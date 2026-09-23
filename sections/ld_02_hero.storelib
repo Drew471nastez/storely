@@ -69,6 +69,7 @@
   "type": "ld_02_hero",
   "name": "LD 02 — Hero",
   "category": "custom",
+  "version": "1.0.1",
   "settings": [
     { "type": "textarea", "id": "intro", "label": "Introduction", "default": "Ghostwriting helps founders share their ideas without writing every post. SEO content gives product brands an FAQ, a comparison, and a buying guide, with checks in Google and ChatGPT." },
     { "type": "url", "id": "email_link", "label": "Email link", "default": "mailto:contact@lucadragoste.ro" },
