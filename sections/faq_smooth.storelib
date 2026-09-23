@@ -1,0 +1,486 @@
+<template>
+  <div
+    class="sfaq"
+    data-icon="{{ settings.icon }}"
+    data-layout="{{ settings.layout }}"
+  >
+    <div class="sfaq__inner">
+      <div class="sfaq__head">
+        {% if settings.heading != blank %}
+          <h2 class="sfaq__heading">{{ settings.heading }}</h2>
+        {% endif %}
+        {% if settings.intro != blank %}
+          <p class="sfaq__intro">{{ settings.intro }}</p>
+        {% endif %}
+        {% if settings.footnote != blank or settings.link_label != blank %}
+          <p class="sfaq__note">
+            {% if settings.footnote != blank %}{{ settings.footnote }}{% endif %}
+            {% if settings.link_label != blank %}
+              <a class="sfaq__notelink" href="{{ settings.link_url | url }}">{{ settings.link_label }}</a>
+            {% endif %}
+          </p>
+        {% endif %}
+      </div>
+
+      <div class="sfaq__list">
+        {% for block in blocks %}
+          <details
+            class="sfaq__item"
+            name="{{ section.id }}-sfaq"
+            data-block-id="{{ block.id }}"
+            {% if forloop.first and settings.open_first %}open{% endif %}
+          >
+            <summary class="sfaq__q">
+              <span class="sfaq__qtext">{{ block.settings.question }}</span>
+              <span class="sfaq__icon" aria-hidden="true"></span>
+            </summary>
+            <div class="sfaq__a">
+              <div class="sfaq__ainner">{{ block.settings.answer | raw }}</div>
+            </div>
+          </details>
+        {% else %}
+          {% if page.in_editor %}
+            <p class="sfaq__empty">No questions yet — add a question block to start this FAQ.</p>
+          {% endif %}
+        {% endfor %}
+      </div>
+    </div>
+  </div>
+</template>
+
+<style>
+  .sfaq {
+    container-type: inline-size;
+    background: {{ scheme.background }};
+    color: {{ scheme.text }};
+    padding-top: {{ settings.padding_top_mobile }}px;
+    padding-bottom: {{ settings.padding_bottom_mobile }}px;
+  }
+
+  .sfaq__inner {
+    max-width: {{ settings.content_width }}px;
+    margin: 0 auto;
+    padding-left: 20px;
+    padding-right: 20px;
+  }
+
+  .sfaq__head {
+    margin-bottom: 28px;
+  }
+
+  .sfaq__heading {
+    margin: 0;
+    color: {{ scheme.heading }};
+    font-size: 1.75rem;
+    line-height: 1.2;
+  }
+
+  .sfaq__intro {
+    margin: 12px 0 0;
+    color: {{ scheme.text_muted }};
+    max-width: 46ch;
+    line-height: 1.55;
+  }
+
+  .sfaq__note {
+    margin: 18px 0 0;
+    color: {{ scheme.text_muted }};
+    font-size: 0.9375rem;
+    line-height: 1.5;
+  }
+
+  .sfaq__notelink {
+    color: {{ scheme.link }};
+    text-decoration: underline;
+    text-underline-offset: 3px;
+  }
+
+  .sfaq__list {
+    border-top: 1px solid {{ scheme.border }};
+  }
+
+  .sfaq__item {
+    border-bottom: 1px solid {{ scheme.border }};
+  }
+
+  .sfaq__q {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    min-height: 56px;
+    padding: 16px 2px;
+    cursor: pointer;
+    list-style: none;
+    color: {{ scheme.heading }};
+  }
+
+  .sfaq__q::-webkit-details-marker {
+    display: none;
+  }
+
+  .sfaq__q:focus-visible {
+    outline: 2px solid {{ scheme.accent }};
+    outline-offset: 3px;
+  }
+
+  .sfaq__qtext {
+    font-size: 1.0625rem;
+    font-weight: 600;
+    line-height: 1.35;
+  }
+
+  .sfaq__icon {
+    position: relative;
+    flex: 0 0 auto;
+    width: 18px;
+    height: 18px;
+    color: {{ scheme.accent }};
+    transition: transform 0.3s ease;
+  }
+
+  .sfaq__icon::before,
+  .sfaq__icon::after {
+    content: "";
+    position: absolute;
+    background: currentColor;
+  }
+
+  /* plus */
+  .sfaq[data-icon="plus"] .sfaq__icon::before {
+    left: 0;
+    top: 8px;
+    width: 18px;
+    height: 2px;
+  }
+
+  .sfaq[data-icon="plus"] .sfaq__icon::after {
+    left: 8px;
+    top: 0;
+    width: 2px;
+    height: 18px;
+    transition: transform 0.3s ease, opacity 0.3s ease;
+  }
+
+  .sfaq[data-icon="plus"] .sfaq__item[open] .sfaq__icon::after {
+    transform: rotate(90deg);
+    opacity: 0;
+  }
+
+  /* chevron */
+  .sfaq[data-icon="chevron"] .sfaq__icon::before {
+    left: 1px;
+    top: 7px;
+    width: 11px;
+    height: 2px;
+    transform: rotate(45deg);
+  }
+
+  .sfaq[data-icon="chevron"] .sfaq__icon::after {
+    right: 1px;
+    top: 7px;
+    width: 11px;
+    height: 2px;
+    transform: rotate(-45deg);
+  }
+
+  .sfaq__item[open] .sfaq__icon {
+    transform: rotate(180deg);
+  }
+
+  .sfaq[data-icon="plus"] .sfaq__item[open] .sfaq__icon {
+    transform: none;
+  }
+
+  .sfaq__a {
+    overflow: hidden;
+  }
+
+  .sfaq__ainner {
+    padding: 0 2px 20px 2px;
+    max-width: 62ch;
+    color: {{ scheme.text }};
+    line-height: 1.6;
+    opacity: 0;
+    transform: translateY(-4px);
+    transition: opacity 0.3s ease, transform 0.3s ease;
+  }
+
+  .sfaq__item[open] .sfaq__ainner {
+    opacity: 1;
+    transform: none;
+  }
+
+  .sfaq__ainner :first-child {
+    margin-top: 0;
+  }
+
+  .sfaq__ainner :last-child {
+    margin-bottom: 0;
+  }
+
+  .sfaq__ainner a {
+    color: {{ scheme.link }};
+  }
+
+  @supports selector(details::details-content) {
+    .sfaq__item::details-content {
+      block-size: 0;
+      overflow: hidden;
+      transition: block-size 0.32s ease, content-visibility 0.32s;
+      transition-behavior: allow-discrete;
+    }
+
+    .sfaq__item[open]::details-content {
+      block-size: auto;
+    }
+  }
+
+  .sfaq__empty {
+    margin: 0;
+    padding: 20px 2px;
+    color: {{ scheme.text_muted }};
+  }
+
+  @container (min-width: 640px) {
+    .sfaq {
+      padding-top: {{ settings.padding_top }}px;
+      padding-bottom: {{ settings.padding_bottom }}px;
+    }
+
+    .sfaq__inner {
+      padding-left: 32px;
+      padding-right: 32px;
+    }
+
+    .sfaq__heading {
+      font-size: 2.125rem;
+    }
+
+    .sfaq__q {
+      padding: 20px 2px;
+    }
+
+    .sfaq__qtext {
+      font-size: 1.125rem;
+    }
+  }
+
+  @container (min-width: 960px) {
+    .sfaq[data-layout="split"] .sfaq__inner {
+      display: grid;
+      grid-template-columns: minmax(0, 0.85fr) minmax(0, 1.3fr);
+      gap: 56px;
+      align-items: start;
+    }
+
+    .sfaq[data-layout="split"] .sfaq__head {
+      margin-bottom: 0;
+      position: sticky;
+      top: 24px;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .sfaq__icon,
+    .sfaq__icon::after,
+    .sfaq__ainner,
+    .sfaq__item::details-content {
+      transition: none;
+    }
+
+    .sfaq__ainner {
+      opacity: 1;
+      transform: none;
+    }
+  }
+</style>
+
+<script>
+</script>
+
+<schema>
+{
+  "name": "Smooth FAQ",
+  "type": "faq_smooth",
+  "settings": [
+    {
+      "type": "color_scheme",
+      "id": "color_scheme",
+      "label": "Colour scheme",
+      "default": "white"
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "Questions about the newsletter"
+    },
+    {
+      "type": "textarea",
+      "id": "intro",
+      "label": "Intro text",
+      "default": "Everything people usually ask before they hand over an email address."
+    },
+    {
+      "type": "select",
+      "id": "layout",
+      "label": "Layout",
+      "options": [
+        { "value": "stacked", "label": "Heading above questions" },
+        { "value": "split", "label": "Heading beside questions" }
+      ],
+      "default": "split"
+    },
+    {
+      "type": "select",
+      "id": "icon",
+      "label": "Open/close icon",
+      "options": [
+        { "value": "plus", "label": "Plus" },
+        { "value": "chevron", "label": "Chevron" }
+      ],
+      "default": "plus"
+    },
+    {
+      "type": "toggle",
+      "id": "open_first",
+      "label": "Start with the first answer open",
+      "default": true
+    },
+    {
+      "type": "range",
+      "id": "content_width",
+      "label": "Content width",
+      "min": 640,
+      "max": 1280,
+      "step": 20,
+      "unit": "px",
+      "default": 1040
+    },
+    {
+      "type": "header",
+      "id": "header_followup",
+      "content": "Follow-up line"
+    },
+    {
+      "type": "text",
+      "id": "footnote",
+      "label": "Follow-up text",
+      "default": "Something else on your mind?"
+    },
+    {
+      "type": "text",
+      "id": "link_label",
+      "label": "Link label",
+      "default": "Write to me"
+    },
+    {
+      "type": "url",
+      "id": "link_url",
+      "label": "Link",
+      "default": "/pages/contact"
+    },
+    {
+      "type": "header",
+      "id": "header_spacing",
+      "content": "Spacing"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "label": "Top spacing (desktop)",
+      "min": 0,
+      "max": 160,
+      "step": 4,
+      "unit": "px",
+      "default": 88
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "label": "Bottom spacing (desktop)",
+      "min": 0,
+      "max": 160,
+      "step": 4,
+      "unit": "px",
+      "default": 88
+    },
+    {
+      "type": "range",
+      "id": "padding_top_mobile",
+      "label": "Top spacing (mobile)",
+      "min": 0,
+      "max": 120,
+      "step": 4,
+      "unit": "px",
+      "default": 52
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom_mobile",
+      "label": "Bottom spacing (mobile)",
+      "min": 0,
+      "max": 120,
+      "step": 4,
+      "unit": "px",
+      "default": 52
+    }
+  ],
+  "blocks": [
+    {
+      "type": "question",
+      "name": "Question",
+      "settings": [
+        {
+          "type": "text",
+          "id": "question",
+          "label": "Question",
+          "default": "How often does it arrive?"
+        },
+        {
+          "type": "richtext",
+          "id": "answer",
+          "label": "Answer",
+          "default": "<p>Once a week, on Thursday morning. Nothing in between unless something genuinely can't wait.</p>"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Smooth FAQ",
+      "blocks": [
+        {
+          "type": "question",
+          "settings": {
+            "question": "How often does the newsletter go out?",
+            "answer": "<p>Once a week, on Thursday morning. If a week is quiet, you get nothing rather than filler.</p>"
+          }
+        },
+        {
+          "type": "question",
+          "settings": {
+            "question": "Can I read a few issues before subscribing?",
+            "answer": "<p>Yes — every past issue stays up on the archive page, in full, with no sign-up wall in front of it.</p>"
+          }
+        },
+        {
+          "type": "question",
+          "settings": {
+            "question": "What happens to my email address?",
+            "answer": "<p>It is used to send you the newsletter and nothing else. No sharing, no selling, no second list you did not ask for.</p>"
+          }
+        },
+        {
+          "type": "question",
+          "settings": {
+            "question": "How do I unsubscribe?",
+            "answer": "<p>There is a one-click unsubscribe link at the bottom of every email. It takes effect immediately and your address is deleted from the list.</p>"
+          }
+        }
+      ]
+    }
+  ]
+}
+</schema>

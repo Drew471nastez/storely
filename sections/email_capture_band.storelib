@@ -1,0 +1,306 @@
+<template>
+  <div class="ecb" style="--pt: {{ settings.mobile_padding_top }}px; --pb: {{ settings.mobile_padding_bottom }}px;">
+    <div class="ecb__media ecb__media--{{ settings.image_position }}">
+      {% if settings.image %}
+        <img src="{{ settings.image | asset }}" alt="{{ settings.image_alt }}" width="1200" height="600" loading="lazy">
+      {% elsif page.in_editor %}
+        <div class="ecb__ph">Add an image</div>
+      {% endif %}
+    </div>
+
+    <div class="ecb__inner ecb__inner--{{ settings.text_align }}">
+      {% if settings.heading %}<h2 class="ecb__heading">{{ settings.heading }}</h2>{% endif %}
+      {% if settings.text %}<p class="ecb__text">{{ settings.text }}</p>{% endif %}
+
+      <form class="ecb__form" action="{{ settings.form_action | url }}" method="post">
+        <label class="ecb__label" for="ecb-email-{{ section.id }}">{{ settings.placeholder }}</label>
+        <input
+          class="ecb__input"
+          id="ecb-email-{{ section.id }}"
+          type="email"
+          name="email"
+          autocomplete="email"
+          required
+          placeholder="{{ settings.placeholder }}">
+        <button class="ecb__btn ecb__btn--{{ settings.button_style }}" type="submit">{{ settings.button_label }}</button>
+      </form>
+    </div>
+  </div>
+</template>
+
+<style>
+  .ecb {
+    container-type: inline-size;
+    position: relative;
+    overflow: hidden;
+    background: {{ scheme.background }};
+    color: {{ scheme.text }};
+    display: flex;
+    flex-direction: column;
+  }
+
+  .ecb__media {
+    order: 2;
+    position: relative;
+    width: 100%;
+    height: {{ settings.mobile_image_height }}px;
+  }
+
+  .ecb__media img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .ecb__media::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(to bottom, {{ scheme.background }} 0%, transparent 65%);
+    pointer-events: none;
+  }
+
+  .ecb__ph {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+    border: 1px dashed {{ scheme.border }};
+    color: {{ scheme.text_muted }};
+    font-size: 13px;
+  }
+
+  .ecb__inner {
+    order: 1;
+    position: relative;
+    z-index: 1;
+    width: 100%;
+    max-width: {{ settings.content_width }}px;
+    margin: 0 auto;
+    padding: var(--pt) 20px var(--pb);
+    box-sizing: border-box;
+  }
+
+  .ecb__inner--left { text-align: left; }
+  .ecb__inner--center { text-align: center; }
+  .ecb__inner--right { text-align: right; }
+
+  .ecb__heading {
+    margin: 0;
+    color: {{ scheme.heading }};
+    font-style: italic;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: -0.005em;
+    line-height: 1.1;
+    font-size: calc({{ settings.heading_size }}px * 0.78);
+  }
+
+  .ecb__text {
+    margin: 12px 0 0;
+    color: {{ scheme.text }};
+    font-size: 16px;
+    line-height: 1.55;
+    max-width: 58ch;
+  }
+
+  .ecb__inner--center .ecb__text { margin-left: auto; margin-right: auto; }
+  .ecb__inner--right .ecb__text { margin-left: auto; }
+
+  .ecb__form {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-top: 24px;
+  }
+
+  .ecb__label {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip-path: inset(50%);
+    white-space: nowrap;
+  }
+
+  .ecb__input {
+    width: 100%;
+    box-sizing: border-box;
+    min-height: 48px;
+    padding: 12px 16px;
+    font: inherit;
+    font-size: 16px;
+    color: {{ scheme.input_text }};
+    background: {{ scheme.input_background }};
+    border: 1px solid {{ scheme.input_border }};
+    border-radius: 8px;
+  }
+
+  .ecb__input::placeholder { color: {{ scheme.text_muted }}; }
+
+  .ecb__input:focus-visible,
+  .ecb__btn:focus-visible {
+    outline: 2px solid {{ scheme.accent }};
+    outline-offset: 2px;
+  }
+
+  .ecb__btn {
+    min-height: 48px;
+    padding: 12px 26px;
+    font: inherit;
+    font-size: 16px;
+    font-weight: 700;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: opacity 0.15s ease;
+  }
+
+  .ecb__btn--filled {
+    background: {{ scheme.primary_button_background }};
+    color: {{ scheme.primary_button_text }};
+    border: 1px solid {{ scheme.primary_button_border }};
+  }
+
+  .ecb__btn--outline {
+    background: transparent;
+    color: {{ scheme.heading }};
+    border: 2px solid {{ scheme.accent }};
+  }
+
+  .ecb__btn:hover { opacity: 0.85; }
+
+  @container (min-width: 640px) {
+    .ecb__form {
+      flex-direction: row;
+      align-items: center;
+      gap: 12px;
+      max-width: 520px;
+    }
+    .ecb__inner--center .ecb__form { margin-left: auto; margin-right: auto; }
+    .ecb__inner--right .ecb__form { margin-left: auto; }
+    .ecb__input { flex: 1 1 auto; }
+    .ecb__btn { flex: 0 0 auto; }
+    .ecb__heading { font-size: calc({{ settings.heading_size }}px * 0.9); }
+  }
+
+  @container (min-width: 1024px) {
+    .ecb {
+      display: block;
+      padding-top: {{ settings.padding_top }}px;
+      padding-bottom: {{ settings.padding_bottom }}px;
+    }
+    .ecb__inner {
+      padding: 0 32px;
+    }
+    .ecb__media {
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      width: 46%;
+      height: auto;
+    }
+    .ecb__media--right { right: 0; left: auto; }
+    .ecb__media--left { left: 0; right: auto; }
+    .ecb__media--right::after {
+      background: linear-gradient(to right, {{ scheme.background }} 0%, {{ scheme.background }} 14%, transparent 78%);
+    }
+    .ecb__media--left::after {
+      background: linear-gradient(to left, {{ scheme.background }} 0%, {{ scheme.background }} 14%, transparent 78%);
+    }
+    .ecb__heading { font-size: {{ settings.heading_size }}px; }
+    .ecb__text { font-size: 17px; margin-top: 14px; }
+    .ecb__form { margin-top: 28px; }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .ecb__btn { transition: none; }
+  }
+</style>
+
+<schema>
+{
+  "name": "Email Capture Band",
+  "type": "email_capture_band",
+  "settings": [
+    { "type": "color_scheme", "id": "color_scheme", "label": "Colour scheme", "default": "dark" },
+
+    { "type": "header", "id": "header_content", "content": "Content" },
+    { "type": "text", "id": "heading", "label": "Heading", "default": "Get weekly sounds!" },
+    { "type": "textarea", "id": "text", "label": "Text", "default": "Stay in tune with our new products and promotions directly to your inbox." },
+
+    { "type": "header", "id": "header_form", "content": "Form" },
+    { "type": "text", "id": "placeholder", "label": "Field placeholder", "default": "Email address" },
+    { "type": "text", "id": "button_label", "label": "Button label", "default": "Subscribe" },
+    { "type": "url", "id": "form_action", "label": "Form submit URL" },
+    {
+      "type": "select",
+      "id": "button_style",
+      "label": "Button style",
+      "default": "filled",
+      "options": [
+        { "value": "filled", "label": "Filled" },
+        { "value": "outline", "label": "Outline" }
+      ]
+    },
+
+    { "type": "header", "id": "header_image", "content": "Image" },
+    { "type": "image_picker", "id": "image", "label": "Image" },
+    { "type": "text", "id": "image_alt", "label": "Image alt text", "default": "Sample pack artwork" },
+    {
+      "type": "select",
+      "id": "image_position",
+      "label": "Image position (desktop)",
+      "default": "right",
+      "options": [
+        { "value": "left", "label": "Left" },
+        { "value": "right", "label": "Right" }
+      ]
+    },
+    { "type": "range", "id": "mobile_image_height", "label": "Image height (mobile)", "min": 120, "max": 400, "step": 10, "unit": "px", "default": 200 },
+
+    { "type": "header", "id": "header_layout", "content": "Layout" },
+    {
+      "type": "select",
+      "id": "text_align",
+      "label": "Text alignment",
+      "default": "center",
+      "options": [
+        { "value": "left", "label": "Left" },
+        { "value": "center", "label": "Centre" },
+        { "value": "right", "label": "Right" }
+      ]
+    },
+    { "type": "range", "id": "content_width", "label": "Content width", "min": 480, "max": 1200, "step": 20, "unit": "px", "default": 900 },
+    { "type": "range", "id": "heading_size", "label": "Heading size", "min": 22, "max": 56, "step": 1, "unit": "px", "default": 34 },
+
+    { "type": "header", "id": "header_spacing", "content": "Spacing" },
+    { "type": "range", "id": "padding_top", "label": "Top spacing (desktop)", "min": 0, "max": 160, "step": 4, "unit": "px", "default": 56 },
+    { "type": "range", "id": "padding_bottom", "label": "Bottom spacing (desktop)", "min": 0, "max": 160, "step": 4, "unit": "px", "default": 56 },
+    { "type": "range", "id": "mobile_padding_top", "label": "Top spacing (mobile)", "min": 0, "max": 120, "step": 4, "unit": "px", "default": 40 },
+    { "type": "range", "id": "mobile_padding_bottom", "label": "Bottom spacing (mobile)", "min": 0, "max": 120, "step": 4, "unit": "px", "default": 32 }
+  ],
+  "presets": [
+    {
+      "name": "Email Capture Band",
+      "settings": {
+        "color_scheme": "dark",
+        "heading": "Get weekly sounds!",
+        "text": "Stay in tune with our new products and promotions directly to your inbox.",
+        "placeholder": "Email address",
+        "button_label": "Subscribe",
+        "button_style": "filled",
+        "image_position": "right",
+        "text_align": "center",
+        "content_width": 900,
+        "heading_size": 34,
+        "padding_top": 56,
+        "padding_bottom": 56,
+        "mobile_padding_top": 40,
+        "mobile_padding_bottom": 32,
+        "mobile_image_height": 200
+      }
+    }
+  ]
+}
+</schema>
