@@ -34,6 +34,7 @@
   "type": "ld_01_header",
   "name": "LD 01 — Header",
   "category": "custom",
+  "version": "1.0.1",
   "settings": [
     { "type": "text", "id": "brand_name", "label": "Brand name", "default": "Luca Dragoste" },
     { "type": "url", "id": "logo_url", "label": "Logo URL", "default": "https://lucadragoste.ro/logo-ld.png" },
