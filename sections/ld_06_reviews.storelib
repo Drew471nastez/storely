@@ -1,6 +1,6 @@
 <template>
 <section class="ldr" data-scheme="{{ settings.color_scheme }}" style="--bg:{{ settings.background }};--ink:{{ settings.text }};--muted:{{ settings.muted }};--line:{{ settings.border }};">
-  <div class="ldr__in"><h2>No client reviews yet</h2><p>{{ settings.text }}</p></div>
+  <div class="ldr__in"><h2>No client reviews yet</h2><p>{{ settings.review_text }}</p></div>
 </section>
 </template>
 
@@ -19,7 +19,7 @@
   "name": "LD 06 — Reviews",
   "category": "custom",
   "settings": [
-    { "type": "textarea", "id": "text", "label": "Text", "default": "You can still read my work before paying. Start with two free posts for ghostwriting or a free brand check for SEO + GEO/AEO." },
+    { "type": "textarea", "id": "review_text", "label": "Text", "default": "You can still read my work before paying. Start with two free posts for ghostwriting or a free brand check for SEO + GEO/AEO." },
     { "type": "color_scheme", "id": "color_scheme", "label": "Base colour scheme", "default": "white" },
     { "type": "color", "id": "background", "label": "Background", "default": "#FFFFFF" },
     { "type": "color", "id": "text", "label": "Text", "default": "#1A1D24" },
