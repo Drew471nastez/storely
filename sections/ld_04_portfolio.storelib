@@ -42,6 +42,7 @@
   "type": "ld_04_portfolio",
   "name": "LD 04 — Portfolio",
   "category": "custom",
+  "version": "1.0.1",
   "settings": [
     { "type": "textarea", "id": "intro", "label": "Introduction", "default": "Both projects are samples for Materia Themes. They show the writing and deliverables without claiming results that do not exist." },
     { "type": "url", "id": "sample_link", "label": "Sample link", "default": "#" },
