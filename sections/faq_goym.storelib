@@ -1,0 +1,269 @@
+<template>
+<section
+  class="goym"
+  data-scheme="{{ settings.color_scheme }}"
+  style="--goym-pt: {{ settings.padding_top }}px; --goym-pb: {{ settings.padding_bottom }}px;"
+>
+  <div class="goym__inner goym__inner--{{ settings.max_width }}">
+    <header class="goym__header">
+      <div class="goym__title-group">
+        {% if settings.eyebrow %}<p class="goym__eyebrow">{{ settings.eyebrow }}</p>{% endif %}
+        {% if settings.heading %}<h2 class="goym__heading">{{ settings.heading }}</h2>{% endif %}
+      </div>
+
+      {% if settings.intro %}<p class="goym__intro">{{ settings.intro }}</p>{% endif %}
+    </header>
+
+    {% if blocks.size == 0 %}
+      {% if page.in_editor %}<p class="goym__empty">Add question blocks to build this FAQ.</p>{% endif %}
+    {% else %}
+      <div class="goym__list">
+        {% for block in blocks %}
+          <details
+            class="goym__item"
+            name="{{ section.id }}-goym"
+            data-block-id="{{ block.id }}"
+            {% if block.settings.open or forloop.first and settings.open_first %}open{% endif %}
+          >
+            <summary class="goym__question">
+              {% if settings.show_numbers %}<span class="goym__number" aria-hidden="true">{{ forloop.index }}</span>{% endif %}
+              <span class="goym__question-text">{{ block.settings.question }}</span>
+              <span class="goym__icon" aria-hidden="true"></span>
+            </summary>
+            <div class="goym__answer rt">{{ block.settings.answer | raw }}</div>
+          </details>
+        {% endfor %}
+      </div>
+    {% endif %}
+
+    {% if settings.footer_text or settings.link_text %}
+      <footer class="goym__footer">
+        {% if settings.footer_text %}<p class="goym__footer-text">{{ settings.footer_text }}</p>{% endif %}
+        {% if settings.link_text %}<a class="goym__link" href="{{ settings.link_url | default: '#' | url }}">{{ settings.link_text }} <span aria-hidden="true">&#8599;</span></a>{% endif %}
+      </footer>
+    {% endif %}
+  </div>
+</section>
+</template>
+
+<style scoped>
+.goym {
+  container-type: inline-size;
+  background: var(--scheme-background);
+  color: var(--scheme-text);
+}
+
+.goym__inner {
+  margin: 0 auto;
+  padding: calc(var(--goym-pt) * var(--theme-spacing-scale, 1)) var(--theme-padding-x, 24px) calc(var(--goym-pb) * var(--theme-spacing-scale, 1));
+}
+
+.goym__inner--narrow { max-width: 760px; }
+.goym__inner--medium { max-width: 980px; }
+.goym__inner--wide { max-width: var(--theme-page-width, 1280px); }
+
+.goym__header {
+  display: grid;
+  gap: 18px;
+  margin-bottom: 36px;
+  padding-bottom: 28px;
+  border-bottom: 1px solid var(--scheme-border);
+}
+
+.goym__title-group { max-width: 42rem; }
+
+.goym__eyebrow {
+  margin: 0 0 10px;
+  color: var(--scheme-accent);
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+
+.goym__heading {
+  margin: 0;
+  color: var(--scheme-heading);
+  font-family: var(--theme-font-heading, {{ theme.typography.heading }}), ui-sans-serif, system-ui, sans-serif;
+  font-size: var(--section-heading-size, 36px);
+  font-weight: var(--section-heading-weight, 700);
+  letter-spacing: var(--section-heading-tracking, -0.02em);
+  line-height: var(--section-heading-line-height, 1.1);
+  text-transform: var(--section-heading-transform, none);
+}
+
+.goym__intro {
+  max-width: 38rem;
+  margin: 0;
+  color: var(--scheme-text-muted);
+  font-size: var(--section-text-size, 17px);
+  line-height: var(--section-text-line-height, 1.6);
+}
+
+.goym__list {
+  display: grid;
+  gap: 12px;
+}
+
+.goym__item {
+  overflow: hidden;
+  border: 1px solid var(--scheme-border);
+  border-radius: var(--theme-radius-medium, {{ theme.radius.medium }}px);
+  background: var(--scheme-background-secondary);
+}
+
+.goym__question {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 14px;
+  min-height: 64px;
+  padding: 18px 20px;
+  color: var(--scheme-heading);
+  cursor: pointer;
+  list-style: none;
+}
+
+.goym__question::-webkit-details-marker { display: none; }
+.goym__question::marker { content: ""; }
+.goym__question:focus-visible { outline: 2px solid var(--scheme-accent); outline-offset: -3px; }
+
+.goym__number {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 30px;
+  height: 30px;
+  border-radius: 999px;
+  background: var(--scheme-accent);
+  color: var(--scheme-background);
+  font-size: 12px;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+}
+
+.goym__question-text {
+  font-size: 16px;
+  font-weight: 650;
+  line-height: 1.4;
+}
+
+.goym__icon {
+  position: relative;
+  width: 18px;
+  height: 18px;
+  color: var(--scheme-accent);
+}
+
+.goym__icon::before,
+.goym__icon::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  width: 16px;
+  height: 2px;
+  margin: auto;
+  background: currentColor;
+  transition: transform 180ms ease, opacity 180ms ease;
+}
+
+.goym__icon::after { transform: rotate(90deg); }
+.goym__item[open] .goym__icon::after { transform: rotate(0); opacity: 0; }
+
+.goym__answer {
+  padding: 0 20px 22px 64px;
+  color: var(--scheme-text-muted);
+  font-size: 15px;
+  line-height: 1.7;
+}
+
+.goym__answer > :first-child { margin-top: 0; }
+.goym__answer > :last-child { margin-bottom: 0; }
+.goym__answer a { color: var(--scheme-link); text-underline-offset: 3px; }
+
+.goym__footer {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px 24px;
+  margin-top: 28px;
+}
+
+.goym__footer-text { margin: 0; color: var(--scheme-text-muted); font-size: 14px; line-height: 1.5; }
+.goym__link { color: var(--scheme-link); font-size: 14px; font-weight: 700; text-decoration: none; }
+.goym__link:hover { text-decoration: underline; text-underline-offset: 4px; }
+.goym__empty { margin: 0; padding: 28px; border: 1px dashed var(--scheme-border); text-align: center; color: var(--scheme-text-muted); }
+
+@container (min-width: 760px) {
+  .goym__header { grid-template-columns: minmax(0, 1.15fr) minmax(18rem, 0.85fr); align-items: end; gap: 48px; }
+}
+
+@container (max-width: 520px) {
+  .goym__question { padding: 16px; }
+  .goym__number { display: none; }
+  .goym__answer { padding: 0 16px 20px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .goym__icon::before,
+  .goym__icon::after { transition: none; }
+}
+</style>
+
+<schema>
+{
+  "schema_version": 1,
+  "type": "faq_goym",
+  "name": "Goym",
+  "category": "faq",
+  "description": "A numbered FAQ with a strong editorial layout.",
+  "version": "1.0.0",
+  "icon": "help-circle",
+  "settings": [
+    { "type": "header", "id": "hdr_content", "label": "Content" },
+    { "type": "text", "id": "eyebrow", "label": "Eyebrow", "default": "Good to know" },
+    { "type": "text", "id": "heading", "label": "Heading", "default": "Questions, clearly answered" },
+    { "type": "textarea", "id": "intro", "label": "Introduction", "default": "The useful details, gathered in one place." },
+    { "type": "text", "id": "footer_text", "label": "Footer text", "default": "Still looking for an answer?" },
+    { "type": "text", "id": "link_text", "label": "Link label", "default": "Get in touch" },
+    { "type": "url", "id": "link_url", "label": "Link", "default": "/contact" },
+    { "type": "header", "id": "hdr_layout", "label": "Layout" },
+    { "type": "select", "id": "max_width", "label": "Content width", "default": "wide", "options": [
+      { "value": "narrow", "label": "Narrow" },
+      { "value": "medium", "label": "Medium" },
+      { "value": "wide", "label": "Wide" }
+    ] },
+    { "type": "toggle", "id": "show_numbers", "label": "Show question numbers", "default": true },
+    { "type": "toggle", "id": "open_first", "label": "Open the first question", "default": true },
+    { "type": "header", "id": "hdr_style", "label": "Style" },
+    { "type": "color_scheme", "id": "color_scheme", "label": "Colour scheme", "default": "white" },
+    { "type": "header", "id": "hdr_spacing", "label": "Spacing" },
+    { "type": "range", "id": "padding_top", "label": "Top padding", "min": 0, "max": 160, "step": 4, "unit": "px", "default": 80 },
+    { "type": "range", "id": "padding_bottom", "label": "Bottom padding", "min": 0, "max": 160, "step": 4, "unit": "px", "default": 80 }
+  ],
+  "blocks": [
+    {
+      "type": "question",
+      "name": "Question",
+      "limit": 30,
+      "settings": [
+        { "type": "text", "id": "question", "label": "Question", "default": "What should customers know?" },
+        { "type": "richtext", "id": "answer", "label": "Answer", "default": "<p>Add a clear, concise answer here.</p>" },
+        { "type": "toggle", "id": "open", "label": "Open by default", "default": false }
+      ]
+    }
+  ],
+  "max_blocks": 30,
+  "presets": [
+    {
+      "name": "Goym",
+      "blocks": [
+        { "type": "question", "settings": { "question": "How do I choose the right option?", "answer": "<p>Use the details on each product page to compare the available choices and find the best fit.</p>" } },
+        { "type": "question", "settings": { "question": "Where can I find delivery information?", "answer": "<p>Delivery details are shown during checkout before you complete your order.</p>" } },
+        { "type": "question", "settings": { "question": "Can I ask another question?", "answer": "<p>Yes. Use the contact link below and include any details that will help us answer.</p>" } }
+      ]
+    }
+  ]
+}
+</schema>
