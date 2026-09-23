@@ -24,6 +24,7 @@
   "type": "ld_10_footer",
   "name": "LD 10 — Footer",
   "category": "custom",
+  "version": "1.0.1",
   "settings": [
     { "type": "url", "id": "linkedin_link", "label": "LinkedIn link", "default": "https://www.linkedin.com" },
     { "type": "url", "id": "email_link", "label": "Email link", "default": "mailto:contact@lucadragoste.ro" },
