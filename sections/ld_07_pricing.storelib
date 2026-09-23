@@ -60,6 +60,7 @@
   "type": "ld_07_pricing",
   "name": "LD 07 — Pricing",
   "category": "custom",
+  "version": "1.0.1",
   "settings": [
     { "type": "color_scheme", "id": "color_scheme", "label": "Base colour scheme", "default": "white" },
     { "type": "color", "id": "background", "label": "Background", "default": "#FFFFFF" },
