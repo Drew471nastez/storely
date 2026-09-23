@@ -36,6 +36,7 @@
   "type": "ld_09_contact",
   "name": "LD 09 — Contact",
   "category": "custom",
+  "version": "1.0.1",
   "settings": [
     { "type": "text", "id": "email_address", "label": "Email address", "default": "contact@lucadragoste.ro" },
     { "type": "url", "id": "email_link", "label": "Email link", "default": "mailto:contact@lucadragoste.ro" },
