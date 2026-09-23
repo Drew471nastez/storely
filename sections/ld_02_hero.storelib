@@ -1,0 +1,88 @@
+<template>
+<section class="ldhero" data-scheme="{{ settings.color_scheme }}" style="--bg:{{ settings.background }};--fg:{{ settings.text }};--muted:{{ settings.muted }};--accent:{{ settings.accent }};--paper:{{ settings.paper }};--ink:{{ settings.ink }};--soft:{{ settings.paper_soft }};">
+  <div class="ldhero__in">
+    <div class="ldhero__copy">
+      <h1>LinkedIn posts<br>for founders.<br>SEO content for<br>product brands.</h1>
+      <p class="ldhero__lead">{{ settings.intro }}</p>
+      <ul>
+        <li>Ghostwriting starts with two free LinkedIn posts</li>
+        <li>SEO content starts with a free three-question brand check</li>
+        <li>You work directly with me</li>
+      </ul>
+      <div class="ldhero__actions">
+        <a class="ldhero__button" href="#ld-services">Choose a service</a>
+        <a class="ldhero__email" href="{{ settings.email_link | url }}">Email me</a>
+      </div>
+    </div>
+    <div class="ldhero__visual" aria-label="Writing samples">
+      <article class="paper paper--front">
+        <p class="paper__kicker">LinkedIn draft</p>
+        <p class="paper__client"><span>m</span> Materia Themes</p>
+        <p class="paper__headline">I think Shopify<br>themes should<br>come with more<br>than a nice<br>homepage.</p>
+        <a href="{{ settings.sample_link | url }}">Read the sample</a>
+      </article>
+      <article class="paper paper--back">
+        <div class="doc">
+          <span class="doc__dot"></span>
+          <p>Materia Themes SEO GEO AEO project</p>
+          <small>Project overview and deliverables</small>
+          <span class="doc__line"></span><span class="doc__line doc__line--short"></span>
+        </div>
+        <a href="{{ settings.project_link | url }}">Open the project</a>
+      </article>
+    </div>
+  </div>
+</section>
+</template>
+
+<style scoped>
+.ldhero { height: 433px; background: var(--bg); color: var(--fg); font-family: Arial, Helvetica, sans-serif; }
+.ldhero__in { display: grid; grid-template-columns: 1.15fr .85fr; width: min(620px, calc(100% - 32px)); height: 100%; margin: 0 auto; align-items: center; gap: 54px; }
+.ldhero h1 { margin: 0 0 12px; color: var(--fg); font-family: "Bodoni 72", Didot, Georgia, serif; font-size: 46px; font-weight: 400; letter-spacing: -2.6px; line-height: .91; }
+.ldhero__lead { max-width: 330px; margin: 0 0 14px; color: var(--muted); font-size: 10px; line-height: 1.55; }
+.ldhero ul { display: flex; flex-wrap: wrap; gap: 4px 13px; margin: 0 0 17px; padding: 0; color: var(--fg); font-size: 6px; list-style: none; }
+.ldhero li::before { content: ""; display: inline-block; width: 3px; height: 3px; margin-right: 6px; border-radius: 50%; background: var(--accent); vertical-align: 1px; }
+.ldhero__actions { display: flex; align-items: center; gap: 12px; }
+.ldhero__button { display: inline-flex; min-height: 27px; padding: 0 13px; align-items: center; justify-content: center; background: var(--accent); color: var(--paper); font-size: 7px; font-weight: 700; text-decoration: none; }
+.ldhero__email { color: var(--fg); font-size: 7px; font-weight: 700; text-decoration: underline; text-underline-offset: 2px; }
+.ldhero__visual { position: relative; height: 250px; }
+.paper { position: absolute; background: var(--paper); color: var(--ink); box-shadow: 0 12px 28px color-mix(in srgb, var(--ink) 16%, transparent); }
+.paper a { color: var(--ink); font-size: 6px; font-weight: 700; text-decoration: underline; text-underline-offset: 1px; }
+.paper__kicker { margin: 0 0 11px; font-size: 5px; font-weight: 800; letter-spacing: .14em; text-transform: uppercase; }
+.paper__client { display: flex; margin: 0; align-items: center; gap: 5px; font-size: 6px; font-weight: 700; }
+.paper__client span { display: inline-flex; width: 12px; height: 12px; align-items: center; justify-content: center; border-radius: 50%; background: var(--ink); color: var(--paper); font-family: Georgia, serif; font-size: 7px; font-style: italic; }
+.paper__headline { margin: 28px 0 18px; font-family: "Bodoni 72", Didot, Georgia, serif; font-size: 17px; letter-spacing: -.7px; line-height: .95; }
+.paper--front { z-index: 2; top: 21px; left: 2px; width: 120px; height: 192px; padding: 16px 14px; transform: rotate(-2deg); }
+.paper--back { z-index: 1; top: 34px; right: 0; width: 110px; height: 164px; padding: 7px 6px 9px; transform: rotate(2.5deg); background: var(--soft); }
+.doc { height: 133px; margin-bottom: 5px; padding: 13px 11px; background: var(--paper); }
+.doc__dot { display: block; width: 7px; height: 7px; margin-bottom: 11px; border-radius: 50%; background: var(--ink); }
+.doc p { margin: 0 0 4px; font-family: Georgia, serif; font-size: 7px; line-height: 1.1; }
+.doc small { font-size: 3.5px; }
+.doc__line { display: block; width: 80%; height: 1px; margin-top: 27px; background: var(--soft); }
+.doc__line--short { width: 45%; margin-top: 3px; }
+@container (max-width: 620px) { .ldhero { height: auto; min-height: 520px; } .ldhero__in { grid-template-columns: 1fr; padding: 62px 0; } .ldhero__visual { display: none; } .ldhero h1 { font-size: clamp(42px, 13vw, 54px); } .ldhero__lead { font-size: 12px; } .ldhero ul { display: grid; font-size: 8px; } }
+</style>
+
+<schema>
+{
+  "schema_version": 1,
+  "type": "ld_02_hero",
+  "name": "LD 02 — Hero",
+  "category": "custom",
+  "settings": [
+    { "type": "textarea", "id": "intro", "label": "Introduction", "default": "Ghostwriting helps founders share their ideas without writing every post. SEO content gives product brands an FAQ, a comparison, and a buying guide, with checks in Google and ChatGPT." },
+    { "type": "url", "id": "email_link", "label": "Email link", "default": "mailto:contact@lucadragoste.ro" },
+    { "type": "url", "id": "sample_link", "label": "Sample link", "default": "#ld-portfolio" },
+    { "type": "url", "id": "project_link", "label": "Project link", "default": "#ld-portfolio" },
+    { "type": "color_scheme", "id": "color_scheme", "label": "Base colour scheme", "default": "black" },
+    { "type": "color", "id": "background", "label": "Background", "default": "#15171D" },
+    { "type": "color", "id": "text", "label": "Text", "default": "#FFFFFF" },
+    { "type": "color", "id": "muted", "label": "Muted text", "default": "#BDC0C5" },
+    { "type": "color", "id": "accent", "label": "Blue accent", "default": "#5381E5" },
+    { "type": "color", "id": "paper", "label": "Paper", "default": "#FFFFFF" },
+    { "type": "color", "id": "ink", "label": "Paper text", "default": "#15171D" },
+    { "type": "color", "id": "paper_soft", "label": "Paper surround", "default": "#F5F5F7" }
+  ],
+  "presets": [{ "name": "LD 02 — Hero" }]
+}
+</schema>

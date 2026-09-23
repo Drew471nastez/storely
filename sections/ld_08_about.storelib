@@ -1,0 +1,38 @@
+<template>
+<section class="lda" data-scheme="{{ settings.color_scheme }}" style="--bg:{{ settings.background }};--ink:{{ settings.text }};--muted:{{ settings.muted }};--line:{{ settings.border }};">
+  <div class="lda__in">
+    <img src="{{ settings.logo_url | asset }}" alt="{{ settings.logo_alt }}" width="96" height="96" loading="lazy">
+    <div><h2>About me</h2><p>{{ settings.biography }}</p><p>{{ settings.note }}</p></div>
+  </div>
+</section>
+</template>
+
+<style scoped>
+.lda { height: 220px; border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); background: var(--bg); color: var(--ink); font-family: Arial, Helvetica, sans-serif; }
+.lda__in { display: grid; grid-template-columns: 96px 310px; width: fit-content; max-width: calc(100% - 32px); height: 100%; margin: 0 auto; align-items: center; gap: 27px; }
+.lda img { width: 96px; height: 96px; object-fit: cover; }
+.lda h2 { margin: 0 0 12px; font-family: "Bodoni 72", Didot, Georgia, serif; font-size: 30px; font-weight: 400; letter-spacing: -1.4px; line-height: 1; }
+.lda p { margin: 0 0 8px; color: var(--muted); font-size: 6.5px; line-height: 1.55; }
+@container (max-width: 520px) { .lda { height: auto; } .lda__in { grid-template-columns: 76px 1fr; min-height: 280px; gap: 20px; } .lda img { width: 76px; height: 76px; } .lda p { font-size: 9px; } }
+</style>
+
+<schema>
+{
+  "schema_version": 1,
+  "type": "ld_08_about",
+  "name": "LD 08 — About",
+  "category": "custom",
+  "settings": [
+    { "type": "url", "id": "logo_url", "label": "Logo URL", "default": "https://lucadragoste.ro/logo-ld.png" },
+    { "type": "text", "id": "logo_alt", "label": "Logo alt text", "default": "Luca Dragoste LD logo" },
+    { "type": "textarea", "id": "biography", "label": "Biography", "default": "I’m Luca, an Advertising student at SNSPA in Bucharest. I run both services myself, so the person you speak with also does the research and writing." },
+    { "type": "textarea", "id": "note", "label": "Note", "default": "I keep the work small, direct, and easy to review." },
+    { "type": "color_scheme", "id": "color_scheme", "label": "Base colour scheme", "default": "white" },
+    { "type": "color", "id": "background", "label": "Background", "default": "#FFFFFF" },
+    { "type": "color", "id": "text", "label": "Text", "default": "#1A1D24" },
+    { "type": "color", "id": "muted", "label": "Muted text", "default": "#4E5156" },
+    { "type": "color", "id": "border", "label": "Borders", "default": "#BDC0C5" }
+  ],
+  "presets": [{ "name": "LD 08 — About" }]
+}
+</schema>

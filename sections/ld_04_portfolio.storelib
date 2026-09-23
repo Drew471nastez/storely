@@ -1,0 +1,56 @@
+<template>
+<section id="ld-portfolio" class="ldw" data-scheme="{{ settings.color_scheme }}" style="--bg:{{ settings.background }};--paper:{{ settings.paper }};--ink:{{ settings.text }};--muted:{{ settings.muted }};">
+  <div class="ldw__in">
+    <div class="ldw__head"><h2>Work you can read now</h2><p>{{ settings.intro }}</p></div>
+    <div class="ldw__feature">
+      <article class="sample">
+        <p class="sample__kicker">LinkedIn draft</p>
+        <p class="sample__client"><span>m</span> Materia Themes</p>
+        <p class="sample__headline">I think Shopify<br>themes should<br>come with more<br>than a nice<br>homepage.</p>
+      </article>
+      <div class="ldw__copy">
+        <h3>Ghostwriting for<br>Materia Themes</h3>
+        <p>A complete LinkedIn writing sample for a Shopify theme brand.</p>
+        <a href="{{ settings.sample_link | url }}">Read the ghostwriting sample</a>
+      </div>
+    </div>
+  </div>
+</section>
+</template>
+
+<style scoped>
+.ldw { height: 461px; border-top: 1px solid color-mix(in srgb, var(--muted) 24%, transparent); background: var(--bg); color: var(--ink); font-family: Arial, Helvetica, sans-serif; }
+.ldw__in { width: min(620px, calc(100% - 32px)); margin: 0 auto; padding-top: 59px; }
+.ldw__head { display: grid; grid-template-columns: 2fr 1fr; gap: 58px; align-items: start; }
+.ldw h2 { margin: 0; font-family: "Bodoni 72", Didot, Georgia, serif; font-size: 30px; font-weight: 400; letter-spacing: -1.4px; line-height: 1; }
+.ldw__head p { margin: 0; color: var(--muted); font-size: 6.5px; line-height: 1.55; }
+.ldw__feature { display: grid; grid-template-columns: 1fr 1fr; gap: 55px; align-items: center; margin-top: 49px; }
+.sample { width: 205px; height: 228px; padding: 21px 18px; transform: rotate(-2deg); background: var(--paper); box-shadow: 0 12px 28px color-mix(in srgb, var(--ink) 12%, transparent); }
+.sample__kicker { margin: 0 0 12px; font-size: 5px; font-weight: 800; letter-spacing: .14em; text-transform: uppercase; }
+.sample__client { display: flex; margin: 0; align-items: center; gap: 5px; font-size: 6px; font-weight: 700; }
+.sample__client span { display: inline-flex; width: 12px; height: 12px; align-items: center; justify-content: center; border-radius: 50%; background: var(--ink); color: var(--paper); font-family: Georgia, serif; font-size: 7px; font-style: italic; }
+.sample__headline { margin: 34px 0 0; font-family: "Bodoni 72", Didot, Georgia, serif; font-size: 19px; letter-spacing: -.8px; line-height: .96; }
+.ldw__copy h3 { margin: 0 0 10px; font-family: "Bodoni 72", Didot, Georgia, serif; font-size: 28px; font-weight: 400; letter-spacing: -1px; line-height: .95; }
+.ldw__copy p { margin: 0 0 9px; color: var(--muted); font-size: 6.5px; }
+.ldw__copy a { color: var(--ink); font-size: 7px; font-weight: 700; text-decoration: underline; text-underline-offset: 2px; }
+@container (max-width: 620px) { .ldw { height: auto; min-height: 590px; } .ldw__in { padding: 72px 0; } .ldw__head, .ldw__feature { grid-template-columns: 1fr; } .ldw__feature { gap: 44px; } .ldw__head p, .ldw__copy p { font-size: 9px; } }
+</style>
+
+<schema>
+{
+  "schema_version": 1,
+  "type": "ld_04_portfolio",
+  "name": "LD 04 — Portfolio",
+  "category": "custom",
+  "settings": [
+    { "type": "textarea", "id": "intro", "label": "Introduction", "default": "Both projects are samples for Materia Themes. They show the writing and deliverables without claiming results that do not exist." },
+    { "type": "url", "id": "sample_link", "label": "Sample link", "default": "#" },
+    { "type": "color_scheme", "id": "color_scheme", "label": "Base colour scheme", "default": "light" },
+    { "type": "color", "id": "background", "label": "Background", "default": "#F5F5F7" },
+    { "type": "color", "id": "paper", "label": "Paper", "default": "#FFFFFF" },
+    { "type": "color", "id": "text", "label": "Text", "default": "#1A1D24" },
+    { "type": "color", "id": "muted", "label": "Muted text", "default": "#4E5156" }
+  ],
+  "presets": [{ "name": "LD 04 — Portfolio" }]
+}
+</schema>

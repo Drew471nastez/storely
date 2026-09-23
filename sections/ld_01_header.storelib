@@ -1,0 +1,50 @@
+<template>
+<header id="ld-top" class="ldh" data-scheme="{{ settings.color_scheme }}" style="--bg:{{ settings.background }};--fg:{{ settings.text }};--line:{{ settings.border }};--paper:{{ settings.contact_background }};--paper-text:{{ settings.contact_text }};">
+  <div class="ldh__in">
+    <a class="ldh__brand" href="#ld-top">
+      <img src="{{ settings.logo_url | asset }}" alt="{{ settings.logo_alt }}" width="18" height="18">
+      <span>{{ settings.brand_name }}</span>
+    </a>
+    <nav class="ldh__nav" aria-label="Main navigation">
+      <a href="#ld-services">Services</a>
+      <a href="#ld-portfolio">Portfolio</a>
+      <a href="#ld-process">How it works</a>
+      <a href="#ld-pricing">Pricing</a>
+      <a class="ldh__contact" href="#ld-contact">Contact</a>
+    </nav>
+  </div>
+</header>
+</template>
+
+<style scoped>
+.ldh { height: 36px; border-top: 2px solid var(--line); border-bottom: 1px solid var(--line); background: var(--bg); color: var(--fg); font-family: Arial, Helvetica, sans-serif; }
+.ldh__in { display: flex; width: min(620px, calc(100% - 32px)); height: 33px; margin: 0 auto; align-items: center; justify-content: space-between; }
+.ldh__brand { display: flex; align-items: center; gap: 6px; color: var(--fg); font-size: 7px; font-weight: 700; text-decoration: none; }
+.ldh__brand img { width: 18px; height: 18px; border: 1px solid var(--line); border-radius: 3px; object-fit: cover; }
+.ldh__nav { display: flex; align-items: center; gap: 14px; }
+.ldh__nav a { color: var(--fg); font-size: 6px; text-decoration: none; }
+.ldh__nav a:hover { text-decoration: underline; text-underline-offset: 2px; }
+.ldh__nav .ldh__contact { padding: 7px 10px; background: var(--paper); color: var(--paper-text); }
+@container (max-width: 520px) { .ldh__nav a:not(.ldh__contact) { display: none; } }
+</style>
+
+<schema>
+{
+  "schema_version": 1,
+  "type": "ld_01_header",
+  "name": "LD 01 — Header",
+  "category": "custom",
+  "settings": [
+    { "type": "text", "id": "brand_name", "label": "Brand name", "default": "Luca Dragoste" },
+    { "type": "url", "id": "logo_url", "label": "Logo URL", "default": "https://lucadragoste.ro/logo-ld.png" },
+    { "type": "text", "id": "logo_alt", "label": "Logo alt text", "default": "Luca Dragoste LD logo" },
+    { "type": "color_scheme", "id": "color_scheme", "label": "Base colour scheme", "default": "black" },
+    { "type": "color", "id": "background", "label": "Background", "default": "#15171D" },
+    { "type": "color", "id": "text", "label": "Text", "default": "#FFFFFF" },
+    { "type": "color", "id": "border", "label": "Border", "default": "#4E5156" },
+    { "type": "color", "id": "contact_background", "label": "Contact background", "default": "#FFFFFF" },
+    { "type": "color", "id": "contact_text", "label": "Contact text", "default": "#15171D" }
+  ],
+  "presets": [{ "name": "LD 01 — Header" }]
+}
+</schema>

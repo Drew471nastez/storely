@@ -1,0 +1,75 @@
+<template>
+<section id="ld-pricing" class="ldprice" data-scheme="{{ settings.color_scheme }}" style="--bg:{{ settings.background }};--soft:{{ settings.soft_background }};--ink:{{ settings.text }};--muted:{{ settings.muted }};--line:{{ settings.border }};--accent:{{ settings.accent }};--button-text:{{ settings.button_text_color }};">
+  <div class="ldprice__in">
+    <h2>Prices for both services</h2>
+    <div class="tabs">
+      <input type="radio" name="{{ section.id }}-pricing" id="{{ section.id }}-ghost" checked>
+      <input type="radio" name="{{ section.id }}-pricing" id="{{ section.id }}-seo">
+      <div class="tabs__labels"><label for="{{ section.id }}-ghost">Ghostwriting</label><label for="{{ section.id }}-seo">SEO + GEO/AEO</label></div>
+      <div class="tabs__panels">
+        <div class="prices prices--ghost">
+          <article class="card card--soft"><p class="card__name">Two free posts</p><p class="card__price">Free</p><ul><li>Two finished drafts</li><li>Written in your voice</li><li>Start by message</li></ul><a class="button button--blue" href="#ld-contact">Get two free posts</a></article>
+          <article class="card"><p class="card__name">Four posts<br>each month</p><p class="card__price">$200 <small>/ month</small></p><ul><li>Founding price for the first three clients</li><li>Four finished posts</li><li>One edit round for each</li></ul><a class="button" href="#ld-contact">View details</a></article>
+        </div>
+        <div class="prices prices--seo">
+          <article class="card card--soft"><p class="card__name">Three-question check</p><p class="card__price">Free</p><ul><li>A focused brand review</li><li>Search and answer opportunities</li><li>A clear recommended next step</li></ul><a class="button button--blue" href="#ld-contact">Get the free check</a></article>
+          <article class="card"><p class="card__name">Content project</p><p class="card__price">By scope</p><ul><li>FAQ, comparison, or buying guide</li><li>Written for people and answer engines</li><li>Delivered ready to review</li></ul><a class="button" href="#ld-contact">Ask for details</a></article>
+        </div>
+      </div>
+    </div>
+    <p class="ldprice__note">All prices are in USD.</p>
+  </div>
+</section>
+</template>
+
+<style scoped>
+.ldprice { height: 517px; background: var(--bg); color: var(--ink); font-family: Arial, Helvetica, sans-serif; }
+.ldprice__in { width: min(620px, calc(100% - 32px)); margin: 0 auto; padding-top: 62px; }
+.ldprice h2 { margin: 0 0 31px; font-family: "Bodoni 72", Didot, Georgia, serif; font-size: 30px; font-weight: 400; letter-spacing: -1.4px; line-height: 1; }
+.tabs { position: relative; }
+.tabs > input { position: absolute; width: 1px; height: 1px; opacity: 0; }
+.tabs__labels { display: flex; gap: 16px; border-bottom: 1px solid var(--ink); }
+.tabs__labels label { position: relative; padding-bottom: 10px; font-size: 7px; cursor: pointer; }
+.tabs__labels label::after { content: ""; position: absolute; right: 0; bottom: -1px; left: 0; height: 2px; background: transparent; }
+.tabs > input:first-of-type:checked ~ .tabs__labels label:first-child,
+.tabs > input:nth-of-type(2):checked ~ .tabs__labels label:nth-child(2) { font-weight: 700; }
+.tabs > input:first-of-type:checked ~ .tabs__labels label:first-child::after,
+.tabs > input:nth-of-type(2):checked ~ .tabs__labels label:nth-child(2)::after { background: var(--accent); }
+.tabs__panels { border-bottom: 1px solid var(--ink); }
+.prices { display: none; grid-template-columns: 1fr 1fr; }
+.tabs > input:first-of-type:checked ~ .tabs__panels .prices--ghost,
+.tabs > input:nth-of-type(2):checked ~ .tabs__panels .prices--seo { display: grid; }
+.card { display: flex; height: 238px; flex-direction: column; padding: 17px; }
+.card + .card { border-left: 1px solid var(--line); }
+.card--soft { background: var(--soft); }
+.card__name { margin: 0 0 18px; font-family: "Bodoni 72", Didot, Georgia, serif; font-size: 16px; letter-spacing: -.5px; line-height: 1; }
+.card__price { margin: 0 0 15px; font-family: "Bodoni 72", Didot, Georgia, serif; font-size: 27px; letter-spacing: -1px; line-height: 1; }
+.card__price small { font-family: Arial, sans-serif; font-size: 5px; letter-spacing: 0; }
+.card ul { flex: 1; margin: 0 0 12px; padding: 0; color: var(--muted); font-size: 6px; list-style: none; }
+.card li { margin-bottom: 8px; }
+.card li::before { content: ""; display: inline-block; width: 3px; height: 3px; margin-right: 8px; border-radius: 50%; background: var(--accent); vertical-align: 1px; }
+.button { display: inline-flex; height: 28px; align-items: center; justify-content: center; border: 1px solid var(--ink); color: var(--ink); font-size: 6px; font-weight: 700; text-decoration: none; }
+.button--blue { border-color: var(--accent); background: var(--accent); color: var(--button-text); }
+.ldprice__note { width: 335px; margin: 15px 0 0; padding: 11px; border: 1px solid var(--line); background: var(--soft); color: var(--muted); font-size: 6px; }
+@container (max-width: 620px) { .ldprice { height: auto; } .ldprice__in { padding: 72px 0; } .prices { grid-template-columns: 1fr; } .card { height: 280px; padding: 24px; } .card + .card { border-top: 1px solid var(--line); border-left: 0; } .card ul { font-size: 9px; } .ldprice__note { width: 100%; } }
+</style>
+
+<schema>
+{
+  "schema_version": 1,
+  "type": "ld_07_pricing",
+  "name": "LD 07 — Pricing",
+  "category": "custom",
+  "settings": [
+    { "type": "color_scheme", "id": "color_scheme", "label": "Base colour scheme", "default": "white" },
+    { "type": "color", "id": "background", "label": "Background", "default": "#FFFFFF" },
+    { "type": "color", "id": "soft_background", "label": "Soft background", "default": "#F5F5F7" },
+    { "type": "color", "id": "text", "label": "Text", "default": "#1A1D24" },
+    { "type": "color", "id": "muted", "label": "Muted text", "default": "#4E5156" },
+    { "type": "color", "id": "border", "label": "Borders", "default": "#BDC0C5" },
+    { "type": "color", "id": "accent", "label": "Blue accent", "default": "#5381E5" },
+    { "type": "color", "id": "button_text_color", "label": "Blue button text", "default": "#FFFFFF" }
+  ],
+  "presets": [{ "name": "LD 07 — Pricing" }]
+}
+</schema>

@@ -1,0 +1,67 @@
+<template>
+<section id="ld-process" class="ldp" data-scheme="{{ settings.color_scheme }}" style="--bg:{{ settings.background }};--ink:{{ settings.text }};--muted:{{ settings.muted }};--line:{{ settings.border }};--accent:{{ settings.accent }};">
+  <div class="ldp__in">
+    <h2>How each service works</h2>
+    <div class="tabs">
+      <input type="radio" name="{{ section.id }}-process" id="{{ section.id }}-ghost" checked>
+      <input type="radio" name="{{ section.id }}-process" id="{{ section.id }}-seo">
+      <div class="tabs__labels"><label for="{{ section.id }}-ghost">Ghostwriting</label><label for="{{ section.id }}-seo">SEO + GEO/AEO</label></div>
+      <div class="tabs__panels">
+        <div class="steps steps--ghost">
+          <article><span>1</span><h3>Send me a link</h3><p>An old post or your About page is enough to start.</p></article>
+          <article><span>2</span><h3>I write two posts</h3><p>You receive two free drafts written in your voice.</p></article>
+          <article><span>3</span><h3>You choose what happens next</h3><p>Use the posts. Continue for $200/month if the writing fits.</p></article>
+        </div>
+        <div class="steps steps--seo">
+          <article><span>1</span><h3>Answer three questions</h3><p>Tell me what you sell, who it helps, and what buyers ask.</p></article>
+          <article><span>2</span><h3>I check the brand</h3><p>You receive a concise search and answer-content review.</p></article>
+          <article><span>3</span><h3>Choose the useful page</h3><p>Continue with an FAQ, comparison, buying guide, or product check.</p></article>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+</template>
+
+<style scoped>
+.ldp { height: 350px; background: var(--bg); color: var(--ink); font-family: Arial, Helvetica, sans-serif; }
+.ldp__in { width: min(620px, calc(100% - 32px)); margin: 0 auto; padding-top: 66px; }
+.ldp h2 { margin: 0 0 28px; font-family: "Bodoni 72", Didot, Georgia, serif; font-size: 30px; font-weight: 400; letter-spacing: -1.4px; line-height: 1; }
+.tabs { position: relative; }
+.tabs > input { position: absolute; width: 1px; height: 1px; opacity: 0; }
+.tabs__labels { display: flex; gap: 16px; border-bottom: 1px solid var(--ink); }
+.tabs__labels label { position: relative; padding-bottom: 10px; font-size: 7px; cursor: pointer; }
+.tabs__labels label::after { content: ""; position: absolute; right: 0; bottom: -1px; left: 0; height: 2px; background: transparent; }
+.tabs > input:first-of-type:checked ~ .tabs__labels label:first-child,
+.tabs > input:nth-of-type(2):checked ~ .tabs__labels label:nth-child(2) { font-weight: 700; }
+.tabs > input:first-of-type:checked ~ .tabs__labels label:first-child::after,
+.tabs > input:nth-of-type(2):checked ~ .tabs__labels label:nth-child(2)::after { background: var(--accent); }
+.tabs__panels { border-bottom: 1px solid var(--ink); }
+.steps { display: none; grid-template-columns: repeat(3, 1fr); }
+.tabs > input:first-of-type:checked ~ .tabs__panels .steps--ghost,
+.tabs > input:nth-of-type(2):checked ~ .tabs__panels .steps--seo { display: grid; }
+.steps article { height: 118px; padding: 13px 12px; border-right: 1px solid var(--line); }
+.steps article:last-child { border-right: 0; }
+.steps span { display: block; margin-bottom: 23px; color: var(--accent); font-family: "Bodoni 72", Didot, Georgia, serif; font-size: 19px; }
+.steps h3 { margin: 0 0 6px; font-size: 7px; }
+.steps p { max-width: 155px; margin: 0; color: var(--muted); font-size: 6px; line-height: 1.45; }
+@container (max-width: 620px) { .ldp { height: auto; } .ldp__in { padding: 72px 0; } .steps { grid-template-columns: 1fr; } .steps article { height: auto; min-height: 110px; border-right: 0; border-bottom: 1px solid var(--line); } .steps p { max-width: none; font-size: 9px; } }
+</style>
+
+<schema>
+{
+  "schema_version": 1,
+  "type": "ld_05_process",
+  "name": "LD 05 — Process",
+  "category": "custom",
+  "settings": [
+    { "type": "color_scheme", "id": "color_scheme", "label": "Base colour scheme", "default": "white" },
+    { "type": "color", "id": "background", "label": "Background", "default": "#FFFFFF" },
+    { "type": "color", "id": "text", "label": "Text", "default": "#1A1D24" },
+    { "type": "color", "id": "muted", "label": "Muted text", "default": "#4E5156" },
+    { "type": "color", "id": "border", "label": "Borders", "default": "#BDC0C5" },
+    { "type": "color", "id": "accent", "label": "Blue accent", "default": "#5381E5" }
+  ],
+  "presets": [{ "name": "LD 05 — Process" }]
+}
+</schema>

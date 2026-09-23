@@ -1,0 +1,39 @@
+<template>
+<footer class="ldf" data-scheme="{{ settings.color_scheme }}" style="--bg:{{ settings.background }};--ink:{{ settings.text }};--muted:{{ settings.muted }};">
+  <div class="ldf__in">
+    <div><strong>Luca Dragoste</strong><span>Bucharest, Romania</span><span>&copy; 2026 Luca Dragoste</span></div>
+    <nav aria-label="Footer navigation"><a href="{{ settings.linkedin_link | url }}">LinkedIn</a><span aria-hidden="true">X</span><a href="{{ settings.email_link | url }}">Email</a><a href="{{ settings.privacy_link | url }}">Privacy</a><a href="{{ settings.terms_link | url }}">Terms</a></nav>
+  </div>
+</footer>
+</template>
+
+<style scoped>
+.ldf { height: 86px; border-top: 1px solid var(--ink); border-bottom: 3px solid var(--ink); background: var(--bg); color: var(--muted); font-family: Arial, Helvetica, sans-serif; }
+.ldf__in { display: flex; width: min(690px, calc(100% - 32px)); height: 82px; margin: 0 auto; align-items: center; justify-content: space-between; }
+.ldf__in > div { display: grid; font-size: 5.5px; line-height: 1.65; }
+.ldf strong { color: var(--ink); }
+.ldf nav { display: flex; align-items: center; gap: 13px; font-size: 5.5px; }
+.ldf a { color: var(--muted); text-decoration: none; }
+.ldf a:hover { color: var(--ink); text-decoration: underline; }
+@container (max-width: 520px) { .ldf { height: auto; } .ldf__in { min-height: 150px; align-items: flex-start; flex-direction: column; justify-content: center; gap: 20px; } .ldf__in > div, .ldf nav { font-size: 8px; } }
+</style>
+
+<schema>
+{
+  "schema_version": 1,
+  "type": "ld_10_footer",
+  "name": "LD 10 — Footer",
+  "category": "custom",
+  "settings": [
+    { "type": "url", "id": "linkedin_link", "label": "LinkedIn link", "default": "https://www.linkedin.com" },
+    { "type": "url", "id": "email_link", "label": "Email link", "default": "mailto:contact@lucadragoste.ro" },
+    { "type": "url", "id": "privacy_link", "label": "Privacy link", "default": "/privacy" },
+    { "type": "url", "id": "terms_link", "label": "Terms link", "default": "/terms" },
+    { "type": "color_scheme", "id": "color_scheme", "label": "Base colour scheme", "default": "white" },
+    { "type": "color", "id": "background", "label": "Background", "default": "#FFFFFF" },
+    { "type": "color", "id": "text", "label": "Text", "default": "#1A1D24" },
+    { "type": "color", "id": "muted", "label": "Muted text", "default": "#4E5156" }
+  ],
+  "presets": [{ "name": "LD 10 — Footer" }]
+}
+</schema>

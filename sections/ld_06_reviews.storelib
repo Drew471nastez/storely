@@ -1,0 +1,31 @@
+<template>
+<section class="ldr" data-scheme="{{ settings.color_scheme }}" style="--bg:{{ settings.background }};--ink:{{ settings.text }};--muted:{{ settings.muted }};--line:{{ settings.border }};">
+  <div class="ldr__in"><h2>No client reviews yet</h2><p>{{ settings.text }}</p></div>
+</section>
+</template>
+
+<style scoped>
+.ldr { height: 175px; border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); background: var(--bg); color: var(--ink); font-family: Arial, Helvetica, sans-serif; }
+.ldr__in { display: grid; grid-template-columns: 1fr 1.15fr; width: min(630px, calc(100% - 32px)); height: 100%; margin: 0 auto; align-items: center; gap: 62px; }
+.ldr h2 { margin: 0; font-family: "Bodoni 72", Didot, Georgia, serif; font-size: 30px; font-weight: 400; letter-spacing: -1.4px; line-height: 1; }
+.ldr p { max-width: 305px; margin: 0; color: var(--muted); font-size: 6.5px; line-height: 1.55; }
+@container (max-width: 620px) { .ldr { height: auto; } .ldr__in { grid-template-columns: 1fr; min-height: 260px; padding: 64px 0; gap: 24px; } .ldr p { font-size: 9px; } }
+</style>
+
+<schema>
+{
+  "schema_version": 1,
+  "type": "ld_06_reviews",
+  "name": "LD 06 — Reviews",
+  "category": "custom",
+  "settings": [
+    { "type": "textarea", "id": "text", "label": "Text", "default": "You can still read my work before paying. Start with two free posts for ghostwriting or a free brand check for SEO + GEO/AEO." },
+    { "type": "color_scheme", "id": "color_scheme", "label": "Base colour scheme", "default": "white" },
+    { "type": "color", "id": "background", "label": "Background", "default": "#FFFFFF" },
+    { "type": "color", "id": "text", "label": "Text", "default": "#1A1D24" },
+    { "type": "color", "id": "muted", "label": "Muted text", "default": "#4E5156" },
+    { "type": "color", "id": "border", "label": "Borders", "default": "#BDC0C5" }
+  ],
+  "presets": [{ "name": "LD 06 — Reviews" }]
+}
+</schema>

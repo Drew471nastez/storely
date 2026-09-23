@@ -1,0 +1,70 @@
+<template>
+<section id="ld-services" class="lds" data-scheme="{{ settings.color_scheme }}" style="--bg:{{ settings.background }};--ink:{{ settings.text }};--muted:{{ settings.muted }};--line:{{ settings.border }};--accent:{{ settings.accent }};">
+  <div class="lds__in">
+    <h2>Choose the service you need</h2>
+    <div class="tabs">
+      <input type="radio" name="{{ section.id }}-services" id="{{ section.id }}-ghost" checked>
+      <input type="radio" name="{{ section.id }}-services" id="{{ section.id }}-seo">
+      <div class="tabs__labels">
+        <label for="{{ section.id }}-ghost">LinkedIn ghostwriting</label>
+        <label for="{{ section.id }}-seo">SEO + GEO/AEO</label>
+      </div>
+      <div class="tabs__panels">
+        <div class="panel panel--ghost">
+          <div><h3>LinkedIn posts for<br>founders, written<br>in your voice</h3><p>Send me something you have already written. I use it to write two free LinkedIn posts. You approve each post before you publish it. X is available by request.</p></div>
+          <aside><p><strong>Start:</strong> two posts free</p><p><strong>Then:</strong> four posts for $200/month for the first three clients</p><a href="#ld-contact">See ghostwriting</a></aside>
+        </div>
+        <div class="panel panel--seo">
+          <div><h3>SEO content for<br>product brands</h3><p>Start with a free three-question brand check, then choose an FAQ, comparison, buying guide, or product check.</p></div>
+          <aside><p><strong>Start:</strong> a free brand check</p><p><strong>Then:</strong> choose the project that fits</p><a href="#ld-contact">See SEO + GEO/AEO</a></aside>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+</template>
+
+<style scoped>
+.lds { height: 374px; background: var(--bg); color: var(--ink); font-family: Arial, Helvetica, sans-serif; }
+.lds__in { width: min(620px, calc(100% - 32px)); margin: 0 auto; padding-top: 59px; }
+.lds h2 { margin: 0 0 29px; font-family: "Bodoni 72", Didot, Georgia, serif; font-size: 30px; font-weight: 400; letter-spacing: -1.4px; line-height: 1; }
+.tabs { position: relative; }
+.tabs > input { position: absolute; width: 1px; height: 1px; opacity: 0; }
+.tabs__labels { display: flex; gap: 16px; border-bottom: 1px solid var(--ink); }
+.tabs__labels label { position: relative; padding-bottom: 10px; font-size: 7px; cursor: pointer; }
+.tabs__labels label::after { content: ""; position: absolute; right: 0; bottom: -1px; left: 0; height: 2px; background: transparent; }
+.tabs > input:first-of-type:checked ~ .tabs__labels label:first-child,
+.tabs > input:nth-of-type(2):checked ~ .tabs__labels label:nth-child(2) { font-weight: 700; }
+.tabs > input:first-of-type:checked ~ .tabs__labels label:first-child::after,
+.tabs > input:nth-of-type(2):checked ~ .tabs__labels label:nth-child(2)::after { background: var(--accent); }
+.tabs__panels { border-bottom: 1px solid var(--ink); }
+.panel { display: none; grid-template-columns: 7fr 3fr; min-height: 172px; }
+.tabs > input:first-of-type:checked ~ .tabs__panels .panel--ghost,
+.tabs > input:nth-of-type(2):checked ~ .tabs__panels .panel--seo { display: grid; }
+.panel > div { padding: 27px 35px 20px 0; }
+.panel aside { padding: 27px 0 20px 26px; border-left: 1px solid var(--line); }
+.panel h3 { margin: 0 0 8px; font-family: "Bodoni 72", Didot, Georgia, serif; font-size: 25px; font-weight: 400; letter-spacing: -1px; line-height: .95; }
+.panel p { max-width: 330px; margin: 0; color: var(--muted); font-size: 6.5px; line-height: 1.5; }
+.panel aside p { margin-bottom: 6px; }
+.panel strong { color: var(--ink); font-weight: 400; }
+.panel a { display: inline-flex; min-height: 27px; margin-top: 10px; padding: 0 13px; align-items: center; border: 1px solid var(--ink); color: var(--ink); font-size: 7px; font-weight: 700; text-decoration: none; }
+@container (max-width: 620px) { .lds { height: auto; min-height: 430px; } .lds__in { padding: 72px 0; } .panel { grid-template-columns: 1fr; } .panel aside { border-top: 1px solid var(--line); border-left: 0; padding-left: 0; } .panel h3 { font-size: 32px; } .panel p { font-size: 9px; } }
+</style>
+
+<schema>
+{
+  "schema_version": 1,
+  "type": "ld_03_services",
+  "name": "LD 03 — Services",
+  "category": "custom",
+  "settings": [
+    { "type": "color_scheme", "id": "color_scheme", "label": "Base colour scheme", "default": "white" },
+    { "type": "color", "id": "background", "label": "Background", "default": "#FFFFFF" },
+    { "type": "color", "id": "text", "label": "Text", "default": "#1A1D24" },
+    { "type": "color", "id": "muted", "label": "Muted text", "default": "#4E5156" },
+    { "type": "color", "id": "border", "label": "Borders", "default": "#BDC0C5" },
+    { "type": "color", "id": "accent", "label": "Blue accent", "default": "#5381E5" }
+  ],
+  "presets": [{ "name": "LD 03 — Services" }]
+}
+</schema>

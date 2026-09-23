@@ -1,0 +1,53 @@
+<template>
+<section id="ld-contact" class="ldc" data-scheme="{{ settings.color_scheme }}" style="--bg:{{ settings.background }};--soft:{{ settings.soft_background }};--ink:{{ settings.text }};--muted:{{ settings.muted }};--line:{{ settings.border }};--accent:{{ settings.accent }};--button-text:{{ settings.button_text_color }};">
+  <div class="ldc__in">
+    <div class="ldc__copy"><h2>Tell me what<br>you need</h2><p>This form opens your email app with the message filled in.</p><p>You can also write to <a href="{{ settings.email_link | url }}">{{ settings.email_address }}</a>.</p></div>
+    <form class="form" action="{{ settings.email_link | url }}" method="get" enctype="text/plain" data-storelib-form="native">
+      <label for="{{ section.id }}-name">Name</label><input id="{{ section.id }}-name" name="name" type="text" autocomplete="name" required>
+      <label for="{{ section.id }}-email">Email</label><input id="{{ section.id }}-email" name="email" type="email" autocomplete="email" required>
+      <label for="{{ section.id }}-service">Service</label><select id="{{ section.id }}-service" name="service"><option>LinkedIn ghostwriting</option><option>SEO + GEO/AEO</option></select>
+      <label for="{{ section.id }}-message">What should I know?</label><textarea id="{{ section.id }}-message" name="body" rows="5" required></textarea>
+      <button type="submit">Open email</button>
+    </form>
+  </div>
+</section>
+</template>
+
+<style scoped>
+.ldc { height: 451px; background: var(--bg); color: var(--ink); font-family: Arial, Helvetica, sans-serif; }
+.ldc__in { display: grid; grid-template-columns: 1fr 1.1fr; width: min(690px, calc(100% - 32px)); height: 100%; margin: 0 auto; align-items: center; gap: 75px; }
+.ldc h2 { margin: 0 0 17px; font-family: "Bodoni 72", Didot, Georgia, serif; font-size: 30px; font-weight: 400; letter-spacing: -1.4px; line-height: .98; }
+.ldc__copy p { margin: 0 0 10px; color: var(--muted); font-size: 6.5px; line-height: 1.5; }
+.ldc__copy a { color: var(--accent); }
+.form { padding: 21px; border: 1px solid var(--ink); background: var(--soft); }
+.form label { display: block; margin: 0 0 4px; font-size: 6px; font-weight: 700; }
+.form input, .form select, .form textarea { display: block; width: 100%; margin: 0 0 10px; border: 1px solid var(--line); border-radius: 0; background: var(--bg); color: var(--ink); font: 7px Arial, sans-serif; }
+.form input, .form select { height: 26px; padding: 0 8px; }
+.form select { appearance: auto; }
+.form textarea { min-height: 78px; padding: 7px 8px; resize: vertical; }
+.form input:focus, .form select:focus, .form textarea:focus { outline: 1px solid var(--accent); outline-offset: 1px; }
+.form button { width: 100%; height: 28px; border: 1px solid var(--accent); border-radius: 0; background: var(--accent); color: var(--button-text); font: 700 7px Arial, sans-serif; cursor: pointer; }
+@container (max-width: 620px) { .ldc { height: auto; } .ldc__in { grid-template-columns: 1fr; min-height: 720px; padding: 72px 0; gap: 40px; } .ldc__copy p, .form input, .form select, .form textarea { font-size: 10px; } .form label { font-size: 9px; } }
+</style>
+
+<schema>
+{
+  "schema_version": 1,
+  "type": "ld_09_contact",
+  "name": "LD 09 — Contact",
+  "category": "custom",
+  "settings": [
+    { "type": "text", "id": "email_address", "label": "Email address", "default": "contact@lucadragoste.ro" },
+    { "type": "url", "id": "email_link", "label": "Email link", "default": "mailto:contact@lucadragoste.ro" },
+    { "type": "color_scheme", "id": "color_scheme", "label": "Base colour scheme", "default": "white" },
+    { "type": "color", "id": "background", "label": "Background", "default": "#FFFFFF" },
+    { "type": "color", "id": "soft_background", "label": "Form background", "default": "#F5F5F7" },
+    { "type": "color", "id": "text", "label": "Text", "default": "#1A1D24" },
+    { "type": "color", "id": "muted", "label": "Muted text", "default": "#4E5156" },
+    { "type": "color", "id": "border", "label": "Input borders", "default": "#BDC0C5" },
+    { "type": "color", "id": "accent", "label": "Blue accent", "default": "#5381E5" },
+    { "type": "color", "id": "button_text_color", "label": "Button text", "default": "#FFFFFF" }
+  ],
+  "presets": [{ "name": "LD 09 — Contact" }]
+}
+</schema>
