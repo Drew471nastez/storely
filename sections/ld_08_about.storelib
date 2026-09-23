@@ -22,6 +22,7 @@
   "type": "ld_08_about",
   "name": "LD 08 — About",
   "category": "custom",
+  "version": "1.0.1",
   "settings": [
     { "type": "url", "id": "logo_url", "label": "Logo URL", "default": "https://lucadragoste.ro/logo-ld.png" },
     { "type": "text", "id": "logo_alt", "label": "Logo alt text", "default": "Luca Dragoste LD logo" },
