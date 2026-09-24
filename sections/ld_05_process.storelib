@@ -24,13 +24,13 @@
 </template>
 
 <style scoped>
-.ldp { height: 350px; background: var(--bg); color: var(--ink); font-family: Arial, Helvetica, sans-serif; }
-.ldp__in { width: min(620px, calc(100% - 32px)); margin: 0 auto; padding-top: 66px; }
-.ldp h2 { margin: 0 0 28px; font-family: "Bodoni 72", Didot, Georgia, serif; font-size: 30px; font-weight: 400; letter-spacing: -1.4px; line-height: 1; }
+.ldp { min-height: 570px; background: var(--bg); color: var(--ink); font-family: Arial, Helvetica, sans-serif; }
+.ldp__in { width: min(1180px, calc(100% - 64px)); margin: 0 auto; padding: 105px 0; }
+.ldp h2 { margin: 0 0 50px; font-family: "Bodoni 72", Didot, Georgia, serif; font-size: 52px; font-weight: 400; letter-spacing: -2.2px; line-height: 1; }
 .tabs { position: relative; }
 .tabs > input { position: absolute; width: 1px; height: 1px; opacity: 0; }
-.tabs__labels { display: flex; gap: 16px; border-bottom: 1px solid var(--ink); }
-.tabs__labels label { position: relative; padding-bottom: 10px; font-size: 7px; cursor: pointer; }
+.tabs__labels { display: flex; gap: 32px; border-bottom: 1px solid var(--ink); }
+.tabs__labels label { position: relative; padding-bottom: 16px; font-size: 14px; cursor: pointer; }
 .tabs__labels label::after { content: ""; position: absolute; right: 0; bottom: -1px; left: 0; height: 2px; background: transparent; }
 .tabs > input:first-of-type:checked ~ .tabs__labels label:first-child,
 .tabs > input:nth-of-type(2):checked ~ .tabs__labels label:nth-child(2) { font-weight: 700; }
@@ -40,12 +40,12 @@
 .steps { display: none; grid-template-columns: repeat(3, 1fr); }
 .tabs > input:first-of-type:checked ~ .tabs__panels .steps--ghost,
 .tabs > input:nth-of-type(2):checked ~ .tabs__panels .steps--seo { display: grid; }
-.steps article { height: 118px; padding: 13px 12px; border-right: 1px solid var(--line); }
+.steps article { min-height: 220px; padding: 28px 24px; border-right: 1px solid var(--line); }
 .steps article:last-child { border-right: 0; }
-.steps span { display: block; margin-bottom: 23px; color: var(--accent); font-family: "Bodoni 72", Didot, Georgia, serif; font-size: 19px; }
-.steps h3 { margin: 0 0 6px; font-size: 7px; }
-.steps p { max-width: 155px; margin: 0; color: var(--muted); font-size: 6px; line-height: 1.45; }
-@container (max-width: 620px) { .ldp { height: auto; } .ldp__in { padding: 72px 0; } .steps { grid-template-columns: 1fr; } .steps article { height: auto; min-height: 110px; border-right: 0; border-bottom: 1px solid var(--line); } .steps p { max-width: none; font-size: 9px; } }
+.steps span { display: block; margin-bottom: 40px; color: var(--accent); font-family: "Bodoni 72", Didot, Georgia, serif; font-size: 34px; }
+.steps h3 { margin: 0 0 12px; font-size: 15px; }
+.steps p { max-width: 290px; margin: 0; color: var(--muted); font-size: 14px; line-height: 1.55; }
+@container (max-width: 820px) { .ldp__in { width: calc(100% - 32px); padding: 80px 0; } .ldp h2 { font-size: 44px; } .steps { grid-template-columns: 1fr; } .steps article { min-height: 180px; border-right: 0; border-bottom: 1px solid var(--line); } .steps p { max-width: none; font-size: 15px; } }
 </style>
 
 <schema>

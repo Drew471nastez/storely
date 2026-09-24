@@ -25,30 +25,30 @@
 </template>
 
 <style scoped>
-.lds { height: 374px; background: var(--bg); color: var(--ink); font-family: Arial, Helvetica, sans-serif; }
-.lds__in { width: min(620px, calc(100% - 32px)); margin: 0 auto; padding-top: 59px; }
-.lds h2 { margin: 0 0 29px; font-family: "Bodoni 72", Didot, Georgia, serif; font-size: 30px; font-weight: 400; letter-spacing: -1.4px; line-height: 1; }
+.lds { min-height: 600px; background: var(--bg); color: var(--ink); font-family: Arial, Helvetica, sans-serif; }
+.lds__in { width: min(1180px, calc(100% - 64px)); margin: 0 auto; padding: 100px 0; }
+.lds h2 { margin: 0 0 52px; font-family: "Bodoni 72", Didot, Georgia, serif; font-size: 52px; font-weight: 400; letter-spacing: -2.2px; line-height: 1; }
 .tabs { position: relative; }
 .tabs > input { position: absolute; width: 1px; height: 1px; opacity: 0; }
-.tabs__labels { display: flex; gap: 16px; border-bottom: 1px solid var(--ink); }
-.tabs__labels label { position: relative; padding-bottom: 10px; font-size: 7px; cursor: pointer; }
+.tabs__labels { display: flex; gap: 32px; border-bottom: 1px solid var(--ink); }
+.tabs__labels label { position: relative; padding-bottom: 16px; font-size: 14px; cursor: pointer; }
 .tabs__labels label::after { content: ""; position: absolute; right: 0; bottom: -1px; left: 0; height: 2px; background: transparent; }
 .tabs > input:first-of-type:checked ~ .tabs__labels label:first-child,
 .tabs > input:nth-of-type(2):checked ~ .tabs__labels label:nth-child(2) { font-weight: 700; }
 .tabs > input:first-of-type:checked ~ .tabs__labels label:first-child::after,
 .tabs > input:nth-of-type(2):checked ~ .tabs__labels label:nth-child(2)::after { background: var(--accent); }
 .tabs__panels { border-bottom: 1px solid var(--ink); }
-.panel { display: none; grid-template-columns: 7fr 3fr; min-height: 172px; }
+.panel { display: none; grid-template-columns: 7fr 3fr; min-height: 260px; }
 .tabs > input:first-of-type:checked ~ .tabs__panels .panel--ghost,
 .tabs > input:nth-of-type(2):checked ~ .tabs__panels .panel--seo { display: grid; }
-.panel > div { padding: 27px 35px 20px 0; }
-.panel aside { padding: 27px 0 20px 26px; border-left: 1px solid var(--line); }
-.panel h3 { margin: 0 0 8px; font-family: "Bodoni 72", Didot, Georgia, serif; font-size: 25px; font-weight: 400; letter-spacing: -1px; line-height: .95; }
-.panel p { max-width: 330px; margin: 0; color: var(--muted); font-size: 6.5px; line-height: 1.5; }
-.panel aside p { margin-bottom: 6px; }
+.panel > div { padding: 44px 64px 36px 0; }
+.panel aside { padding: 44px 0 36px 48px; border-left: 1px solid var(--line); }
+.panel h3 { margin: 0 0 16px; font-family: "Bodoni 72", Didot, Georgia, serif; font-size: 44px; font-weight: 400; letter-spacing: -1.6px; line-height: .95; }
+.panel p { max-width: 640px; margin: 0; color: var(--muted); font-size: 14px; line-height: 1.6; }
+.panel aside p { margin-bottom: 12px; }
 .panel strong { color: var(--ink); font-weight: 400; }
-.panel a { display: inline-flex; min-height: 27px; margin-top: 10px; padding: 0 13px; align-items: center; border: 1px solid var(--ink); color: var(--ink); font-size: 7px; font-weight: 700; text-decoration: none; }
-@container (max-width: 620px) { .lds { height: auto; min-height: 430px; } .lds__in { padding: 72px 0; } .panel { grid-template-columns: 1fr; } .panel aside { border-top: 1px solid var(--line); border-left: 0; padding-left: 0; } .panel h3 { font-size: 32px; } .panel p { font-size: 9px; } }
+.panel a { display: inline-flex; min-height: 46px; margin-top: 20px; padding: 0 22px; align-items: center; border: 1px solid var(--ink); color: var(--ink); font-size: 14px; font-weight: 700; text-decoration: none; }
+@container (max-width: 820px) { .lds__in { width: calc(100% - 32px); padding: 80px 0; } .lds h2 { font-size: 44px; } .panel { grid-template-columns: 1fr; } .panel > div { padding-right: 0; } .panel aside { border-top: 1px solid var(--line); border-left: 0; padding-left: 0; } .panel h3 { font-size: 38px; } .panel p { font-size: 15px; } }
 </style>
 
 <schema>

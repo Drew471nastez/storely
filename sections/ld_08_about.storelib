@@ -1,19 +1,19 @@
 <template>
 <section class="lda" data-scheme="{{ settings.color_scheme }}" style="--bg:{{ settings.background }};--ink:{{ settings.text }};--muted:{{ settings.muted }};--line:{{ settings.border }};">
   <div class="lda__in">
-    <img src="{{ settings.logo_url | asset }}" alt="{{ settings.logo_alt }}" width="96" height="96" loading="lazy">
+    <img src="{{ settings.logo_url | asset }}" alt="{{ settings.logo_alt }}" width="164" height="164" loading="lazy">
     <div><h2>About me</h2><p>{{ settings.biography }}</p><p>{{ settings.note }}</p></div>
   </div>
 </section>
 </template>
 
 <style scoped>
-.lda { height: 220px; border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); background: var(--bg); color: var(--ink); font-family: Arial, Helvetica, sans-serif; }
-.lda__in { display: grid; grid-template-columns: 96px 310px; width: fit-content; max-width: calc(100% - 32px); height: 100%; margin: 0 auto; align-items: center; gap: 27px; }
-.lda img { width: 96px; height: 96px; object-fit: cover; }
-.lda h2 { margin: 0 0 12px; font-family: "Bodoni 72", Didot, Georgia, serif; font-size: 30px; font-weight: 400; letter-spacing: -1.4px; line-height: 1; }
-.lda p { margin: 0 0 8px; color: var(--muted); font-size: 6.5px; line-height: 1.55; }
-@container (max-width: 520px) { .lda { height: auto; } .lda__in { grid-template-columns: 76px 1fr; min-height: 280px; gap: 20px; } .lda img { width: 76px; height: 76px; } .lda p { font-size: 9px; } }
+.lda { min-height: 390px; border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); background: var(--bg); color: var(--ink); font-family: Arial, Helvetica, sans-serif; }
+.lda__in { display: grid; grid-template-columns: 164px minmax(0, 620px); width: min(930px, calc(100% - 64px)); min-height: 390px; margin: 0 auto; align-items: center; gap: 52px; }
+.lda img { width: 164px; height: 164px; object-fit: cover; }
+.lda h2 { margin: 0 0 22px; font-family: "Bodoni 72", Didot, Georgia, serif; font-size: 52px; font-weight: 400; letter-spacing: -2.2px; line-height: 1; }
+.lda p { margin: 0 0 14px; color: var(--muted); font-size: 14px; line-height: 1.6; }
+@container (max-width: 720px) { .lda__in { grid-template-columns: 110px 1fr; width: calc(100% - 32px); min-height: 440px; gap: 28px; } .lda img { width: 110px; height: 110px; } .lda h2 { font-size: 44px; } .lda p { font-size: 15px; } }
 </style>
 
 <schema>

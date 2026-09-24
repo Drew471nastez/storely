@@ -8,14 +8,14 @@
 </template>
 
 <style scoped>
-.ldf { height: 86px; border-top: 1px solid var(--ink); border-bottom: 3px solid var(--ink); background: var(--bg); color: var(--muted); font-family: Arial, Helvetica, sans-serif; }
-.ldf__in { display: flex; width: min(690px, calc(100% - 32px)); height: 82px; margin: 0 auto; align-items: center; justify-content: space-between; }
-.ldf__in > div { display: grid; font-size: 5.5px; line-height: 1.65; }
+.ldf { min-height: 160px; border-top: 1px solid var(--ink); border-bottom: 3px solid var(--ink); background: var(--bg); color: var(--muted); font-family: Arial, Helvetica, sans-serif; }
+.ldf__in { display: flex; width: min(1120px, calc(100% - 64px)); min-height: 156px; margin: 0 auto; align-items: center; justify-content: space-between; }
+.ldf__in > div { display: grid; font-size: 12px; line-height: 1.65; }
 .ldf strong { color: var(--ink); }
-.ldf nav { display: flex; align-items: center; gap: 13px; font-size: 5.5px; }
+.ldf nav { display: flex; align-items: center; gap: 24px; font-size: 12px; }
 .ldf a { color: var(--muted); text-decoration: none; }
 .ldf a:hover { color: var(--ink); text-decoration: underline; }
-@container (max-width: 520px) { .ldf { height: auto; } .ldf__in { min-height: 150px; align-items: flex-start; flex-direction: column; justify-content: center; gap: 20px; } .ldf__in > div, .ldf nav { font-size: 8px; } }
+@container (max-width: 720px) { .ldf__in { width: calc(100% - 32px); min-height: 220px; align-items: flex-start; flex-direction: column; justify-content: center; gap: 28px; } .ldf__in > div, .ldf nav { font-size: 13px; } .ldf nav { flex-wrap: wrap; } }
 </style>
 
 <schema>
