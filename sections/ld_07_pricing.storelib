@@ -23,7 +23,7 @@
 </template>
 
 <style scoped>
-.ldprice { min-height: 820px; background: var(--bg); color: var(--ink); font-family: Arial, Helvetica, sans-serif; }
+.ldprice { min-height: 820px; scroll-margin-top: 72px; background: var(--bg); color: var(--ink); font-family: Arial, Helvetica, sans-serif; }
 .ldprice__in { width: min(1180px, calc(100% - 64px)); margin: 0 auto; padding: 105px 0; }
 .ldprice h2 { margin: 0 0 52px; font-family: "Bodoni 72", Didot, Georgia, serif; font-size: 52px; font-weight: 400; letter-spacing: -2.2px; line-height: 1; }
 .tabs { position: relative; }
@@ -52,6 +52,9 @@
 .button--blue { border-color: var(--accent); background: var(--accent); color: var(--button-text); }
 .ldprice__note { width: 55%; margin: 24px 0 0; padding: 18px; border: 1px solid var(--line); background: var(--soft); color: var(--muted); font-size: 13px; }
 @container (max-width: 820px) { .ldprice__in { width: calc(100% - 32px); padding: 80px 0; } .ldprice h2 { font-size: 44px; } .prices { grid-template-columns: 1fr; } .card { min-height: 380px; padding: 28px; } .card + .card { border-top: 1px solid var(--line); border-left: 0; } .card ul { font-size: 15px; } .ldprice__note { width: 100%; } }
+@keyframes ldprice-reveal { from { opacity: .15; transform: translateY(28px); } to { opacity: 1; transform: translateY(0); } }
+@supports (animation-timeline: view()) { .ldprice__in { animation: ldprice-reveal both cubic-bezier(.22,.61,.36,1); animation-timeline: view(); animation-range: entry 5% cover 24%; } }
+@media (prefers-reduced-motion: reduce) { .ldprice__in { animation: none; } }
 </style>
 
 <schema>

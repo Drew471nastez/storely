@@ -5,7 +5,7 @@
     <div class="ldw__feature">
       <article class="sample">
         <p class="sample__kicker">LinkedIn draft</p>
-        <p class="sample__client"><img src="{{ settings.materia_logo_url | asset }}" alt="Materia Themes logo" width="12" height="12"> Materia Themes</p>
+        <p class="sample__client"><span class="materia-mark"><img src="{{ settings.materia_logo_url | asset }}" alt="Materia Themes logo" width="22" height="22"></span> Materia Themes</p>
         <p class="sample__headline">I think Shopify<br>themes should<br>come with more<br>than a nice<br>homepage.</p>
       </article>
       <div class="ldw__copy">
@@ -19,7 +19,7 @@
 </template>
 
 <style scoped>
-.ldw { min-height: 760px; border-top: 1px solid color-mix(in srgb, var(--muted) 24%, transparent); background: var(--bg); color: var(--ink); font-family: Arial, Helvetica, sans-serif; }
+.ldw { min-height: 760px; scroll-margin-top: 72px; border-top: 1px solid color-mix(in srgb, var(--muted) 24%, transparent); background: var(--bg); color: var(--ink); font-family: Arial, Helvetica, sans-serif; }
 .ldw__in { width: min(1180px, calc(100% - 64px)); margin: 0 auto; padding: 100px 0 110px; }
 .ldw__head { display: grid; grid-template-columns: 2fr 1fr; gap: 96px; align-items: start; }
 .ldw h2 { margin: 0; font-family: "Bodoni 72", Didot, Georgia, serif; font-size: 52px; font-weight: 400; letter-spacing: -2.2px; line-height: 1; }
@@ -28,12 +28,16 @@
 .sample { width: 340px; height: 395px; padding: 34px 30px; transform: rotate(-2deg); background: var(--paper); box-shadow: 0 18px 45px color-mix(in srgb, var(--ink) 12%, transparent); }
 .sample__kicker { margin: 0 0 20px; font-size: 10px; font-weight: 800; letter-spacing: .14em; text-transform: uppercase; }
 .sample__client { display: flex; margin: 0; align-items: center; gap: 9px; font-size: 12px; font-weight: 700; }
-.sample__client img { width: 22px; height: 22px; border-radius: 50%; object-fit: cover; }
+.materia-mark { display: inline-flex; width: 22px; height: 22px; flex: 0 0 22px; align-items: center; justify-content: center; overflow: hidden; border-radius: 50%; background: var(--ink); }
+.materia-mark img { display: block; width: 100%; height: 100%; border-radius: inherit; object-fit: cover; }
 .sample__headline { margin: 58px 0 0; font-family: "Bodoni 72", Didot, Georgia, serif; font-size: 34px; letter-spacing: -1.2px; line-height: .96; }
 .ldw__copy h3 { margin: 0 0 18px; font-family: "Bodoni 72", Didot, Georgia, serif; font-size: 50px; font-weight: 400; letter-spacing: -1.8px; line-height: .95; }
 .ldw__copy p { margin: 0 0 16px; color: var(--muted); font-size: 14px; line-height: 1.55; }
 .ldw__copy a { color: var(--ink); font-size: 14px; font-weight: 700; text-decoration: underline; text-underline-offset: 3px; }
 @container (max-width: 820px) { .ldw__in { width: calc(100% - 32px); padding: 80px 0; } .ldw h2 { font-size: 44px; } .ldw__head, .ldw__feature { grid-template-columns: 1fr; } .ldw__feature { gap: 56px; } .ldw__head p, .ldw__copy p { font-size: 15px; } .sample { width: min(340px, calc(100% - 24px)); } }
+@keyframes ldw-reveal { from { opacity: .15; transform: translateY(28px); } to { opacity: 1; transform: translateY(0); } }
+@supports (animation-timeline: view()) { .ldw__head, .ldw__feature { animation: ldw-reveal both cubic-bezier(.22,.61,.36,1); animation-timeline: view(); animation-range: entry 4% cover 24%; } .ldw__feature { animation-range: entry 7% cover 30%; } }
+@media (prefers-reduced-motion: reduce) { .ldw__head, .ldw__feature { animation: none; } }
 </style>
 
 <schema>
