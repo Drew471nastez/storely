@@ -17,7 +17,7 @@
     <div class="ldhero__visual" aria-label="Writing samples">
       <article class="paper paper--front">
         <p class="paper__kicker">LinkedIn draft</p>
-        <p class="paper__client"><span>m</span> Materia Themes</p>
+        <p class="paper__client"><img src="{{ settings.materia_logo_url | asset }}" alt="Materia Themes logo" width="12" height="12"> Materia Themes</p>
         <p class="paper__headline">I think Shopify<br>themes should<br>come with more<br>than a nice<br>homepage.</p>
         <a href="{{ settings.sample_link | url }}">Read the sample</a>
       </article>
@@ -50,7 +50,7 @@
 .paper a { color: var(--ink); font-size: 6px; font-weight: 700; text-decoration: underline; text-underline-offset: 1px; }
 .paper__kicker { margin: 0 0 11px; font-size: 5px; font-weight: 800; letter-spacing: .14em; text-transform: uppercase; }
 .paper__client { display: flex; margin: 0; align-items: center; gap: 5px; font-size: 6px; font-weight: 700; }
-.paper__client span { display: inline-flex; width: 12px; height: 12px; align-items: center; justify-content: center; border-radius: 50%; background: var(--ink); color: var(--paper); font-family: Georgia, serif; font-size: 7px; font-style: italic; }
+.paper__client img { width: 12px; height: 12px; border-radius: 50%; object-fit: cover; }
 .paper__headline { margin: 28px 0 18px; font-family: "Bodoni 72", Didot, Georgia, serif; font-size: 17px; letter-spacing: -.7px; line-height: .95; }
 .paper--front { z-index: 2; top: 21px; left: 2px; width: 120px; height: 192px; padding: 16px 14px; transform: rotate(-2deg); }
 .paper--back { z-index: 1; top: 34px; right: 0; width: 110px; height: 164px; padding: 7px 6px 9px; transform: rotate(2.5deg); background: var(--soft); }
@@ -75,6 +75,7 @@
     { "type": "url", "id": "email_link", "label": "Email link", "default": "mailto:contact@lucadragoste.ro" },
     { "type": "url", "id": "sample_link", "label": "Sample link", "default": "#ld-portfolio" },
     { "type": "url", "id": "project_link", "label": "Project link", "default": "#ld-portfolio" },
+    { "type": "url", "id": "materia_logo_url", "label": "Materia Themes logo", "default": "https://zcawjnmhkrmlnqtuqlun.supabase.co/storage/v1/object/public/images/Untitled%20design%20-%202026-07-10T094107.479.png" },
     { "type": "color_scheme", "id": "color_scheme", "label": "Base colour scheme", "default": "black" },
     { "type": "color", "id": "background", "label": "Background", "default": "#15171D" },
     { "type": "color", "id": "text", "label": "Text", "default": "#FFFFFF" },

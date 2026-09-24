@@ -1,5 +1,5 @@
 <template>
-<header id="ld-top" class="ldh" data-scheme="{{ settings.color_scheme }}" style="--bg:{{ settings.background }};--fg:{{ settings.text }};--line:{{ settings.border }};--paper:{{ settings.contact_background }};--paper-text:{{ settings.contact_text }};">
+<header id="ld-top" class="ldh" data-scheme="{{ settings.color_scheme }}" style="--bg:{{ settings.background }};--fg:{{ settings.text }};--line:{{ settings.border }};--paper:{{ settings.contact_background }};--paper-text:{{ settings.contact_text }};--scroll-bg:{{ settings.scroll_background }};--scroll-text:{{ settings.scroll_text }};--scroll-line:{{ settings.scroll_border }};--accent:{{ settings.accent }};">
   <div class="ldh__in">
     <a class="ldh__brand" href="#ld-top">
       <img src="{{ settings.logo_url | asset }}" alt="{{ settings.logo_alt }}" width="18" height="18">
@@ -17,14 +17,19 @@
 </template>
 
 <style scoped>
-.ldh { height: 36px; border-top: 2px solid var(--line); border-bottom: 1px solid var(--line); background: var(--bg); color: var(--fg); font-family: Arial, Helvetica, sans-serif; }
-.ldh__in { display: flex; width: min(620px, calc(100% - 32px)); height: 33px; margin: 0 auto; align-items: center; justify-content: space-between; }
-.ldh__brand { display: flex; align-items: center; gap: 6px; color: var(--fg); font-size: 7px; font-weight: 700; text-decoration: none; }
+.ldh { position: relative; z-index: 999; height: 36px; color: var(--fg); font-family: Arial, Helvetica, sans-serif; }
+.ldh::before { content: ""; position: fixed; z-index: 998; top: 0; right: 0; left: 0; height: 35px; border-top: 2px solid var(--line); border-bottom: 1px solid var(--line); background: color-mix(in srgb, var(--bg) 78%, transparent); backdrop-filter: blur(14px) saturate(135%); -webkit-backdrop-filter: blur(14px) saturate(135%); animation: ldh-surface linear both; animation-timeline: scroll(root block); animation-range: 0 110px; }
+.ldh__in { position: fixed; z-index: 999; top: 2px; right: 0; left: 0; display: flex; width: min(620px, calc(100% - 32px)); height: 33px; margin: 0 auto; align-items: center; justify-content: space-between; color: var(--fg); animation: ldh-text linear both; animation-timeline: scroll(root block); animation-range: 0 110px; }
+.ldh__brand { display: flex; align-items: center; gap: 6px; color: currentColor; font-size: 7px; font-weight: 700; text-decoration: none; }
 .ldh__brand img { width: 18px; height: 18px; border: 1px solid var(--line); border-radius: 3px; object-fit: cover; }
 .ldh__nav { display: flex; align-items: center; gap: 14px; }
-.ldh__nav a { color: var(--fg); font-size: 6px; text-decoration: none; }
+.ldh__nav a { color: currentColor; font-size: 6px; text-decoration: none; }
 .ldh__nav a:hover { text-decoration: underline; text-underline-offset: 2px; }
-.ldh__nav .ldh__contact { padding: 7px 10px; background: var(--paper); color: var(--paper-text); }
+.ldh__nav .ldh__contact { padding: 7px 10px; background: var(--paper); color: var(--paper-text); animation: ldh-contact linear both; animation-timeline: scroll(root block); animation-range: 0 110px; }
+@keyframes ldh-surface { from { border-color: var(--line); background-color: color-mix(in srgb, var(--bg) 78%, transparent); } to { border-color: var(--scroll-line); background-color: color-mix(in srgb, var(--scroll-bg) 96%, transparent); } }
+@keyframes ldh-text { from { color: var(--fg); } to { color: var(--scroll-text); } }
+@keyframes ldh-contact { from { background-color: var(--paper); color: var(--paper-text); } to { background-color: var(--accent); color: var(--paper); } }
+@supports not (animation-timeline: scroll()) { .ldh::before { background: color-mix(in srgb, var(--bg) 92%, transparent); } }
 @container (max-width: 520px) { .ldh__nav a:not(.ldh__contact) { display: none; } }
 </style>
 
@@ -44,7 +49,11 @@
     { "type": "color", "id": "text", "label": "Text", "default": "#FFFFFF" },
     { "type": "color", "id": "border", "label": "Border", "default": "#4E5156" },
     { "type": "color", "id": "contact_background", "label": "Contact background", "default": "#FFFFFF" },
-    { "type": "color", "id": "contact_text", "label": "Contact text", "default": "#15171D" }
+    { "type": "color", "id": "contact_text", "label": "Contact text", "default": "#15171D" },
+    { "type": "color", "id": "scroll_background", "label": "Scrolled background", "default": "#FFFFFF" },
+    { "type": "color", "id": "scroll_text", "label": "Scrolled text", "default": "#15171D" },
+    { "type": "color", "id": "scroll_border", "label": "Scrolled border", "default": "#DFE0E4" },
+    { "type": "color", "id": "accent", "label": "Scrolled button", "default": "#5381E5" }
   ],
   "presets": [{ "name": "LD 01 — Header" }]
 }
