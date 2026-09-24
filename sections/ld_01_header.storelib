@@ -26,7 +26,7 @@
 </template>
 
 <style scoped>
-.ldh { position: sticky; z-index: 999; top: 0; width: 100%; min-height: 72px; border-top: 2px solid var(--line); border-bottom: 1px solid var(--line); background: color-mix(in srgb, var(--bg) 90%, transparent); color: var(--fg); box-shadow: 0 4px 18px color-mix(in srgb, var(--bg) 10%, transparent); backdrop-filter: blur(12px) saturate(125%); -webkit-backdrop-filter: blur(12px) saturate(125%); font-family: Arial, Helvetica, sans-serif; animation: ldh-surface linear both; animation-timeline: scroll(root block); animation-range: 0 150px; }
+.ldh { position: sticky; z-index: 999; top: 0; width: 100%; min-height: 72px; overflow: visible; border-top: 2px solid var(--line); border-bottom: 1px solid var(--line); background: color-mix(in srgb, var(--bg) 90%, transparent); color: var(--fg); box-shadow: 0 4px 18px color-mix(in srgb, var(--bg) 10%, transparent); backdrop-filter: blur(12px) saturate(125%); -webkit-backdrop-filter: blur(12px) saturate(125%); font-family: Arial, Helvetica, sans-serif; animation: ldh-surface linear both; animation-timeline: scroll(root block); animation-range: 0 150px; }
 .ldh__in { display: flex; width: min(1180px, calc(100% - 64px)); height: 69px; margin: 0 auto; align-items: center; justify-content: space-between; color: inherit; }
 .ldh__brand { display: flex; align-items: center; gap: 10px; color: currentColor; font-size: 14px; font-weight: 700; text-decoration: none; }
 .ldh__brand img { width: 32px; height: 32px; border: 1px solid var(--line); border-radius: 5px; object-fit: cover; }
@@ -38,8 +38,8 @@
 .ldh__menu-button { display: none; padding: 10px 13px; border: 1px solid currentColor; border-radius: 0; background: transparent; color: currentColor; font: 700 12px/1 Arial, sans-serif; cursor: pointer; user-select: none; }
 .ldh__menu-button span::after { content: "+"; margin-left: 8px; }
 .ldh__menu-toggle:checked ~ .ldh__in .ldh__menu-button span::after { content: "−"; }
-.ldh__menu-panel { position: relative; z-index: 1000; display: none; box-sizing: border-box; width: 100%; padding: 10px 16px 16px; border-top: 1px solid var(--line); background: color-mix(in srgb, var(--bg) 94%, transparent); color: var(--fg); box-shadow: 0 20px 44px color-mix(in srgb, var(--bg) 22%, transparent); backdrop-filter: blur(12px) saturate(125%); -webkit-backdrop-filter: blur(12px) saturate(125%); }
-.ldh__menu-toggle:checked ~ .ldh__menu-panel { display: grid; gap: 0; animation: ldh-menu-in 220ms cubic-bezier(.22,.61,.36,1) both; }
+.ldh__menu-panel { position: relative; z-index: 1000; display: none; box-sizing: border-box; width: 100%; height: 242px; margin-bottom: -242px; padding: 10px 16px 16px; border-top: 1px solid var(--line); background: color-mix(in srgb, var(--bg) 94%, transparent); color: var(--fg); box-shadow: 0 20px 44px color-mix(in srgb, var(--bg) 22%, transparent); backdrop-filter: blur(12px) saturate(125%); -webkit-backdrop-filter: blur(12px) saturate(125%); }
+.ldh__menu-toggle:checked ~ .ldh__menu-panel { display: grid; grid-template-rows: repeat(5, 1fr); gap: 0; animation: ldh-menu-in 220ms cubic-bezier(.22,.61,.36,1) both; }
 .ldh__menu-panel a { padding: 14px 12px; color: currentColor; font-size: 13px; text-decoration: none; }
 .ldh__menu-panel a:hover { background: color-mix(in srgb, currentColor 8%, transparent); }
 .ldh__menu-panel .ldh__menu-contact { margin-top: 4px; background: var(--paper); color: var(--paper-text); }
@@ -58,7 +58,7 @@
   "type": "ld_01_header",
   "name": "LD 01 — Header",
   "category": "custom",
-  "version": "1.0.4",
+  "version": "1.0.5",
   "settings": [
     { "type": "text", "id": "brand_name", "label": "Brand name", "default": "Luca Dragoste" },
     { "type": "url", "id": "logo_url", "label": "Logo URL", "default": "https://lucadragoste.ro/logo-ld.png" },
