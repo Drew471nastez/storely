@@ -3,7 +3,7 @@
   <div class="ldhero__in">
     <div class="ldhero__copy">
       <h1>LinkedIn posts<br>for founders.<br>SEO content for<br>product brands.</h1>
-      <p class="ldhero__lead">{{ settings.intro }}</p>
+      <p class="ldhero__lead">{{ settings.hero_intro }}</p>
       <ul>
         <li>Ghostwriting starts with two free LinkedIn posts</li>
         <li>SEO content starts with a free three-question brand check</li>
@@ -71,7 +71,7 @@
   "category": "custom",
   "version": "1.0.1",
   "settings": [
-    { "type": "textarea", "id": "intro", "label": "Introduction", "default": "Ghostwriting helps founders share their ideas without writing every post. SEO content gives product brands an FAQ, a comparison, and a buying guide, with checks in Google and ChatGPT." },
+    { "type": "textarea", "id": "hero_intro", "label": "Introduction", "default": "Ghostwriting helps founders share their ideas without writing every post. SEO content gives product brands an FAQ, a comparison, and a buying guide, with checks in Google and ChatGPT." },
     { "type": "url", "id": "email_link", "label": "Email link", "default": "mailto:contact@lucadragoste.ro" },
     { "type": "url", "id": "sample_link", "label": "Sample link", "default": "#ld-portfolio" },
     { "type": "url", "id": "project_link", "label": "Project link", "default": "#ld-portfolio" },

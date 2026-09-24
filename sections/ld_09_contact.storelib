@@ -1,8 +1,8 @@
 <template>
 <section id="ld-contact" class="ldc" data-scheme="{{ settings.color_scheme }}" style="--bg:{{ settings.background }};--soft:{{ settings.soft_background }};--ink:{{ settings.text }};--muted:{{ settings.muted }};--line:{{ settings.border }};--accent:{{ settings.accent }};--button-text:{{ settings.button_text_color }};">
   <div class="ldc__in">
-    <div class="ldc__copy"><h2>Tell me what<br>you need</h2><p>This form opens your email app with the message filled in.</p><p>You can also write to <a href="{{ settings.email_link | url }}">{{ settings.email_address }}</a>.</p></div>
-    <form class="form" action="{{ settings.email_link | url }}" method="get" enctype="text/plain" data-storelib-form="native">
+    <div class="ldc__copy"><h2>Tell me what<br>you need</h2><p>This form opens your email app with the message filled in.</p><p>You can also write to <a href="{{ settings.contact_email_link | url }}">{{ settings.contact_email_address }}</a>.</p></div>
+    <form class="form" action="{{ settings.contact_email_link | url }}" method="get" enctype="text/plain" data-storelib-form="native">
       <label for="{{ section.id }}-name">Name</label><input id="{{ section.id }}-name" name="name" type="text" autocomplete="name" required>
       <label for="{{ section.id }}-email">Email</label><input id="{{ section.id }}-email" name="email" type="email" autocomplete="email" required>
       <label for="{{ section.id }}-service">Service</label><select id="{{ section.id }}-service" name="service"><option>LinkedIn ghostwriting</option><option>SEO + GEO/AEO</option></select>
@@ -38,8 +38,8 @@
   "category": "custom",
   "version": "1.0.1",
   "settings": [
-    { "type": "text", "id": "email_address", "label": "Email address", "default": "contact@lucadragoste.ro" },
-    { "type": "url", "id": "email_link", "label": "Email link", "default": "mailto:contact@lucadragoste.ro" },
+    { "type": "text", "id": "contact_email_address", "label": "Email address", "default": "contact@lucadragoste.ro" },
+    { "type": "url", "id": "contact_email_link", "label": "Email link", "default": "mailto:contact@lucadragoste.ro" },
     { "type": "color_scheme", "id": "color_scheme", "label": "Base colour scheme", "default": "white" },
     { "type": "color", "id": "background", "label": "Background", "default": "#FFFFFF" },
     { "type": "color", "id": "soft_background", "label": "Form background", "default": "#F5F5F7" },
