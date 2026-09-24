@@ -1,57 +1,57 @@
 <template>
-<header id="ld-top" class="ldh" data-scheme="{{ settings.color_scheme }}" style="--bg:{{ settings.background }};--fg:{{ settings.text }};--line:{{ settings.border }};--paper:{{ settings.contact_background }};--paper-text:{{ settings.contact_text }};--scroll-bg:{{ settings.scroll_background }};--scroll-text:{{ settings.scroll_text }};--scroll-line:{{ settings.scroll_border }};--accent:{{ settings.accent }};">
-  <div class="ldh__in">
-    <a class="ldh__brand" href="#ld-top">
-      <img src="{{ settings.logo_url | asset }}" alt="{{ settings.logo_alt }}" width="18" height="18">
-      <span>{{ settings.brand_name }}</span>
-    </a>
-    <nav class="ldh__nav" aria-label="Main navigation">
-      <a href="#ld-services">Services</a>
-      <a href="#ld-portfolio">Portfolio</a>
-      <a href="#ld-process">How it works</a>
-      <a href="#ld-pricing">Pricing</a>
-      <a class="ldh__contact" href="#ld-contact">Contact</a>
-    </nav>
-    <details class="ldh__menu">
-      <summary>Menu</summary>
-      <nav class="ldh__menu-panel" aria-label="Mobile navigation">
+<div class="ldh-shell" data-scheme="{{ settings.color_scheme }}" style="--bg:{{ settings.background }};--fg:{{ settings.text }};--line:{{ settings.border }};--paper:{{ settings.contact_background }};--paper-text:{{ settings.contact_text }};--scroll-bg:{{ settings.scroll_background }};--scroll-text:{{ settings.scroll_text }};--scroll-line:{{ settings.scroll_border }};--accent:{{ settings.accent }};">
+  <div class="ldh__spacer" aria-hidden="true"></div>
+  <header id="ld-top" class="ldh">
+    <div class="ldh__in">
+      <a class="ldh__brand" href="#ld-top">
+        <img src="{{ settings.logo_url | asset }}" alt="{{ settings.logo_alt }}" width="32" height="32">
+        <span>{{ settings.brand_name }}</span>
+      </a>
+      <nav class="ldh__nav" aria-label="Main navigation">
         <a href="#ld-services">Services</a>
         <a href="#ld-portfolio">Portfolio</a>
         <a href="#ld-process">How it works</a>
         <a href="#ld-pricing">Pricing</a>
-        <a class="ldh__menu-contact" href="#ld-contact">Contact</a>
+        <a class="ldh__contact" href="#ld-contact">Contact</a>
       </nav>
-    </details>
-  </div>
-</header>
+      <button class="ldh__menu-button" type="button" popovertarget="{{ section.id }}-mobile-menu">Menu</button>
+    </div>
+  </header>
+  <nav class="ldh__menu-panel" id="{{ section.id }}-mobile-menu" popover aria-label="Mobile navigation">
+    <a href="#ld-services">Services</a>
+    <a href="#ld-portfolio">Portfolio</a>
+    <a href="#ld-process">How it works</a>
+    <a href="#ld-pricing">Pricing</a>
+    <a class="ldh__menu-contact" href="#ld-contact">Contact</a>
+  </nav>
+</div>
 </template>
 
 <style scoped>
-.ldh { position: relative; z-index: 999; height: 72px; background: var(--bg); color: var(--fg); font-family: Arial, Helvetica, sans-serif; }
-.ldh::before { content: ""; position: fixed; z-index: 998; top: 0; right: 0; left: 0; height: 71px; border-top: 2px solid var(--line); border-bottom: 1px solid var(--line); background: color-mix(in srgb, var(--bg) 96%, transparent); backdrop-filter: blur(16px) saturate(140%); -webkit-backdrop-filter: blur(16px) saturate(140%); animation: ldh-surface linear both; animation-timeline: scroll(root block); animation-range: 0 140px; }
-.ldh__in { position: fixed; z-index: 999; top: 2px; right: 0; left: 0; display: flex; width: min(1180px, calc(100% - 64px)); height: 69px; margin: 0 auto; align-items: center; justify-content: space-between; color: var(--fg); animation: ldh-text linear both; animation-timeline: scroll(root block); animation-range: 0 140px; }
+.ldh-shell { height: 72px; background: var(--bg); color: var(--fg); font-family: Arial, Helvetica, sans-serif; }
+.ldh__spacer { height: 72px; background: var(--bg); }
+.ldh { position: fixed; z-index: 999; top: 0; right: 0; left: 0; height: 72px; border-top: 2px solid var(--line); border-bottom: 1px solid var(--line); background: color-mix(in srgb, var(--bg) 90%, transparent); color: var(--fg); box-shadow: 0 4px 18px color-mix(in srgb, var(--bg) 10%, transparent); backdrop-filter: blur(12px) saturate(125%); -webkit-backdrop-filter: blur(12px) saturate(125%); animation: ldh-surface linear both; animation-timeline: scroll(root block); animation-range: 0 150px; }
+.ldh__in { display: flex; width: min(1180px, calc(100% - 64px)); height: 69px; margin: 0 auto; align-items: center; justify-content: space-between; color: inherit; }
 .ldh__brand { display: flex; align-items: center; gap: 10px; color: currentColor; font-size: 14px; font-weight: 700; text-decoration: none; }
 .ldh__brand img { width: 32px; height: 32px; border: 1px solid var(--line); border-radius: 5px; object-fit: cover; }
 .ldh__nav { display: flex; align-items: center; gap: 30px; }
 .ldh__nav a { color: currentColor; font-size: 13px; text-decoration: none; }
 .ldh__nav a:hover { text-decoration: underline; text-underline-offset: 2px; }
-.ldh__nav .ldh__contact { padding: 12px 18px; background: var(--paper); color: var(--paper-text); animation: ldh-contact linear both; animation-timeline: scroll(root block); animation-range: 0 140px; }
-.ldh__menu { display: none; }
-.ldh__menu summary { padding: 9px 12px; border: 1px solid currentColor; color: currentColor; font-size: 12px; line-height: 1; list-style: none; cursor: pointer; }
-.ldh__menu summary::-webkit-details-marker { display: none; }
-.ldh__menu summary::after { content: "+"; margin-left: 8px; }
-.ldh__menu[open] summary::after { content: "−"; }
-.ldh__menu-panel { position: absolute; top: 69px; right: 0; left: 0; display: grid; gap: 0; padding: 12px; border: 1px solid var(--line); border-top: 0; background: color-mix(in srgb, var(--bg) 98%, transparent); color: var(--fg); box-shadow: 0 18px 40px color-mix(in srgb, var(--bg) 28%, transparent); backdrop-filter: blur(16px) saturate(140%); -webkit-backdrop-filter: blur(16px) saturate(140%); animation: ldh-menu-surface linear both; animation-timeline: scroll(root block); animation-range: 0 140px; }
-.ldh__menu-panel a { padding: 13px 12px; color: currentColor; font-size: 13px; text-decoration: none; }
+.ldh__nav .ldh__contact { padding: 12px 18px; background: var(--paper); color: var(--paper-text); animation: ldh-contact linear both; animation-timeline: scroll(root block); animation-range: 0 150px; }
+.ldh__menu-button { display: none; padding: 10px 13px; border: 1px solid currentColor; border-radius: 0; background: transparent; color: currentColor; font: 700 12px/1 Arial, sans-serif; cursor: pointer; }
+.ldh__menu-panel { position: fixed; z-index: 1000; top: 72px; right: 16px; left: 16px; width: auto; max-width: none; margin: 0; padding: 12px; border: 1px solid var(--line); border-top: 0; background: color-mix(in srgb, var(--bg) 94%, transparent); color: var(--fg); box-shadow: 0 20px 44px color-mix(in srgb, var(--bg) 22%, transparent); backdrop-filter: blur(12px) saturate(125%); -webkit-backdrop-filter: blur(12px) saturate(125%); }
+.ldh__menu-panel:popover-open { display: grid; gap: 0; animation: ldh-menu-in 220ms cubic-bezier(.22,.61,.36,1) both; }
+.ldh__menu-panel::backdrop { background: transparent; }
+.ldh__menu-panel a { padding: 14px 12px; color: currentColor; font-size: 13px; text-decoration: none; }
 .ldh__menu-panel a:hover { background: color-mix(in srgb, currentColor 8%, transparent); }
 .ldh__menu-panel .ldh__menu-contact { margin-top: 4px; background: var(--paper); color: var(--paper-text); }
-@keyframes ldh-surface { from { border-color: var(--line); background-color: color-mix(in srgb, var(--bg) 96%, transparent); } to { border-color: var(--scroll-line); background-color: color-mix(in srgb, var(--scroll-bg) 96%, transparent); } }
-@keyframes ldh-text { from { color: var(--fg); } to { color: var(--scroll-text); } }
+@keyframes ldh-surface { from { border-color: var(--line); background-color: color-mix(in srgb, var(--bg) 90%, transparent); color: var(--fg); box-shadow: 0 4px 18px color-mix(in srgb, var(--bg) 10%, transparent); } to { border-color: var(--scroll-line); background-color: color-mix(in srgb, var(--scroll-bg) 92%, transparent); color: var(--scroll-text); box-shadow: 0 6px 22px color-mix(in srgb, var(--scroll-text) 10%, transparent); } }
 @keyframes ldh-contact { from { background-color: var(--paper); color: var(--paper-text); } to { background-color: var(--accent); color: var(--paper); } }
-@keyframes ldh-menu-surface { from { border-color: var(--line); background-color: color-mix(in srgb, var(--bg) 98%, transparent); color: var(--fg); } to { border-color: var(--scroll-line); background-color: color-mix(in srgb, var(--scroll-bg) 98%, transparent); color: var(--scroll-text); } }
-@supports not (animation-timeline: scroll()) { .ldh::before { background: color-mix(in srgb, var(--bg) 92%, transparent); } }
-@container (max-width: 720px) { .ldh__in { width: calc(100% - 32px); } .ldh__nav { display: none; } .ldh__menu { display: block; } }
-@media (prefers-reduced-motion: reduce) { .ldh::before, .ldh__in, .ldh__nav .ldh__contact, .ldh__menu-panel { animation: none; } }
+@keyframes ldh-menu-in { from { opacity: 0; transform: translateY(-8px); } to { opacity: 1; transform: translateY(0); } }
+@supports not (animation-timeline: scroll()) { .ldh { background: color-mix(in srgb, var(--bg) 92%, transparent); } }
+@container (max-width: 720px) { .ldh__in { width: calc(100% - 32px); } .ldh__nav { display: none; } .ldh__menu-button { display: block; } }
+@container (min-width: 721px) { .ldh__menu-panel { display: none; } }
+@media (prefers-reduced-motion: reduce) { .ldh, .ldh__contact, .ldh__menu-panel:popover-open { animation: none; } }
 </style>
 
 <schema>
@@ -60,7 +60,7 @@
   "type": "ld_01_header",
   "name": "LD 01 — Header",
   "category": "custom",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "settings": [
     { "type": "text", "id": "brand_name", "label": "Brand name", "default": "Luca Dragoste" },
     { "type": "url", "id": "logo_url", "label": "Logo URL", "default": "https://lucadragoste.ro/logo-ld.png" },
