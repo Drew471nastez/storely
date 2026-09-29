@@ -1,102 +1,1013 @@
-{# Notion marketplace hero storelib — yours. Everything below is a starting point. #}
 <template>
-<section class="notion_marketplace_hero-storelib" style="--bg: {{ scheme.bg }}; --text: {{ scheme.paragraph }}; --heading: {{ scheme.heading }}; --accent: {{ scheme.accent }}; --pt: {{ settings.padding_top }}px; --pb: {{ settings.padding_bottom }}px;">
-  <div class="notion_marketplace_hero-storelib__in">
-    {% if settings.eyebrow %}<p class="notion_marketplace_hero-storelib__eyebrow">{{ settings.eyebrow }}</p>{% endif %}
-    <h2 class="notion_marketplace_hero-storelib__h">{{ settings.heading }}</h2>
-    {% if settings.body %}<p class="notion_marketplace_hero-storelib__body">{{ settings.body }}</p>{% endif %}
+<section
+  class="nmh"
+  data-scheme="{{ settings.color_scheme }}"
+  data-layout="{{ settings.layout }}"
+  data-align="{{ settings.alignment }}"
+  style="
+    --nmh-pt: {{ settings.padding_top }}px;
+    --nmh-pb: {{ settings.padding_bottom }}px;
+    --nmh-max: {{ settings.max_width }}px;
+    --nmh-copy: {{ settings.copy_width }}px;
+    --nmh-gap: {{ settings.column_gap }}px;
+    --nmh-radius: {{ settings.card_radius }}px;
+    --nmh-search-radius: {{ settings.search_radius }}px;
+    --nmh-card-width: {{ settings.card_width }}px;
+    --nmh-glow: {{ settings.glow_color | alpha: 0.24 }};
+    --nmh-glow-soft: {{ settings.glow_color | alpha: 0.10 }};
+  "
+>
+  <div class="nmh__background" aria-hidden="true">
+    <span class="nmh__orb nmh__orb--one"></span>
+    <span class="nmh__orb nmh__orb--two"></span>
+    <span class="nmh__grid"></span>
+  </div>
+
+  <div class="nmh__inner">
+    <div class="nmh__copy">
+      {% if settings.eyebrow %}
+        <div class="nmh__eyebrow">
+          <span class="nmh__eyebrow-dot"></span>
+          <span>{{ settings.eyebrow }}</span>
+        </div>
+      {% endif %}
+
+      <h1 class="nmh__heading">
+        <span>{{ settings.heading }}</span>
+        {% if settings.heading_accent %}
+          <span class="nmh__heading-accent">{{ settings.heading_accent }}</span>
+        {% endif %}
+      </h1>
+
+      {% if settings.body %}
+        <p class="nmh__body">{{ settings.body }}</p>
+      {% endif %}
+
+      {% if settings.show_search %}
+        <form class="nmh__search" action="{{ settings.search_url | url }}" method="get" role="search">
+          <svg class="nmh__search-icon" viewBox="0 0 24 24" aria-hidden="true">
+            <circle cx="11" cy="11" r="6.5"></circle>
+            <path d="m16 16 4.2 4.2"></path>
+          </svg>
+          <input
+            class="nmh__search-input"
+            type="search"
+            name="q"
+            placeholder="{{ settings.search_placeholder }}"
+            aria-label="{{ settings.search_placeholder }}"
+          >
+          <button class="nmh__search-button" type="submit" data-button-id="primary">
+            {{ settings.search_button }}
+          </button>
+        </form>
+      {% endif %}
+
+      {% if settings.show_categories %}
+        <div class="nmh__chips" aria-label="Template categories">
+          {% if settings.category_1 %}
+            <a class="nmh__chip" href="{{ settings.category_1_url | url }}">{{ settings.category_1 }}</a>
+          {% endif %}
+          {% if settings.category_2 %}
+            <a class="nmh__chip" href="{{ settings.category_2_url | url }}">{{ settings.category_2 }}</a>
+          {% endif %}
+          {% if settings.category_3 %}
+            <a class="nmh__chip" href="{{ settings.category_3_url | url }}">{{ settings.category_3 }}</a>
+          {% endif %}
+          {% if settings.category_4 %}
+            <a class="nmh__chip" href="{{ settings.category_4_url | url }}">{{ settings.category_4 }}</a>
+          {% endif %}
+        </div>
+      {% endif %}
+
+      {% if settings.show_trust %}
+        <div class="nmh__trust">
+          {% if settings.trust_1 %}
+            <span class="nmh__trust-item">
+              <svg viewBox="0 0 20 20" aria-hidden="true"><path d="m5.2 10.1 3 3.1 6.6-7"></path></svg>
+              {{ settings.trust_1 }}
+            </span>
+          {% endif %}
+          {% if settings.trust_2 %}
+            <span class="nmh__trust-item">
+              <svg viewBox="0 0 20 20" aria-hidden="true"><path d="m5.2 10.1 3 3.1 6.6-7"></path></svg>
+              {{ settings.trust_2 }}
+            </span>
+          {% endif %}
+          {% if settings.trust_3 %}
+            <span class="nmh__trust-item">
+              <svg viewBox="0 0 20 20" aria-hidden="true"><path d="m5.2 10.1 3 3.1 6.6-7"></path></svg>
+              {{ settings.trust_3 }}
+            </span>
+          {% endif %}
+        </div>
+      {% endif %}
+    </div>
+
+    {% if settings.show_showcase %}
+      <div class="nmh__showcase" aria-label="{{ settings.showcase_label }}">
+        <div class="nmh__showcase-topline">
+          <span class="nmh__showcase-kicker">{{ settings.showcase_label }}</span>
+          {% if settings.showcase_link_text %}
+            <a class="nmh__showcase-link" href="{{ settings.showcase_link_url | url }}">
+              {{ settings.showcase_link_text }}
+              <svg viewBox="0 0 20 20" aria-hidden="true"><path d="M6 10h8M11 6l4 4-4 4"></path></svg>
+            </a>
+          {% endif %}
+        </div>
+
+        <div class="nmh__cards">
+          {% if settings.source == 'shop' %}
+            {% for block in products %}
+              {% if forloop.index <= 3 %}
+                <a
+                  class="nmh__card"
+                  data-card-index="{{ forloop.index }}"
+                  href="{{ block.settings.url | url }}"
+                  aria-label="{{ block.settings.title }}"
+                >
+                  <div class="nmh__card-media">
+                    {% if block.settings.image %}
+                      <img src="{{ block.settings.image | asset }}" alt="{{ block.settings.title }}">
+                    {% else %}
+                      <div class="nmh__placeholder">
+                        <div class="nmh__placeholder-side"></div>
+                        <div class="nmh__placeholder-main">
+                          <span class="nmh__placeholder-pill"></span>
+                          <span class="nmh__placeholder-line nmh__placeholder-line--wide"></span>
+                          <span class="nmh__placeholder-line"></span>
+                          <span class="nmh__placeholder-line nmh__placeholder-line--short"></span>
+                          <div class="nmh__placeholder-grid">
+                            <span></span><span></span><span></span>
+                          </div>
+                        </div>
+                      </div>
+                    {% endif %}
+                  </div>
+                  <div class="nmh__card-meta">
+                    <div>
+                      <span class="nmh__card-type">{{ settings.card_type_label }}</span>
+                      <strong class="nmh__card-title">{{ block.settings.title }}</strong>
+                    </div>
+                    {% if settings.show_card_price %}
+                      {% if block.settings.price %}
+                        <span class="nmh__card-price">{{ block.settings.price }}</span>
+                      {% endif %}
+                    {% endif %}
+                  </div>
+                </a>
+              {% endif %}
+            {% else %}
+              {% if page.in_editor %}
+                <div class="nmh__empty">Publish products or switch “Card source” to Manual cards.</div>
+              {% endif %}
+            {% endfor %}
+          {% else %}
+            {% for block in blocks %}
+              {% if forloop.index <= 3 %}
+                <a
+                  class="nmh__card"
+                  data-card-index="{{ forloop.index }}"
+                  href="{{ block.settings.url | url }}"
+                  aria-label="{{ block.settings.title }}"
+                >
+                  <div class="nmh__card-media">
+                    {% if block.settings.image %}
+                      <img src="{{ block.settings.image | asset }}" alt="{{ block.settings.title }}">
+                    {% else %}
+                      <div class="nmh__placeholder">
+                        <div class="nmh__placeholder-side"></div>
+                        <div class="nmh__placeholder-main">
+                          <span class="nmh__placeholder-pill"></span>
+                          <span class="nmh__placeholder-line nmh__placeholder-line--wide"></span>
+                          <span class="nmh__placeholder-line"></span>
+                          <span class="nmh__placeholder-line nmh__placeholder-line--short"></span>
+                          <div class="nmh__placeholder-grid">
+                            <span></span><span></span><span></span>
+                          </div>
+                        </div>
+                      </div>
+                    {% endif %}
+                  </div>
+                  <div class="nmh__card-meta">
+                    <div>
+                      <span class="nmh__card-type">{{ settings.card_type_label }}</span>
+                      <strong class="nmh__card-title">{{ block.settings.title }}</strong>
+                    </div>
+                    {% if settings.show_card_price %}
+                      {% if block.settings.price %}
+                        <span class="nmh__card-price">{{ block.settings.price }}</span>
+                      {% endif %}
+                    {% endif %}
+                  </div>
+                </a>
+              {% endif %}
+            {% else %}
+              {% if page.in_editor %}
+                <div class="nmh__empty">Add up to three template cards from the sidebar.</div>
+              {% endif %}
+            {% endfor %}
+          {% endif %}
+        </div>
+
+        {% if settings.show_rating %}
+          <div class="nmh__rating">
+            <span class="nmh__rating-stars" aria-hidden="true">★★★★★</span>
+            <span>{{ settings.rating_text }}</span>
+          </div>
+        {% endif %}
+      </div>
+    {% endif %}
   </div>
 </section>
 </template>
 
 <style>
-.notion_marketplace_hero-storelib {
-  /* container-type lets the rules below ask how wide THIS section is,
-     rather than how wide the browser window is. */
-  container-type: inline-size;
-  background: var(--bg);
-  color: var(--text);
-  padding: var(--pt) var(--theme-padding-x, 24px) var(--pb);
+.nmh {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  padding: var(--nmh-pt) 24px var(--nmh-pb);
+  background: var(--s-bg);
+  color: var(--s-para);
 }
-.notion_marketplace_hero-storelib__in { max-width: 720px; margin: 0 auto; text-align: center; }
-.notion_marketplace_hero-storelib__eyebrow {
-  margin: 0 0 12px;
-  font-size: 12px; font-weight: 600; letter-spacing: 0.14em; text-transform: uppercase;
-  color: var(--accent);
-}
-.notion_marketplace_hero-storelib__h {
-  margin: 0;
-  font-size: 28px; line-height: 1.15; font-weight: 700;
-  color: var(--heading);
-  /* A bare family name falls back to the browser's serif: give it a stack. */
-  font-family: var(--theme-font-heading, {{ theme.typography.heading }}), ui-sans-serif, system-ui, sans-serif;
-}
-.notion_marketplace_hero-storelib__body { margin: 14px 0 0; font-size: 16px; line-height: 1.6; }
 
-/* Tablet, then desktop. Phone is what the rules above already are. */
-@container (min-width: 640px) { .notion_marketplace_hero-storelib__h { font-size: 34px; } }
-@container (min-width: 1024px) { .notion_marketplace_hero-storelib__h { font-size: 40px; } }
+.nmh * {
+  box-sizing: border-box;
+}
+
+.nmh__background {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+}
+
+.nmh__grid {
+  position: absolute;
+  inset: 0;
+  opacity: .34;
+  background-image:
+    linear-gradient(color-mix(in srgb, var(--s-border) 34%, transparent) 1px, transparent 1px),
+    linear-gradient(90deg, color-mix(in srgb, var(--s-border) 34%, transparent) 1px, transparent 1px);
+  background-size: 56px 56px;
+  -webkit-mask-image: linear-gradient(to bottom, rgba(0,0,0,.78), transparent 78%);
+  mask-image: linear-gradient(to bottom, rgba(0,0,0,.78), transparent 78%);
+}
+
+.nmh__orb {
+  position: absolute;
+  width: 520px;
+  height: 520px;
+  border-radius: 50%;
+  filter: blur(80px);
+  opacity: .85;
+  background: var(--nmh-glow);
+}
+
+.nmh__orb--one {
+  top: -310px;
+  right: -80px;
+}
+
+.nmh__orb--two {
+  left: 18%;
+  bottom: -430px;
+  background: var(--nmh-glow-soft);
+}
+
+.nmh__inner {
+  width: min(100%, var(--nmh-max));
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 56px;
+  align-items: center;
+}
+
+.nmh__copy {
+  width: min(100%, var(--nmh-copy));
+}
+
+.nmh[data-align="center"] .nmh__copy {
+  margin-inline: auto;
+  text-align: center;
+}
+
+.nmh__eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  width: fit-content;
+  margin-bottom: 18px;
+  padding: 7px 11px;
+  border: 1px solid var(--s-border);
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--s-bg) 82%, var(--s-heading) 4%);
+  color: var(--s-heading);
+  font-size: 12px;
+  line-height: 1;
+  font-weight: 650;
+  letter-spacing: .02em;
+  box-shadow: 0 1px 2px color-mix(in srgb, var(--s-heading) 6%, transparent);
+}
+
+.nmh[data-align="center"] .nmh__eyebrow {
+  margin-inline: auto;
+}
+
+.nmh__eyebrow-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--s-accent);
+  box-shadow: 0 0 0 4px color-mix(in srgb, var(--s-accent) 14%, transparent);
+}
+
+.nmh__heading {
+  margin: 0;
+  max-width: 13ch;
+  color: var(--s-heading);
+  font-size: clamp(44px, 7vw, 82px);
+  line-height: .96;
+  letter-spacing: -.055em;
+  font-weight: 760;
+}
+
+.nmh[data-align="center"] .nmh__heading {
+  margin-inline: auto;
+}
+
+.nmh__heading > span {
+  display: block;
+}
+
+.nmh__heading-accent {
+  color: var(--s-accent);
+}
+
+.nmh__body {
+  max-width: 620px;
+  margin: 24px 0 0;
+  color: var(--s-para);
+  font-size: clamp(16px, 2vw, 19px);
+  line-height: 1.65;
+}
+
+.nmh[data-align="center"] .nmh__body {
+  margin-inline: auto;
+}
+
+.nmh__search {
+  width: min(100%, 600px);
+  min-height: 62px;
+  margin-top: 30px;
+  padding: 6px 6px 6px 18px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  border: 1px solid color-mix(in srgb, var(--s-border) 92%, var(--s-heading) 8%);
+  border-radius: var(--nmh-search-radius);
+  background: color-mix(in srgb, var(--s-bg) 92%, white 8%);
+  box-shadow:
+    0 1px 0 color-mix(in srgb, white 70%, transparent) inset,
+    0 14px 36px color-mix(in srgb, var(--s-heading) 8%, transparent);
+}
+
+.nmh[data-align="center"] .nmh__search {
+  margin-inline: auto;
+}
+
+.nmh__search:focus-within {
+  border-color: color-mix(in srgb, var(--s-accent) 55%, var(--s-border));
+  box-shadow:
+    0 0 0 4px color-mix(in srgb, var(--s-accent) 10%, transparent),
+    0 14px 36px color-mix(in srgb, var(--s-heading) 8%, transparent);
+}
+
+.nmh__search-icon {
+  width: 20px;
+  height: 20px;
+  flex: 0 0 auto;
+  fill: none;
+  stroke: var(--s-para);
+  stroke-width: 1.8;
+  stroke-linecap: round;
+}
+
+.nmh__search-input {
+  min-width: 0;
+  flex: 1;
+  border: 0;
+  outline: 0;
+  padding: 0;
+  background: transparent;
+  color: var(--s-heading);
+  font: inherit;
+  font-size: 15px;
+}
+
+.nmh__search-input::placeholder {
+  color: color-mix(in srgb, var(--s-para) 68%, transparent);
+}
+
+.nmh__search-button {
+  min-height: 48px;
+  border: 0;
+  border-radius: calc(var(--nmh-search-radius) - 6px);
+  padding: 0 18px;
+  background: var(--s-btn);
+  color: var(--s-btn-text);
+  font: inherit;
+  font-size: 14px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: transform .18s ease, opacity .18s ease;
+}
+
+.nmh__search-button:hover {
+  transform: translateY(-1px);
+}
+
+.nmh__chips {
+  margin-top: 14px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.nmh[data-align="center"] .nmh__chips,
+.nmh[data-align="center"] .nmh__trust {
+  justify-content: center;
+}
+
+.nmh__chip {
+  display: inline-flex;
+  align-items: center;
+  min-height: 34px;
+  padding: 0 12px;
+  border: 1px solid var(--s-border);
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--s-bg) 94%, var(--s-heading) 3%);
+  color: var(--s-para);
+  text-decoration: none;
+  font-size: 12px;
+  font-weight: 620;
+  transition: transform .18s ease, border-color .18s ease, color .18s ease;
+}
+
+.nmh__chip:hover {
+  transform: translateY(-1px);
+  border-color: color-mix(in srgb, var(--s-accent) 50%, var(--s-border));
+  color: var(--s-heading);
+}
+
+.nmh__trust {
+  margin-top: 22px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px 18px;
+}
+
+.nmh__trust-item {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  color: color-mix(in srgb, var(--s-para) 88%, transparent);
+  font-size: 12px;
+  font-weight: 560;
+}
+
+.nmh__trust-item svg {
+  width: 15px;
+  height: 15px;
+  fill: none;
+  stroke: var(--s-accent);
+  stroke-width: 2.1;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.nmh__showcase {
+  width: min(100%, 690px);
+  margin-inline: auto;
+}
+
+.nmh__showcase-topline {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  margin-bottom: 16px;
+}
+
+.nmh__showcase-kicker {
+  color: var(--s-heading);
+  font-size: 13px;
+  font-weight: 700;
+}
+
+.nmh__showcase-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  color: var(--s-para);
+  text-decoration: none;
+  font-size: 12px;
+  font-weight: 650;
+}
+
+.nmh__showcase-link svg {
+  width: 15px;
+  height: 15px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.8;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  transition: transform .18s ease;
+}
+
+.nmh__showcase-link:hover svg {
+  transform: translateX(2px);
+}
+
+.nmh__cards {
+  position: relative;
+  min-height: 520px;
+}
+
+.nmh__card {
+  position: absolute;
+  width: min(var(--nmh-card-width), 76vw);
+  overflow: hidden;
+  border: 1px solid color-mix(in srgb, var(--s-border) 88%, var(--s-heading) 12%);
+  border-radius: var(--nmh-radius);
+  background: var(--s-bg);
+  color: inherit;
+  text-decoration: none;
+  box-shadow:
+    0 1px 0 color-mix(in srgb, white 74%, transparent) inset,
+    0 22px 70px color-mix(in srgb, var(--s-heading) 13%, transparent);
+  transform-origin: center;
+  transition: transform .25s ease, box-shadow .25s ease;
+}
+
+.nmh__card:hover {
+  z-index: 8;
+  box-shadow:
+    0 1px 0 color-mix(in srgb, white 74%, transparent) inset,
+    0 28px 84px color-mix(in srgb, var(--s-heading) 18%, transparent);
+}
+
+.nmh__card[data-card-index="1"] {
+  z-index: 5;
+  left: 7%;
+  top: 62px;
+  transform: rotate(-5deg);
+}
+
+.nmh__card[data-card-index="2"] {
+  z-index: 4;
+  right: 2%;
+  top: 6px;
+  transform: rotate(5.4deg) scale(.94);
+}
+
+.nmh__card[data-card-index="3"] {
+  z-index: 3;
+  right: 7%;
+  bottom: 0;
+  transform: rotate(2.2deg) scale(.86);
+}
+
+.nmh__card[data-card-index="1"]:hover {
+  transform: rotate(-2.5deg) translateY(-7px);
+}
+
+.nmh__card[data-card-index="2"]:hover {
+  transform: rotate(2.6deg) scale(.96) translateY(-7px);
+}
+
+.nmh__card[data-card-index="3"]:hover {
+  transform: rotate(.8deg) scale(.89) translateY(-7px);
+}
+
+.nmh__card-media {
+  aspect-ratio: 16 / 10;
+  overflow: hidden;
+  background: color-mix(in srgb, var(--s-bg) 90%, var(--s-heading) 5%);
+}
+
+.nmh__card-media img {
+  width: 100%;
+  height: 100%;
+  display: block;
+  object-fit: cover;
+  transition: transform .35s ease;
+}
+
+.nmh__card:hover .nmh__card-media img {
+  transform: scale(1.025);
+}
+
+.nmh__placeholder {
+  width: 100%;
+  height: 100%;
+  display: grid;
+  grid-template-columns: 24% 1fr;
+  background:
+    radial-gradient(circle at 72% 24%, var(--nmh-glow) 0, transparent 34%),
+    color-mix(in srgb, var(--s-bg) 94%, var(--s-heading) 4%);
+}
+
+.nmh__placeholder-side {
+  border-right: 1px solid var(--s-border);
+  background:
+    linear-gradient(var(--s-border), var(--s-border)) 26% 22% / 48% 7px no-repeat,
+    linear-gradient(var(--s-border), var(--s-border)) 26% 34% / 58% 7px no-repeat,
+    linear-gradient(var(--s-border), var(--s-border)) 26% 46% / 42% 7px no-repeat,
+    linear-gradient(var(--s-border), var(--s-border)) 26% 58% / 54% 7px no-repeat;
+}
+
+.nmh__placeholder-main {
+  padding: 11% 10%;
+}
+
+.nmh__placeholder-pill,
+.nmh__placeholder-line {
+  display: block;
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--s-heading) 17%, transparent);
+}
+
+.nmh__placeholder-pill {
+  width: 68px;
+  height: 18px;
+  margin-bottom: 16px;
+  background: color-mix(in srgb, var(--s-accent) 26%, transparent);
+}
+
+.nmh__placeholder-line {
+  width: 76%;
+  height: 9px;
+  margin-top: 10px;
+}
+
+.nmh__placeholder-line--wide {
+  width: 92%;
+  height: 14px;
+  background: color-mix(in srgb, var(--s-heading) 26%, transparent);
+}
+
+.nmh__placeholder-line--short {
+  width: 48%;
+}
+
+.nmh__placeholder-grid {
+  margin-top: 26px;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 8px;
+}
+
+.nmh__placeholder-grid span {
+  aspect-ratio: 1.18;
+  border: 1px solid var(--s-border);
+  border-radius: 9px;
+  background: color-mix(in srgb, var(--s-bg) 82%, var(--s-heading) 7%);
+}
+
+.nmh__card-meta {
+  min-height: 82px;
+  padding: 15px 16px 16px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  border-top: 1px solid var(--s-border);
+}
+
+.nmh__card-meta > div {
+  min-width: 0;
+}
+
+.nmh__card-type {
+  display: block;
+  margin-bottom: 4px;
+  color: var(--s-para);
+  font-size: 10px;
+  font-weight: 650;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+}
+
+.nmh__card-title {
+  display: block;
+  overflow: hidden;
+  color: var(--s-heading);
+  font-size: 14px;
+  line-height: 1.3;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+.nmh__card-price {
+  flex: 0 0 auto;
+  color: var(--s-heading);
+  font-size: 13px;
+  font-weight: 760;
+}
+
+.nmh__rating {
+  position: relative;
+  z-index: 10;
+  width: fit-content;
+  margin: 14px 14px 0 auto;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: var(--s-para);
+  font-size: 11px;
+  font-weight: 620;
+}
+
+.nmh__rating-stars {
+  color: var(--s-star);
+  letter-spacing: 1px;
+}
+
+.nmh__empty {
+  position: relative;
+  max-width: 420px;
+  margin: 80px auto 0;
+  padding: 20px;
+  border: 1px dashed var(--s-border);
+  border-radius: var(--nmh-radius);
+  color: var(--s-para);
+  text-align: center;
+  font-size: 13px;
+}
+
+.nmh[data-layout="stacked"] .nmh__inner {
+  text-align: center;
+}
+
+.nmh[data-layout="stacked"] .nmh__copy {
+  margin-inline: auto;
+}
+
+.nmh[data-layout="stacked"] .nmh__heading,
+.nmh[data-layout="stacked"] .nmh__body,
+.nmh[data-layout="stacked"] .nmh__search {
+  margin-inline: auto;
+}
+
+.nmh[data-layout="stacked"] .nmh__chips,
+.nmh[data-layout="stacked"] .nmh__trust {
+  justify-content: center;
+}
+
+@media (min-width: 980px) {
+  .nmh[data-layout="split"] .nmh__inner {
+    grid-template-columns: minmax(0, .93fr) minmax(430px, 1.07fr);
+    gap: var(--nmh-gap);
+  }
+
+  .nmh[data-layout="stacked"] .nmh__showcase {
+    margin-top: 4px;
+  }
+}
+
+@media (max-width: 979px) {
+  .nmh {
+    padding-inline: 20px;
+  }
+
+  .nmh__inner {
+    gap: 34px;
+  }
+
+  .nmh__copy {
+    margin-inline: auto;
+    text-align: center;
+  }
+
+  .nmh__heading,
+  .nmh__body,
+  .nmh__search,
+  .nmh__eyebrow {
+    margin-inline: auto;
+  }
+
+  .nmh__chips,
+  .nmh__trust {
+    justify-content: center;
+  }
+
+  .nmh__showcase {
+    max-width: 620px;
+  }
+
+  .nmh__cards {
+    min-height: 470px;
+  }
+}
+
+@media (max-width: 640px) {
+  .nmh {
+    padding-inline: 16px;
+  }
+
+  .nmh__heading {
+    font-size: clamp(42px, 13vw, 58px);
+    max-width: 11ch;
+  }
+
+  .nmh__body {
+    margin-top: 18px;
+    font-size: 16px;
+  }
+
+  .nmh__search {
+    min-height: 58px;
+    margin-top: 24px;
+    padding-left: 15px;
+  }
+
+  .nmh__search-button {
+    min-height: 46px;
+    padding-inline: 14px;
+  }
+
+  .nmh__chips {
+    flex-wrap: nowrap;
+    justify-content: flex-start;
+    overflow-x: auto;
+    padding-bottom: 4px;
+    scrollbar-width: none;
+  }
+
+  .nmh__chips::-webkit-scrollbar {
+    display: none;
+  }
+
+  .nmh__chip {
+    flex: 0 0 auto;
+  }
+
+  .nmh__trust {
+    gap: 9px 14px;
+  }
+
+  .nmh__showcase-topline {
+    padding-inline: 2px;
+  }
+
+  .nmh__cards {
+    min-height: 405px;
+  }
+
+  .nmh__card {
+    width: min(var(--nmh-card-width), 78vw);
+  }
+
+  .nmh__card[data-card-index="1"] {
+    left: 1%;
+    top: 58px;
+  }
+
+  .nmh__card[data-card-index="2"] {
+    right: 0;
+    top: 4px;
+  }
+
+  .nmh__card[data-card-index="3"] {
+    right: 2%;
+    bottom: 2px;
+  }
+
+  .nmh__card-meta {
+    min-height: 70px;
+    padding: 12px;
+  }
+
+  .nmh__card-type {
+    font-size: 9px;
+  }
+
+  .nmh__card-title,
+  .nmh__card-price {
+    font-size: 12px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .nmh__card,
+  .nmh__card-media img,
+  .nmh__chip,
+  .nmh__search-button,
+  .nmh__showcase-link svg {
+    transition: none;
+  }
+}
 </style>
 
 <schema>
 {
-  "language_version": 1,
-  "type": "notion_marketplace_hero-storelib",
-  "name": "Notion marketplace hero storelib",
-  "category": "content",
+  "schema_version": 1,
+  "type": "notion_marketplace_hero",
+  "name": "Notion marketplace hero",
+  "category": "hero",
+  "description": "A premium marketplace hero with search, categories and layered template cards.",
+  "supports_typography_overrides": false,
+  "capabilities": [],
   "settings": [
+    { "type": "color_scheme", "id": "color_scheme", "label": "Colour scheme" },
+    { "type": "select", "id": "layout", "label": "Desktop layout", "options": [
+      { "value": "split", "label": "Split" },
+      { "value": "stacked", "label": "Stacked" }
+    ], "default": "split" },
+    { "type": "select", "id": "alignment", "label": "Content alignment", "options": [
+      { "value": "left", "label": "Left" },
+      { "value": "center", "label": "Center" }
+    ], "default": "left" },
+
+    { "type": "text", "id": "eyebrow", "label": "Eyebrow", "default": "The Notion template marketplace" },
+    { "type": "text", "id": "heading", "label": "Heading", "default": "Build less." },
+    { "type": "text", "id": "heading_accent", "label": "Accent heading", "default": "Do more." },
+    { "type": "textarea", "id": "body", "label": "Description", "default": "Discover practical Notion systems built by independent creators for work, money, study and everyday life." },
+
+    { "type": "toggle", "id": "show_search", "label": "Show search", "default": true },
+    { "type": "url", "id": "search_url", "label": "Search results URL", "default": "/search" },
+    { "type": "text", "id": "search_placeholder", "label": "Search placeholder", "default": "Search templates, creators, workflows..." },
+    { "type": "text", "id": "search_button", "label": "Search button", "default": "Search" },
+
+    { "type": "toggle", "id": "show_categories", "label": "Show category chips", "default": true },
+    { "type": "text", "id": "category_1", "label": "Category 1", "default": "Productivity" },
+    { "type": "url", "id": "category_1_url", "label": "Category 1 URL", "default": "/search?q=productivity" },
+    { "type": "text", "id": "category_2", "label": "Category 2", "default": "Finance" },
+    { "type": "url", "id": "category_2_url", "label": "Category 2 URL", "default": "/search?q=finance" },
+    { "type": "text", "id": "category_3", "label": "Category 3", "default": "Students" },
+    { "type": "url", "id": "category_3_url", "label": "Category 3 URL", "default": "/search?q=students" },
+    { "type": "text", "id": "category_4", "label": "Category 4", "default": "Creators" },
+    { "type": "url", "id": "category_4_url", "label": "Category 4 URL", "default": "/search?q=creators" },
+
+    { "type": "toggle", "id": "show_trust", "label": "Show trust points", "default": true },
+    { "type": "text", "id": "trust_1", "label": "Trust point 1", "default": "Instant access" },
+    { "type": "text", "id": "trust_2", "label": "Trust point 2", "default": "Creator-made" },
+    { "type": "text", "id": "trust_3", "label": "Trust point 3", "default": "Built for Notion" },
+
+    { "type": "toggle", "id": "show_showcase", "label": "Show template showcase", "default": true },
+    { "type": "select", "id": "source", "label": "Card source", "options": [
+      { "value": "manual", "label": "Manual cards" },
+      { "value": "shop", "label": "Published products" }
+    ], "default": "manual" },
+    { "type": "text", "id": "showcase_label", "label": "Showcase label", "default": "Trending this week" },
+    { "type": "text", "id": "showcase_link_text", "label": "Showcase link text", "default": "Explore all" },
+    { "type": "url", "id": "showcase_link_url", "label": "Showcase link URL", "default": "/search" },
+    { "type": "text", "id": "card_type_label", "label": "Card type label", "default": "Notion template" },
+    { "type": "toggle", "id": "show_card_price", "label": "Show card price", "default": true },
+
+    { "type": "toggle", "id": "show_rating", "label": "Show rating line", "default": true },
+    { "type": "text", "id": "rating_text", "label": "Rating text", "default": "Loved by organised people" },
+
+    { "type": "range", "id": "max_width", "label": "Content width", "min": 960, "max": 1600, "step": 20, "unit": "px", "default": 1360 },
+    { "type": "range", "id": "copy_width", "label": "Text width", "min": 420, "max": 760, "step": 20, "unit": "px", "default": 650 },
+    { "type": "range", "id": "column_gap", "label": "Column gap", "min": 24, "max": 120, "step": 4, "unit": "px", "default": 72 },
+    { "type": "range", "id": "padding_top", "label": "Space above", "min": 40, "max": 200, "step": 4, "unit": "px", "default": 96 },
+    { "type": "range", "id": "padding_bottom", "label": "Space below", "min": 40, "max": 200, "step": 4, "unit": "px", "default": 96 },
+    { "type": "range", "id": "card_width", "label": "Template card width", "min": 260, "max": 520, "step": 10, "unit": "px", "default": 390 },
+    { "type": "range", "id": "card_radius", "label": "Template card radius", "min": 8, "max": 36, "step": 2, "unit": "px", "default": 22 },
+    { "type": "range", "id": "search_radius", "label": "Search radius", "min": 8, "max": 36, "step": 2, "unit": "px", "default": 18 },
+    { "type": "color", "id": "glow_color", "label": "Background glow", "default": "#8B5CF6" }
+  ],
+  "blocks": [
     {
-      "type": "color_scheme",
-      "id": "color_scheme",
-      "label": "Color scheme",
-      "default": "white"
-    },
-    {
-      "type": "text",
-      "id": "eyebrow",
-      "label": "Eyebrow",
-      "placeholder": "Short label above the heading"
-    },
-    {
-      "type": "text",
-      "id": "heading",
-      "label": "Heading",
-      "default": "Notion marketplace hero storelib"
-    },
-    {
-      "type": "textarea",
-      "id": "body",
-      "label": "Text"
-    },
-    {
-      "type": "header",
-      "id": "hdr_spacing",
-      "label": "Spacing"
-    },
-    {
-      "type": "range",
-      "id": "padding_top",
-      "label": "Padding top",
-      "min": 0,
-      "max": 160,
-      "step": 4,
-      "unit": "px",
-      "default": 64
-    },
-    {
-      "type": "range",
-      "id": "padding_bottom",
-      "label": "Padding bottom",
-      "min": 0,
-      "max": 160,
-      "step": 4,
-      "unit": "px",
-      "default": 64
+      "type": "template_card",
+      "name": "Template card",
+      "limit": 6,
+      "settings": [
+        { "type": "image_picker", "id": "image", "label": "Preview image" },
+        { "type": "text", "id": "title", "label": "Title", "default": "Creator OS" },
+        { "type": "text", "id": "price", "label": "Price", "default": "$19" },
+        { "type": "url", "id": "url", "label": "Link", "default": "/search" }
+      ]
     }
   ],
+  "max_blocks": 6,
   "presets": [
     {
-      "name": "Notion marketplace hero storelib"
+      "name": "Notion marketplace hero",
+      "settings": {
+        "layout": "split",
+        "alignment": "left",
+        "source": "manual"
+      },
+      "blocks": [
+        { "type": "template_card", "settings": { "title": "Second Brain", "price": "$24", "url": "/search" } },
+        { "type": "template_card", "settings": { "title": "Finance OS", "price": "$18", "url": "/search" } },
+        { "type": "template_card", "settings": { "title": "Creator Dashboard", "price": "$29", "url": "/search" } }
+      ]
     }
   ]
 }
