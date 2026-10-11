@@ -175,7 +175,7 @@
    - Optional username + avatar pill in the top-left, like a creator handle
    - Optional like / share / save counters on the right edge
 {%- endcomment -%}
-<link rel="stylesheet" href="{{ 'pagination-styles.css' | asset_url }}" media="print" onload="this.media='all'">
+{{ 'pagination-styles.css' | asset_url | stylesheet_tag }}
 {%- liquid
   assign s = section.settings
   assign section_width = s.section_width | default: 'container'

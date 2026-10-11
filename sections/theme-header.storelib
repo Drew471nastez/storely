@@ -68,6 +68,52 @@
     }
   }
 {% comment %}{% endcomment %}</style>
+{%- comment -%} Image arrival: a picture below the first screen fades in when it has loaded instead of popping in. It runs once per page load, never on a builder redraw, and never under reduced motion. Pictures already on screen, slider pictures and hover swap pictures are left as they are. {%- endcomment -%}
+<style>
+  img.sl-img-wait {
+    opacity: 0;
+  }
+  img.sl-img-fade {
+    transition: opacity .4s ease;
+  }
+{% comment %}{% endcomment %}</style>
+<script>
+  (function(){
+    if (window.__slImgFade) return;
+    window.__slImgFade = 1;
+    if (window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+    var skip = /opacity|secondary|hover|hidden/;
+    var reveal = function(img){
+      img.classList.remove('sl-img-wait');
+      setTimeout(function(){ img.classList.remove('sl-img-fade'); }, 450);
+    };
+    var run = function(){
+      var vh = window.innerHeight || document.documentElement.clientHeight;
+      Array.prototype.forEach.call(document.images, function(img){
+        if (img.complete || skip.test(img.className) || img.closest('.swiper, header, [data-no-fade]')) return;
+        if (img.getBoundingClientRect().top < vh) return;
+        img.classList.add('sl-img-wait', 'sl-img-fade');
+        var done = function(){ reveal(img); };
+        img.addEventListener('load', done, { once: true });
+        img.addEventListener('error', done, { once: true });
+        if (io) io.observe(img);
+      });
+    };
+    {%- comment -%} Safety net: a picture that is on screen and still has not loaded after 3 seconds is shown anyway. {%- endcomment -%}
+    var io = window.IntersectionObserver ? new IntersectionObserver(function(entries){
+      entries.forEach(function(entry){
+        if (!entry.isIntersecting) return;
+        io.unobserve(entry.target);
+        setTimeout(function(){ reveal(entry.target); }, 3000);
+      });
+    }) : null;
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', run, { once: true });
+    } else {
+      run();
+    }
+  })();
+{% comment %}{% endcomment %}</script>
 {%- unless request.design_mode -%}
 <script type="speculationrules">
   {

@@ -1,4 +1,57 @@
 <template compat="shopify">
+{%- comment -%} Materia: connect this section to the theme-level animation settings (settings.scroll_animation / animation_duration / animation_delay). {%- endcomment -%}
+{%- comment -%} Render guard: while this section is drawn or redrawn (a setting changed in the builder) its transitions are held, so nothing fades or slides into place. A redrawn section never replays its scroll animation. The section reveal plays once, and only for a section that starts below the first screen. {%- endcomment -%}
+<style>
+  #shopify-section-{{ section.id }}.sl-settling,
+  #shopify-section-{{ section.id }}.sl-settling *,
+  #shopify-section-{{ section.id }}.sl-settling *::before,
+  #shopify-section-{{ section.id }}.sl-settling *::after {
+    transition: none !important;
+  }
+  #shopify-section-{{ section.id }}.sl-still.scroll-trigger,
+  #shopify-section-{{ section.id }}.sl-still .scroll-trigger {
+    animation: none !important;
+    opacity: 1 !important;
+    transform: none !important;
+  }
+{%- if settings.scroll_animation != blank and settings.scroll_animation != 'none' %}
+  #shopify-section-{{ section.id }}.scroll-trigger {
+    --animation-duration: {{ settings.animation_duration | default: 700 }}ms;
+    --animation-delay: {{ settings.animation_delay | default: 0 }}ms;
+  }
+{%- endif %}
+{% comment %}{% endcomment %}</style>
+<script>
+  (function(){
+    var id = {{ section.id | json }};
+    var el = document.getElementById('shopify-section-' + id);
+    if (!el) return;
+    var seen = window.__slSections || (window.__slSections = {});
+    var redraw = seen[id] === 1;
+    seen[id] = 1;
+    if (redraw) el.classList.add('sl-still');
+    el.classList.add('sl-settling');
+    var settle = function(){
+      requestAnimationFrame(function(){
+        requestAnimationFrame(function(){ el.classList.remove('sl-settling'); });
+      });
+    };
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', settle, { once: true });
+    } else {
+      setTimeout(settle, 200);
+    }
+{%- if settings.scroll_animation != blank and settings.scroll_animation != 'none' %}
+    var anim = {{ settings.scroll_animation | json }};
+    var reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    if (redraw || reduce || el.getBoundingClientRect().top < (window.innerHeight || 0)) {
+      el.classList.remove('scroll-trigger', anim, 'scroll-trigger--offscreen');
+    } else {
+      el.classList.add('scroll-trigger', anim);
+    }
+{%- endif %}
+  })();
+{% comment %}{% endcomment %}</script>
 <style data-rs-bulletproof>
   {%- if section.settings.reset_spacing -%}
     /* reset_spacing: bulletproof override of ALL section spacing mechanisms */

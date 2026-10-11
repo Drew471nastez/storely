@@ -176,7 +176,7 @@
   Materia Themes. Developed By Materia Themes.
 {%- endcomment -%}
 {{ 'section-collection.css' | asset_url | stylesheet_tag }}
-<link rel="stylesheet" href="{{ 'pagination-styles.css' | asset_url }}" media="print" onload="this.media='all'">
+{{ 'pagination-styles.css' | asset_url | stylesheet_tag }}
 {%- liquid
   assign section_st = section.settings
   assign section_width = section_st.section_width
