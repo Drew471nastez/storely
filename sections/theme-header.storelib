@@ -52,22 +52,37 @@
 {%- endif %}
   })();
 {% comment %}{% endcomment %}</script>
-{%- comment -%} Page changes: the browser cross-fades from one page to the next instead of flashing white, and a link is fetched when the pointer rests on it, so the next page is ready on click. Cart, checkout and account links are never fetched early. {%- endcomment -%}
+{%- comment -%} Page changes: no cross-fade. A cross-fade blends a snapshot of the old page into the new one, so an open menu, drawer or sticky header showed as ghost panels and slanted cuts while the page changed. Without it the browser keeps the old page on screen until the new one is ready to paint, then swaps in one frame. A link is fetched when the pointer rests on it, and the page is prepared in full the moment it is pressed, so the swap is near instant. Cart, checkout and account links are never fetched early. {%- endcomment -%}
 <style>
   @view-transition {
-    navigation: auto;
-  }
-  ::view-transition-old(root),
-  ::view-transition-new(root) {
-    animation-duration: 180ms;
-    animation-timing-function: ease-out;
-  }
-  @media (prefers-reduced-motion: reduce) {
-    @view-transition {
-      navigation: none;
-    }
+    navigation: none;
   }
 {% comment %}{% endcomment %}</style>
+{%- comment -%} Header redraw: when a header setting changes in the builder, the redrawn header keeps the sticky state it had, so it does not drop out of place and jump back. {%- endcomment -%}
+<script>
+  (function(){
+    var id = {{ section.id | json }};
+    var el = document.getElementById('shopify-section-' + id);
+    if (!el) return;
+    var keep = ['shopify-section-header-sticky', 'animate', 'shopify-section-header-hidden'];
+    var store = window.__slHeaderState || (window.__slHeaderState = {});
+    var redraw = el.classList.contains('sl-still');
+    if (redraw && store[id] && (window.scrollY || window.pageYOffset || 0) > 0) {
+      store[id].forEach(function(c){ el.classList.add(c); });
+    }
+    var save = function(){
+      if (!el.isConnected) return;
+      store[id] = keep.filter(function(c){ return el.classList.contains(c); });
+    };
+    save();
+    if (window.MutationObserver) {
+      new MutationObserver(save).observe(el, { attributes: true, attributeFilter: ['class'] });
+    }
+    if (redraw) {
+      requestAnimationFrame(function(){ window.dispatchEvent(new Event('scroll')); });
+    }
+  })();
+{% comment %}{% endcomment %}</script>
 {%- comment -%} Image arrival: a picture below the first screen fades in when it has loaded instead of popping in. It runs once per page load, never on a builder redraw, and never under reduced motion. Pictures already on screen, slider pictures and hover swap pictures are left as they are. {%- endcomment -%}
 <style>
   img.sl-img-wait {
@@ -117,6 +132,18 @@
 {%- unless request.design_mode -%}
 <script type="speculationrules">
   {
+    "prerender": [
+      {
+        "where": {
+          "and": [
+            { "href_matches": "/*" },
+            { "not": { "href_matches": ["/cart*", "/checkout*", "/account*", "/*logout*", "/search*"] } },
+            { "not": { "selector_matches": "[target=_blank], [download], [rel~=nofollow]" } }
+          ]
+        },
+        "eagerness": "conservative"
+      }
+    ],
     "prefetch": [
       {
         "where": {
