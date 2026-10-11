@@ -1,6 +1,6 @@
 <template compat="shopify">
 {%- comment -%} Materia: connect this section to the theme-level animation settings (settings.scroll_animation / animation_duration / animation_delay). {%- endcomment -%}
-{%- comment -%} Render guard: while this section is drawn or redrawn (a setting changed in the builder) its transitions are held, so nothing fades or slides into place. A redrawn section never replays its scroll animation. The section reveal plays once, and only for a section that starts below the first screen. {%- endcomment -%}
+{%- comment -%} Render guard: while this section is drawn or redrawn (a setting changed in the builder) its transitions are held, so nothing fades or slides into place. A redrawn section never replays its scroll animation. The section reveal plays once, and only for a section that starts below the first screen; the fade up of the blocks inside it (motion-element) follows the same rule, so the first screen and an edited section never fade in. {%- endcomment -%}
 <style>
   #shopify-section-{{ section.id }}.sl-settling,
   #shopify-section-{{ section.id }}.sl-settling *,
@@ -10,6 +10,12 @@
   }
   #shopify-section-{{ section.id }}.sl-still.scroll-trigger,
   #shopify-section-{{ section.id }}.sl-still .scroll-trigger {
+    animation: none !important;
+    opacity: 1 !important;
+    transform: none !important;
+  }
+  #shopify-section-{{ section.id }}.sl-calm motion-element,
+  #shopify-section-{{ section.id }}.sl-calm .scroll-trigger:not(.scroll-trigger--offscreen) {
     animation: none !important;
     opacity: 1 !important;
     transform: none !important;
@@ -30,6 +36,7 @@
     var redraw = seen[id] === 1;
     seen[id] = 1;
     if (redraw) el.classList.add('sl-still');
+    if (redraw || el.getBoundingClientRect().top < (window.innerHeight || 0) || (window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches)) el.classList.add('sl-calm');
     el.classList.add('sl-settling');
     var settle = function(){
       requestAnimationFrame(function(){
@@ -83,6 +90,14 @@
     }
   })();
 {% comment %}{% endcomment %}</script>
+{%- if request.design_mode -%}
+{%- comment -%} Builder only: a section being redrawn after a setting change stays at full strength instead of dimming while the new version loads. A section that is still waiting for its scroll reveal is left alone. {%- endcomment -%}
+<style>
+  .shopify-section:not(.scroll-trigger) {
+    opacity: 1 !important;
+  }
+{% comment %}{% endcomment %}</style>
+{%- endif -%}
 {%- comment -%} Image arrival: a picture below the first screen fades in when it has loaded instead of popping in. It runs once per page load, never on a builder redraw, and never under reduced motion. Pictures already on screen, slider pictures and hover swap pictures are left as they are. {%- endcomment -%}
 <style>
   img.sl-img-wait {
