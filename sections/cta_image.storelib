@@ -1,5 +1,5 @@
 <template>
-<section class="s ci ci--{{ settings.image_side }}" data-scheme="{{ settings.color_scheme }}" style="--s-bg: {{ scheme.bg }}; --s-text: {{ scheme.text }}; --s-heading: {{ scheme.heading }}; --s-para: {{ scheme.paragraph }}; --s-border: {{ scheme.border }}; --s-accent: {{ scheme.accent }}; --s-btn: {{ scheme.primary_btn_bg }}; --s-btn-text: {{ scheme.primary_btn_text }}; --s-btn2: {{ scheme.secondary_btn_bg }}; --s-btn2-text: {{ scheme.secondary_btn_text }}; --s-btn2-border: {{ scheme.secondary_btn_border }}; --s-radius: {{ theme.radius.medium }}px; --s-pt: {{ settings.padding_top }}px; --s-pb: {{ settings.padding_bottom }}px;">
+<section class="s ci ci--{{ settings.image_side }}" data-scheme="{{ settings.color_scheme }}" style="--s-bg: {{ scheme.bg }}; --s-text: {{ scheme.text }}; --s-heading: {{ scheme.heading }}; --s-para: {{ scheme.paragraph }}; --s-border: {{ scheme.border }}; --s-accent: {{ scheme.accent }}; --s-btn: {{ scheme.primary_btn_bg }}; --s-btn-text: {{ scheme.primary_btn_text }}; --s-btn2: {{ scheme.secondary_btn_bg }}; --s-btn2-text: {{ scheme.secondary_btn_text }}; --s-btn2-border: {{ scheme.secondary_btn_border }}; --s-btn-hover: {{ scheme.primary_btn_hover_bg }}; --s-btn-hover-text: {{ scheme.primary_btn_hover_text }}; --s-btn2-hover: {{ scheme.secondary_btn_hover_bg }}; --s-btn2-hover-text: {{ scheme.secondary_btn_hover_text }}; --s-radius: {{ theme.radius.medium }}px; --s-pt: {{ settings.padding_top }}px; --s-pb: {{ settings.padding_bottom }}px;">
   <div class="s__in s__in--{{ settings.max_width }} ci__in">
     <div class="ci__media">
       {% if settings.image %}<img src="{{ settings.image | asset }}" alt="{{ settings.image_alt }}" loading="lazy" decoding="async">{% else %}<div class="ci__placeholder" aria-hidden="true"></div>{% endif %}
@@ -30,7 +30,7 @@
 .s__in--medium { max-width: 960px; }
 .s__in--wide { max-width: var(--theme-page-width, 1280px); }
 .s__in--full { max-width: none; }
-.s__eyebrow { margin: 0 0 12px; font-size: 12px; font-weight: 600; letter-spacing: 0.14em; text-transform: uppercase; color: var(--s-accent); }
+.s__eyebrow { margin: 0 0 12px; font-family: var(--sl-caption-font); font-size: var(--sl-caption-size, 12px); font-weight: var(--sl-caption-weight, 600); letter-spacing: var(--sl-caption-tracking, 0.14em); text-transform: var(--sl-caption-transform, uppercase); color: var(--s-accent); }
 .s__h {
   margin: 0;
   /* The section's heading style: Heading 2 unless the section picked
@@ -43,7 +43,7 @@
   text-transform: var(--section-heading-transform, none);
   /* The theme's font when the page sets one, the token otherwise, and a real
      stack either way: a bare family name falls back to the browser's serif. */
-  font-family: var(--theme-font-heading, {{ theme.typography.heading }}), ui-sans-serif, system-ui, sans-serif;
+  font-family: var(--section-heading-font, var(--theme-font-heading, {{ theme.typography.heading }}), ui-sans-serif, system-ui, sans-serif);
 }
 .s__sub { margin: 14px 0 0; font-size: var(--section-text-size, 17px); line-height: var(--section-text-line-height, 1.6); color: var(--s-para); }
 .s__head { max-width: 44rem; }
@@ -52,10 +52,13 @@
 .s__head--center .s__btns { justify-content: center; }
 .s__btn {
   display: inline-flex; align-items: center; justify-content: center;
-  padding: 13px 24px; font-size: 15px; font-weight: 600; text-decoration: none;
-  border-radius: var(--s-radius); border: 1px solid transparent; transition: opacity 150ms ease;
+  padding: var(--sl-button-padding, 13px 24px); font-size: var(--sl-button-size, 15px); line-height: var(--sl-button-line-height); font-weight: var(--theme-button-weight, 600); text-decoration: none;
+  border-radius: var(--s-radius); border: 1px solid transparent; transition: background-color 150ms ease, color 150ms ease, border-color 150ms ease;
 }
-.s__btn:hover { opacity: 0.88; }
+/* Each button's hover colours come from the scheme, after the section's own
+   Advanced colors: automatic until somebody chooses them. */
+.s__btn--primary:hover { background: var(--s-btn-hover); color: var(--s-btn-hover-text); border-color: var(--s-btn-hover); }
+.s__btn--secondary:hover { background: var(--s-btn2-hover); color: var(--s-btn2-hover-text); }
 .s__btn--primary { background: var(--s-btn); color: var(--s-btn-text); border-color: var(--s-btn); }
 /* The scheme's OWN secondary-button colours, not a stand-in for them.
    This said `transparent / var(--s-heading) / var(--s-border)`, so the
@@ -67,7 +70,7 @@
 
 .ci__in { display: grid; gap: 32px; align-items: center; grid-template-columns: 1fr; }
 @container (min-width: 820px) { .ci__in { grid-template-columns: 1fr 1fr; gap: 48px; } .ci--right .ci__media { order: 2; } }
-.ci__media { overflow: hidden; border-radius: var(--s-radius); background: var(--s-border); }
+.ci__media { overflow: hidden; border-radius: var(--sl-image-radius, var(--s-radius)); background: var(--s-border); }
 .ci__media img { display: block; width: 100%; object-fit: cover; aspect-ratio: 3 / 2; }
 .ci__placeholder { width: 100%; aspect-ratio: 3 / 2; }
 .ci__copy { max-width: 30rem; }

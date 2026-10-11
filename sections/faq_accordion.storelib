@@ -71,7 +71,7 @@
 
 .s__head { max-width: 44rem; margin-bottom: 40px; }
 .s__head--center { margin-inline: auto; text-align: center; }
-.s__eyebrow { margin: 0 0 12px; font-size: 12px; font-weight: 600; letter-spacing: 0.14em; text-transform: uppercase; color: var(--s-accent); }
+.s__eyebrow { margin: 0 0 12px; font-family: var(--sl-caption-font); font-size: var(--sl-caption-size, 12px); font-weight: var(--sl-caption-weight, 600); letter-spacing: var(--sl-caption-tracking, 0.14em); text-transform: var(--sl-caption-transform, uppercase); color: var(--s-accent); }
 .s__h {
   margin: 0;
   /* The section's heading style: Heading 2 unless the section picked
@@ -83,7 +83,7 @@
   text-transform: var(--section-heading-transform, none);
   color: var(--s-heading);
   /* A bare family name falls back to the browser's serif, so give it a stack. */
-  font-family: var(--theme-font-heading, {{ theme.typography.heading }}), ui-sans-serif, system-ui, sans-serif;
+  font-family: var(--section-heading-font, var(--theme-font-heading, {{ theme.typography.heading }}), ui-sans-serif, system-ui, sans-serif);
 }
 .s__sub { margin: 14px 0 0; font-size: var(--section-text-size, 17px); line-height: var(--section-text-line-height, 1.6); color: var(--s-para); }
 

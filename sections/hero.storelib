@@ -26,7 +26,7 @@
       {% if settings.button_text or settings.button2_text %}
         <div class="hero__actions">
           {% if settings.button_text %}
-            <a class="hero__button hero__button--{{ settings.button_style }}" href="{{ settings.button_url | default: '#' | url }}" style="--btn: {{ settings.button_color | default: scheme.primary_btn_bg }}; --btn-text: {{ settings.button_text_color | default: scheme.primary_btn_text }}; border-radius: {{ settings.button_border_radius }}px;">{{ settings.button_text }}</a>
+            <a class="hero__button hero__button--{{ settings.button_style }}" href="{{ settings.button_url | default: '#' | url }}" style="--btn: {{ settings.button_color | default: scheme.primary_btn_bg }}; --btn-text: {{ settings.button_text_color | default: scheme.primary_btn_text }};{% if settings.button_color %}{% else %} --btn-hover: {{ scheme.primary_btn_hover_bg }}; --btn-hover-text: {{ scheme.primary_btn_hover_text }};{% endif %} border-radius: {{ settings.button_border_radius }}px;">{{ settings.button_text }}</a>
           {% endif %}
           {% if settings.button2_text %}
             <a class="hero__button hero__button--{{ settings.button2_style }}" href="{{ settings.button2_url | default: '#' | url }}" style="--btn: {{ settings.text_color | default: scheme.heading }}; --btn-text: {{ settings.bg_color | default: scheme.bg }}; border-radius: {{ settings.button_border_radius }}px;">{{ settings.button2_text }}</a>
@@ -35,7 +35,7 @@
       {% endif %}
     </div>
     {% if settings.layout == 'split' and settings.hero_image %}
-      <div class="hero__image"><img src="{{ settings.hero_image | asset }}" alt="" loading="eager" fetchpriority="high" decoding="async"></div>
+      <div class="hero__image"><img src="{{ settings.hero_image | asset }}" alt="{{ settings.heading }}" loading="eager" fetchpriority="high" decoding="async"></div>
     {% endif %}
   </div>
 
@@ -120,7 +120,7 @@
 }
 .hero__heading {
   margin: 0;
-  font-family: var(--theme-font-heading, {{ theme.typography.heading }}), ui-sans-serif, system-ui, sans-serif;
+  font-family: var(--section-heading-font, var(--theme-font-heading, {{ theme.typography.heading }}), ui-sans-serif, system-ui, sans-serif);
   max-width: 48rem;
   font-size: 36px;
   font-weight: 700;
@@ -154,9 +154,14 @@
   font-size: 15px;
   font-weight: 600;
   text-decoration: none;
-  transition: opacity 150ms ease;
+  transition: background-color 150ms ease, color 150ms ease, border-color 150ms ease;
 }
-.hero__button:hover { opacity: 0.9; }
+/* The primary button's hover is the scheme's, after the section's own
+   Advanced colors; a colour typed into the old Button colour field gets one
+   worked out from it. Outline and ghost buttons take a tint of their colour. */
+.hero__button--filled:hover { background: var(--btn-hover, color-mix(in srgb, var(--btn) 88%, #000)); border-color: var(--btn-hover, color-mix(in srgb, var(--btn) 88%, #000)); color: var(--btn-hover-text, var(--btn-text)); }
+.hero__button--outline:hover,
+.hero__button--ghost:hover { background: color-mix(in srgb, var(--btn) 10%, transparent); }
 .hero__button--filled { background: var(--btn); color: var(--btn-text); border: 1px solid var(--btn); }
 .hero__button--outline { background: transparent; color: var(--btn); border: 2px solid var(--btn); }
 .hero__button--ghost { background: transparent; color: var(--btn); border: 1px solid transparent; }
@@ -215,8 +220,8 @@
     { "type": "radio", "id": "button_style", "label": "Button style", "default": "filled", "options": [
       { "label": "Filled", "value": "filled" }, { "label": "Outline", "value": "outline" }, { "label": "Ghost", "value": "ghost" }
     ] },
-    { "type": "color", "id": "button_color", "label": "Button colour", "default": "#6366f1" },
-    { "type": "color", "id": "button_text_color", "label": "Button text colour", "default": "#ffffff" },
+    { "type": "color", "id": "button_color", "label": "Button colour", "default": "" },
+    { "type": "color", "id": "button_text_color", "label": "Button text colour", "default": "" },
     { "type": "range", "id": "button_border_radius", "label": "Button radius", "min": 0, "max": 32, "step": 2, "unit": "px", "default": 8 },
 
     { "type": "header", "id": "hdr_cta2", "label": "Secondary button" },

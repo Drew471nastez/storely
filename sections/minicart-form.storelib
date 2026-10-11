@@ -1,0 +1,447 @@
+<template compat="shopify">
+{%- comment -%} Render guard: while this section is drawn or redrawn (a setting changed in the builder) its transitions are held, so nothing fades or slides into place. A redrawn section never replays its scroll animation. The section reveal plays once, and only for a section that starts below the first screen. {%- endcomment -%}
+<style>
+  #shopify-section-{{ section.id }}.sl-settling,
+  #shopify-section-{{ section.id }}.sl-settling *,
+  #shopify-section-{{ section.id }}.sl-settling *::before,
+  #shopify-section-{{ section.id }}.sl-settling *::after {
+    transition: none !important;
+  }
+  #shopify-section-{{ section.id }}.sl-still.scroll-trigger,
+  #shopify-section-{{ section.id }}.sl-still .scroll-trigger {
+    animation: none !important;
+    opacity: 1 !important;
+    transform: none !important;
+  }
+{% comment %}{% endcomment %}</style>
+<script>
+  (function(){
+    var id = {{ section.id | json }};
+    var el = document.getElementById('shopify-section-' + id);
+    if (!el) return;
+    var seen = window.__slSections || (window.__slSections = {});
+    var redraw = seen[id] === 1;
+    seen[id] = 1;
+    if (redraw) el.classList.add('sl-still');
+    el.classList.add('sl-settling');
+    var settle = function(){
+      requestAnimationFrame(function(){
+        requestAnimationFrame(function(){ el.classList.remove('sl-settling'); });
+      });
+    };
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', settle, { once: true });
+    } else {
+      setTimeout(settle, 200);
+    }
+  })();
+{% comment %}{% endcomment %}</script>
+<style>
+  /* Theme font-weight inheritance — inherit theme weights by default; explicit rules still override */
+  #shopify-section-{{ section.id }} {
+    font-weight: var(--body-weight, inherit);
+  }
+  :where(#shopify-section-{{ section.id }}) :is(h1, h2, h3, h4, h5, h6) {
+    font-weight: var(--heading-weight, inherit);
+  }
+{% comment %}{% endcomment %}</style>
+{%- comment -%}Section isolation — prevent CSS/JS bleed between sections{%- endcomment -%}
+<style>
+  #shopify-section-{{ section.id }} { isolation: isolate; position: relative; }
+{% comment %}{% endcomment %}</style>
+{%- comment -%}
+  Materia Themes. Developed By Materia Themes.
+{%- endcomment -%}
+{%- liquid
+  assign theme_st = settings
+  assign show_add_cart = theme_st.show_add_cart
+  assign free_shipping = theme_st.show_on_minicart_cart_page
+  assign show_currency_code = theme_st.show_currency_code
+  assign action_after_add_cart = theme_st.action_after_add_cart
+  assign minicart_type = theme_st.minicart_type
+  assign shipping_rate = theme_st.free_shipping_minimum | times: 1 | default: 0
+  assign shipping_rate_price = shipping_rate | money
+  if show_currency_code
+    assign shipping_rate_price = shipping_rate | money_with_currency
+  endif
+  assign cart_duration_show = theme_st.show_duration_on_minicart_cart_page
+  assign cart_duration = theme_st.cart_duration
+  assign recommendations_heading = theme_st.product_recommendations_heading
+  assign product_recommendations_type = theme_st.product_recommendations_type
+  assign select_product_recommendations = theme_st.select_product_recommendations
+  assign hidden_price = theme_st.hidden_price
+-%}
+{% liquid
+  assign enable_rtl = settings.rtl
+  assign iso_code = request.locale.iso_code
+  assign lis_language_rtl = settings.language_rtl
+  if lis_language_rtl != blank
+    if lis_language_rtl contains iso_code
+      assign enable_rtl = true
+    else
+      assign enable_rtl = false
+    endif
+  endif
+%}
+{%- if free_shipping and shipping_rate > 0 -%}
+  {%- liquid
+    assign items_subtotal_price = cart.items_subtotal_price
+    assign shipping_price = shipping_rate
+  -%}
+  <free-ship-progress-bar
+    data-order="{{ cart.items_subtotal_price }}"
+    data-fe-amount="{{ shipping_rate }}"
+    data-fe-unavaiable="{{ 'general.cart.free_shipping' | t }}"
+    data-fe-avaiable="{{ 'general.cart.free_shipping_avaiable' | t }}"
+    class="block cart_shipping cart_threshold{% if action_after_add_cart == 'open_drawer' %} grey-bg{% endif %} border-bottom{% if action_after_add_cart != 'show_popup' %} border-top{% endif %} px-30 pt-33 pb-15{% if cart.items.size > 0 and items_subtotal_price >= shipping_price %} cart_shipping_free{% endif %}"
+  >
+    <div class="progress-bar cart_bar_w relative rounded-10">
+      <span
+        class="progress percent_shipping_bar transition relative primary-color rounded-10"
+        style="width: 0%;"
+      >
+        {% if enable_rtl %}
+          <svg width="30" height="30" fill="none" class="absolute">
+            <circle cx="15" cy="15" r="14.5" fill="#fff" stroke="currentColor"/><g fill="currentColor" stroke="currentColor" stroke-width=".3"><path d="m6.187 14.611 1.09-1.011a.643.643 0 0 0 .167-.25l.856-2.325a1.722 1.722 0 0 1 1.607-1.12h1.298v-.363a.59.59 0 0 1 .59-.59h7.842a.448.448 0 0 1 .453.43.44.44 0 0 1-.439.447h-7.569v3.805a.59.59 0 0 1-.59.59H7.927l-1.058.953v3.554h.96a1.894 1.894 0 0 1 3.692 0h2.954a1.894 1.894 0 0 1 3.693 0h1.469a.448.448 0 0 1 .453.43.439.439 0 0 1-.439.447h-1.49a1.894 1.894 0 0 1-3.679 0h-2.968a1.895 1.895 0 0 1-3.678 0H6.582a.59.59 0 0 1-.59-.59V15.05a.59.59 0 0 1 .195-.439Zm5.018-1.263v-2.565H9.907a.84.84 0 0 0-.784.546l-.748 2.019h2.83Zm5.116 6.823a1.017 1.017 0 1 0 0-2.035 1.017 1.017 0 0 0 0 2.035Zm-6.646 0a1.017 1.017 0 1 0 0-2.035 1.017 1.017 0 0 0 0 2.035Z"/><path d="M21.518 12.283h-4.973a.438.438 0 1 1 0-.878h4.973a.439.439 0 0 1 0 .878ZM16.113 14.28a.438.438 0 0 1 .438-.439h7.003a.44.44 0 1 1 0 .878H16.55a.439.439 0 0 1-.438-.44ZM18.887 16.716a.437.437 0 0 1 .439-.438h3.048a.439.439 0 0 1 0 .877h-3.048a.438.438 0 0 1-.44-.439Z"/></g>
+          </svg>
+        {% else %}
+          <svg width="30" height="30" fill="none" class="absolute">
+            <circle cx="15" cy="15" r="14.5" fill="#fff" stroke="currentColor"/><path fill="currentColor" stroke="currentColor" stroke-width=".3" d="M23.802 14.611 22.71 13.6a.643.643 0 0 1-.166-.25l-.857-2.325a1.722 1.722 0 0 0-1.607-1.12h-1.298v-.363a.59.59 0 0 0-.59-.59h-7.841a.448.448 0 0 0-.453.43.439.439 0 0 0 .438.447h7.57v3.805a.59.59 0 0 0 .59.59h3.564l1.059.953v3.554h-.96a1.894 1.894 0 0 0-3.693 0h-2.953a1.894 1.894 0 0 0-3.693 0h-1.47a.448.448 0 0 0-.452.43.438.438 0 0 0 .438.447h1.491a1.895 1.895 0 0 0 3.678 0h2.968a1.894 1.894 0 0 0 3.678 0h1.255a.59.59 0 0 0 .59-.59V15.05a.589.589 0 0 0-.195-.439Zm-5.019-1.263v-2.565h1.298a.84.84 0 0 1 .785.546l.747 2.019h-2.83Zm-5.116 6.823a1.017 1.017 0 1 1 0-2.035 1.017 1.017 0 0 1 0 2.035Zm6.646 0a1.017 1.017 0 1 1 0-2.035 1.017 1.017 0 0 1 0 2.035Z"/><path fill="currentColor" stroke="currentColor" stroke-width=".3" d="M8.47 12.283h4.974a.438.438 0 0 0 0-.878H8.47a.439.439 0 1 0 0 .878ZM13.876 14.28a.438.438 0 0 0-.439-.439H6.435a.44.44 0 1 0 0 .878h7.002a.439.439 0 0 0 .439-.44ZM11.101 16.716a.44.44 0 0 0-.438-.438H7.614a.439.439 0 0 0 0 .877h3.049a.438.438 0 0 0 .438-.439Z"/>
+          </svg>
+        {% endif %}
+      </span>
+    </div>
+    <div class="free-shipping-message mt-17 cart-thres cart_thres_1 opacity-0">
+      {{ 'general.cart.cart_thres1_html' | t: price: shipping_rate_price }}
+    </div>
+  </free-ship-progress-bar>
+{% endif %}
+{%- if cart_duration_show -%}
+  <div class="cart-countdown-time px-30 heading-style color-default">
+    <countdown-timer
+      data-minutes-left="{{ cart_duration }}"
+      data-timeout-message="{{ 'general.cart.timeout_message' | t }}"
+      class="flex flex-wrap align-center pt-17 pb-15 border-bottom-dashed  w-full"
+    >
+      <span class="me-5">{{- 'general.cart.countdown_message_html' | t -}}</span>
+      <div class="countdown-inner inline-flex align-center"></div>
+    </countdown-timer>
+  </div>
+{% endif %}
+<div id="minicart-form" class="minicart-form flex-1 flex flex-column grow relative overflow-hidden color-default bls-image-js ">
+  <div class="flex-1 overflow-y-scroll custom-scrollbar">
+    <form
+      id="minicart"
+      action="{{ routes.cart_url }}"
+      method="post"
+      class="minicart-form flex-1 flex flex-column grow relative overflow-hidden color-default"
+      novalidate
+    >
+      {%- if cart.items.size > 0 -%}
+        <div class="minicart-body flex-1 grow pt-30 px-30 overflow-x-hidden{% if action_after_add_cart == 'open_drawer' %} pb-30{% endif %}">
+          {%- render 'cart-drawer-addons', slot: 'top_of_drawer' -%}
+          <div class="items">
+            {% for item in cart.items %}
+              {%- render 'cart-item', item: item -%}
+            {% endfor %}
+          </div>
+          {%- render 'cart-drawer-addons', slot: 'below_items' -%}
+        </div>
+      {%- else -%}
+        <div class="cart-body">
+          <div class="cart-empty text-center p-30">
+            {% if action_after_add_cart == 'open_drawer' %}
+              <svg class="cart-empty__icon" width="80" height="80" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                <path d="M5.25 8.25h13.5l-1 11.4a2.5 2.5 0 0 1-2.49 2.28H8.74a2.5 2.5 0 0 1-2.49-2.28l-1-11.4Z" stroke="#C9CCD1" stroke-width="1.5" stroke-linejoin="round"/>
+                <path d="M8.75 11V8a3.25 3.25 0 0 1 6.5 0v3" stroke="#C9CCD1" stroke-width="1.5" stroke-linecap="round"/>
+              </svg>
+            {% endif %}
+            <div class="fs-18 h6 mt-15 mb-20">{{ 'general.cart.subtitle' | t }}</div>
+            <p class="empty description mt-0 mb-20 max-w-custom mx-auto" style="--max-width: 85%;">
+              {{ 'general.cart.description' | t }}
+            </p>
+            <button type="button" class="minicart-action close-cart btn-primary mb-10">
+              {{ 'general.cart.return_shop' | t }}
+            </button>
+          </div>
+        </div>
+      {% endif %}
+    </form>
+    {% if cart.items.size > 0 %}
+      {% if action_after_add_cart == 'open_drawer' and minicart_type == 'show_inside' or action_after_add_cart == 'open_drawer' and minicart_type == 'show_both' %}
+        {%- if product_recommendations_type == 'auto' -%}
+          <minicart-recommendations
+            data-url="{{ routes.product_recommendations_url }}?product_id={{ cart.items.first.product_id }}&limit=6&section_id=cart-upsell"
+            class="bls-image-js block cart-recommend pb-30 px-30 pt-30 border-top block{% if product_recommendations_type == 'auto' %} no-js-hidden{% endif %}"
+          >
+        {%- else -%}
+          <div
+            class="cart-recommend cart-recommend-custom pb-30 px-30 pt-30 border-top inside block{% if select_product_recommendations == blank %} hidden-recommend{% endif %}"
+          >
+        {% endif %}
+        {%- if recommendations_heading -%}
+          <h4 class="minicart-heading mt-0 mb-15 fs-18 heading-letter-spacing">
+            {{ recommendations_heading }}
+          </h4>
+        {% endif %}
+        <slide-section
+          class="swiper swiper-cart-upsell"
+          id="swiper-cart-upsell"
+          data-section-id="cart-upsell"
+          data-autoplay="false"
+          data-loop="false"
+          data-mobile="1"
+          data-tablet="1"
+          data-desktop="1"
+          data-item-mobile="1"
+          data-spacing="5"
+        >
+          <div class="swiper-wrapper">
+            {%- if product_recommendations_type != 'auto' -%}
+              {%- for item in select_product_recommendations -%}
+                {% liquid
+                  assign hidden = false
+                  for itemcart in cart.items
+                    if itemcart.product_id == item.id
+                      assign hidden = true
+                    endif
+                  endfor
+                %}
+                {% if hidden == false %}
+                  <div class="swiper-slide">
+                    {% render 'product-item',
+                      card_product: item,
+                      template_enable_price: true,
+                      template_enable_add_cart: true,
+                      template_enable_product_vendor: false,
+                      template_enable_rate: false,
+                      template_enable_product_short_description: false,
+                      template_enable_color_swatches: false,
+                      type: 'list'
+                    %}
+                  </div>
+                {% endif %}
+              {%- endfor -%}
+            {%- endif -%}
+          </div>
+          <div class="swiper-pagination"></div>
+        </slide-section>
+        {%- if product_recommendations_type == 'auto' -%}
+          </minicart-recommendations>
+        {%- else -%}
+          </div>
+        {% endif %}
+      {% endif %}
+      {% if action_after_add_cart == 'open_drawer' and minicart_type == 'show_beside' %}
+        {%- if product_recommendations_type == 'auto' -%}
+          <minicart-recommendations-beside
+            data-url="{{ routes.product_recommendations_url }}?product_id={{ cart.items.first.product_id }}&limit=6&section_id=cart-upsell"
+            class="bls-image-js cart-recommend pb-30 px-30 block fixed-1025 gradient inset-y-0 z-2 beside invisible-1025 pointer-none-1025 cart-recommend-beside-mobile color-default{% if product_recommendations_type == 'auto' %} no-js-hidden{% endif %}"
+          >
+        {%- else -%}
+          <div
+            class="cart-recommend cart-recommend-custom pb-30 px-30 fixed-1025 inset-y-0 z-2 beside invisible-1025 pointer-none-1025 cart-recommend-beside-mobile color-default{% if select_product_recommendations == blank %} hidden{% endif %}"
+          >
+        {% endif %}
+        {%- if recommendations_heading -%}
+          <minicart-recommendations-heading class="flex gap-10 justify-between recommend-heading">
+            <h4 class="minicart-heading mt-0 mb-15 fs-18 heading-letter-spacing">
+              {{ recommendations_heading }}
+            </h4>
+            <button-close-beside class="btn-reset button-close button-close-beside pointer hover-svg-zoom hidden block-1025">
+              <svg width="13" height="13" viewBox="0 0 13 13" fill="none" class="transition">
+                <use href="#icon-close" />
+              </svg>
+            </button-close-beside>
+          </minicart-recommendations-heading>
+        {% endif %}
+        <grid-custom
+          class="cart-upsell-wrapper flex gap flex-wrap custom-scrollbar"
+          data-mobile="1"
+          data-spacing="15"
+          data-section-id="cart-upsell-beside"
+        >
+          {%- if product_recommendations_type != 'auto' -%}
+            {%- for item in select_product_recommendations -%}
+              {% liquid
+                assign hidden = false
+                for itemcart in cart.items
+                  if itemcart.product_id == item.id
+                    assign hidden = true
+                  endif
+                endfor
+              %}
+              {% if hidden == false %}
+                <div class="cart-upsell-item w-full">
+                  {% render 'product-item',
+                    card_product: item,
+                    template_enable_price: true,
+                    template_enable_add_cart: true,
+                    template_enable_product_vendor: false,
+                    template_enable_rate: false,
+                    template_enable_product_short_description: false,
+                    template_enable_color_swatches: false,
+                    type: 'list'
+                  %}
+                </div>
+              {% endif %}
+            {%- endfor -%}
+          {% endif %}
+        </grid-custom>
+        {%- if product_recommendations_type == 'auto' -%}
+          </minicart-recommendations-beside>
+        {%- else -%}
+          </div>
+        {% endif %}
+      {% endif %}
+    {% endif %}
+  </div>
+  {% if cart.items.size > 0 %}
+    <div class="cart-footer{% if action_after_add_cart == 'show_popup' %} mt-30{% endif %}">
+      {% if action_after_add_cart == 'open_drawer' %}
+        {%- render 'cart-addons' -%}
+      {% endif %}
+      {%- comment -%} Cart drawer addons rendered ABOVE the gray totals container {%- endcomment -%}
+      <div class="cart-drawer-addons-row px-30">
+        {%- render 'cart-drawer-addons', slot: 'above_subtotal' -%}
+      </div>
+      <div class="drawer-bottom cart__ctas px-30 pt-20 pb-30 grey-bg border-top">
+        {% if hidden_price == false %}
+          <div class="cart-summary {% if enable_rtl %}text-left{% else %}text-right{% endif %}" data-cart-summary>
+            <div data-discounts>
+              <ul class="cart-discounts list-unstyled fs-small primary-color" data-discounts-list>
+                {% unless cart.cart_level_discount_applications.size == 0 %}
+                  {% for discount in cart.cart_level_discount_applications %}
+                    <li>
+                      <span>
+                        {% if show_currency_code %}
+                          {{- discount.title | upcase }}&nbsp;(-
+                          {{- discount.total_allocated_amount | money_with_currency -}}
+                          )
+                        {% else %}
+                          {{- discount.title | upcase }}&nbsp;(-{{ discount.total_allocated_amount | money }})
+                        {% endif %}
+                      </span>
+                    </li>
+                  {% endfor %}
+                {% endunless %}
+              </ul>
+            </div>
+          </div>
+        {% endif %}
+        <div class="subtotal flex gap-10 justify-between align-center" data-cart-subtotal>
+          <h5 class="heading-color my-0">{{ 'general.cart.subtotal' | t }}</h5>
+          <span class="subtotal-price h5 my-5" data-cart-subtotal-price>
+            {% if show_currency_code %}
+              {{ cart.total_price | money_with_currency }}
+            {% else %}
+              {{ cart.total_price | money }}
+            {% endif %}
+          </span>
+        </div>
+        {%- if theme_st.enable_catalog_mode == false -%}
+          {%- if theme_st.show_cart_terms_drawer -%}
+            {%- liquid
+              assign terms_link_url = theme_st.cart_terms_link_url
+              if terms_link_url == blank and shop.terms_of_service.url != blank
+                assign terms_link_url = shop.terms_of_service.url
+              endif
+              assign terms_link_label = theme_st.cart_terms_link_label | default: 'terms & conditions'
+              assign terms_label = theme_st.cart_terms_label
+              if terms_label == blank
+                assign terms_label = 'I agree with the LINK'
+              endif
+              assign terms_label_html = terms_label | escape
+              if terms_link_url != blank
+                assign terms_link_html = '<a href="' | append: terms_link_url | append: '" class="underline" target="_blank" rel="noopener">' | append: terms_link_label | append: '</a>'
+              else
+                assign terms_link_html = terms_link_label
+              endif
+              assign terms_label_html = terms_label_html | replace: 'LINK', terms_link_html
+            -%}
+            <cart-terms class="cart-terms cart-terms--drawer block mt-15 mb-10">
+              <label class="cart-terms__field flex align-start gap-10 pointer">
+                <span class="cart-terms__box relative inline-block">
+                  <input
+                    type="checkbox"
+                    class="cart-terms__input"
+                    id="cart-terms-agree-drawer"
+                    name="cart-terms-agree-drawer"
+                    required
+                  >
+                  <span class="cart-terms__check" aria-hidden="true"></span>
+                </span>
+                <span class="cart-terms__text fs-small">{{ terms_label_html }}</span>
+              </label>
+            </cart-terms>
+          {%- endif -%}
+          {%- render 'cart-drawer-addons', slot: 'above_checkout' -%}
+          <a
+            class="action block mb-10{% unless theme_st.show_cart_terms_drawer %} mt-17{% endunless %} btn-outline w-full text-center no-underline viewcart"
+            href="{{ routes.cart_url }}"
+            {% if theme_st.show_cart_terms_drawer %}data-requires-terms="drawer" aria-disabled="true" tabindex="-1"{% endif %}
+          >
+            <span>{{ 'general.cart.viewcart' | t }}</span>
+          </a>
+          <button
+            type="submit"
+            class="btn-primary w-full btn-checkout"
+            name="checkout"
+            form="minicart"
+            {% if theme_st.show_cart_terms_drawer %}data-requires-terms="drawer" aria-disabled="true" disabled{% endif %}
+          >
+            <span>{{ 'general.cart.checkout' | t }}</span>
+          </button>
+          {%- render 'cart-drawer-addons', slot: 'below_checkout' -%}
+        {% endif %}
+      </div>
+    </div>
+  {% endif %}
+</div>
+{%- if theme_st.show_cart_terms_drawer -%}
+  <script>
+    (function () {
+      if (window.__cartTermsInit) return;
+      window.__cartTermsInit = true;
+      function bindTermsCheckbox(box) {
+        if (!box || box.__termsBound) return;
+        box.__termsBound = true;
+        var scope = box.getAttribute('id') === 'cart-terms-agree-drawer' ? 'drawer' : 'page';
+        function sync() {
+          var checked = box.checked;
+          document.querySelectorAll('[data-requires-terms="' + scope + '"]').forEach(function (btn) {
+            if (checked) {
+              btn.removeAttribute('disabled');
+              btn.removeAttribute('aria-disabled');
+            } else {
+              btn.setAttribute('disabled', '');
+              btn.setAttribute('aria-disabled', 'true');
+            }
+          });
+        }
+        box.addEventListener('change', sync);
+        sync();
+      }
+      function scan() {
+        bindTermsCheckbox(document.getElementById('cart-terms-agree'));
+        bindTermsCheckbox(document.getElementById('cart-terms-agree-drawer'));
+      }
+      scan();
+      document.addEventListener('DOMContentLoaded', scan);
+      document.addEventListener('cart:refresh', scan);
+      document.addEventListener('cart:updated', scan);
+      new MutationObserver(scan).observe(document.body, { childList: true, subtree: true });
+    })();
+{% comment %}{% endcomment %}  </script>
+{%- endif -%}
+
+</template>
+
+<schema>
+{
+  "type": "minicart-form",
+  "name": "Minicart form",
+  "settings": [],
+  "shopify": {}
+}
+</schema>
