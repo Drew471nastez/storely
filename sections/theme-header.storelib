@@ -95,6 +95,27 @@
     }
   })();
 {% comment %}{% endcomment %}</script>
+{%- comment -%} Same page links: the logo, Home or any link to the page you are already on scrolls smoothly back to the top instead of reloading the page. Ctrl, Cmd, Shift and middle clicks, links that open a new tab, links with a #section, and links in the open mobile menu behave as normal. Reduced motion jumps to the top without the scroll. {%- endcomment -%}
+<script>
+  (function(){
+    if (window.__slTopLinks) return;
+    window.__slTopLinks = 1;
+    var clean = function(path){ return path.replace(/\/+$/, '') || '/'; };
+    document.addEventListener('click', function(e){
+      if (e.defaultPrevented || e.button !== 0 || e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return;
+      var a = e.target.closest && e.target.closest('a[href]');
+      if (!a || a.target === '_blank' || a.hasAttribute('download')) return;
+      if (document.documentElement.classList.contains('nav-open')) return;
+      var url;
+      try { url = new URL(a.href, location.href); } catch (err) { return; }
+      if (url.origin !== location.origin || url.hash || url.search !== location.search) return;
+      if (clean(url.pathname) !== clean(location.pathname)) return;
+      e.preventDefault();
+      var reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      window.scrollTo({ top: 0, behavior: reduce ? 'auto' : 'smooth' });
+    });
+  })();
+{% comment %}{% endcomment %}</script>
 {%- if request.design_mode -%}
 {%- comment -%} Builder only: a section being redrawn after a setting change stays at full strength instead of dimming while the new version loads. A section that is still waiting for its scroll reveal is left alone. {%- endcomment -%}
 <style>
