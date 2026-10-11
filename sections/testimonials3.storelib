@@ -19,6 +19,11 @@
     opacity: 1 !important;
     transform: none !important;
   }
+  #shopify-section-{{ section.id }}.sl-calm .lazy-loading-swiper-before {
+    opacity: 1 !important;
+    visibility: visible !important;
+    transition: none !important;
+  }
 {% comment %}{% endcomment %}</style>
 <script>
   (function(){

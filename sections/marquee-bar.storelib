@@ -20,6 +20,11 @@
     opacity: 1 !important;
     transform: none !important;
   }
+  #shopify-section-{{ section.id }}.sl-calm .lazy-loading-swiper-before {
+    opacity: 1 !important;
+    visibility: visible !important;
+    transition: none !important;
+  }
 {%- if settings.scroll_animation != blank and settings.scroll_animation != 'none' %}
   #shopify-section-{{ section.id }}.scroll-trigger {
     --animation-duration: {{ settings.animation_duration | default: 700 }}ms;

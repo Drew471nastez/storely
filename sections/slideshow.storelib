@@ -20,6 +20,11 @@
     opacity: 1 !important;
     transform: none !important;
   }
+  #shopify-section-{{ section.id }}.sl-calm .lazy-loading-swiper-before {
+    opacity: 1 !important;
+    visibility: visible !important;
+    transition: none !important;
+  }
 {%- if settings.scroll_animation != blank and settings.scroll_animation != 'none' %}
   #shopify-section-{{ section.id }}.scroll-trigger {
     --animation-duration: {{ settings.animation_duration | default: 700 }}ms;
@@ -676,12 +681,12 @@
   }
 {% comment %}{% endcomment %}</style>
 
-{%- comment -%} Redraw hold: when a setting changes in the builder, the slide on screen keeps its text visible instead of hiding it and fading it up again. The hold ends at the first real slide change, which then animates as usual. {%- endcomment -%}
+{%- comment -%} First slide hold: on the first screen, and after a setting changes in the builder, the slide on screen shows its text at once instead of hiding it and fading it up. The hold ends at the first real slide change, which then animates as usual. {%- endcomment -%}
 <style>
-  #shopify-section-{{ section.id }}.sl-still .sl-hold :is(.swiper-slide-active, .swiper-slide:first-child) .sec__content-inner {
+  #shopify-section-{{ section.id }}.sl-calm .sl-hold :is(.swiper-slide-active, .swiper-slide:first-child) .sec__content-inner {
     visibility: visible !important;
   }
-  #shopify-section-{{ section.id }}.sl-still .sl-hold :is(.swiper-slide-active, .swiper-slide:first-child) .opacity-0 {
+  #shopify-section-{{ section.id }}.sl-calm .sl-hold :is(.swiper-slide-active, .swiper-slide:first-child) .opacity-0 {
     opacity: 1 !important;
     transform: none !important;
     animation: none !important;
@@ -691,11 +696,15 @@
   (function(){
     var id = {{ section.id | json }};
     var outer = document.getElementById('shopify-section-' + id);
-    if (!outer || !outer.classList.contains('sl-still')) return;
+    if (!outer || !outer.classList.contains('sl-calm')) return;
     var start = function(tries){
       var root = document.getElementById(id);
       if (!root) {
-        if (tries < 10) requestAnimationFrame(function(){ start(tries + 1); });
+        if (document.readyState === 'loading') {
+          document.addEventListener('DOMContentLoaded', function(){ start(10); }, { once: true });
+        } else if (tries < 10) {
+          requestAnimationFrame(function(){ start(tries + 1); });
+        }
         return;
       }
       var wrap = root.querySelector('.swiper-wrapper');
@@ -793,6 +802,15 @@
           {% for block in section.blocks %}
             {% liquid
               assign block_st = block.settings
+              comment
+                The first slide is the first thing on the page: its pictures load at once and first, so they are there when the slider appears instead of popping in after it. Later slides stay lazy.
+              endcomment
+              assign sl_loading = 'lazy'
+              assign sl_priority = 'auto'
+              if forloop.first
+                assign sl_loading = 'eager'
+                assign sl_priority = 'high'
+              endif
               assign image = block_st.image
               assign image_mobile = block_st.image_mobile | default: image
               assign slider_effect = block_st.slider_effect
@@ -1095,7 +1113,7 @@
                              srcset="{{ block_st.split_mobile_primary_image | image_url: width: 600 }} 600w, {{ block_st.split_mobile_primary_image | image_url: width: 800 }} 800w, {{ block_st.split_mobile_primary_image | image_url: width: 1200 }} 1200w"
                              sizes="100vw"
                              alt="{{ block_st.heading | escape }}"
-                             loading="lazy"
+                             loading="{{ sl_loading }}" fetchpriority="{{ sl_priority }}"
                              class="banner__split-img">
                       </picture>
                     {%- elsif block_st.split_mobile_use_primary -%}
@@ -1105,20 +1123,20 @@
                       {%- if demo_smp != blank -%}
                         <picture class="banner__split-mobile-primary">
                           <source media="(min-width: 768px)" srcset="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg'/>">
-                          <img src="{{ demo_smp }}" sizes="100vw" alt="{{ block_st.heading | escape }}" loading="lazy" class="banner__split-img">
+                          <img src="{{ demo_smp }}" sizes="100vw" alt="{{ block_st.heading | escape }}" loading="{{ sl_loading }}" fetchpriority="{{ sl_priority }}" class="banner__split-img">
                         </picture>
                       {%- endif -%}
                     {%- endif -%}
                     <div class="banner__media-split{% if block_st.split_mobile_use_primary %} banner__media-split--hide-mobile{% endif %}">
                       <div class="banner__media-split-left">
                         {%- if block_st.image_split_left != blank -%}
-                          {{ block_st.image_split_left | image_url: width: 1200 | image_tag: alt: block_st.heading, class: 'banner__split-img', loading: 'lazy', widths: '600, 900, 1200, 1600' }}
+                          {{ block_st.image_split_left | image_url: width: 1200 | image_tag: alt: block_st.heading, class: 'banner__split-img', loading: sl_loading, fetchpriority: sl_priority, widths: '600, 900, 1200, 1600' }}
                         {%- else -%}
                           {%- assign sl_key = block.id | append: '_split_left' -%}
                           {%- capture demo_split_left -%}{%- render 'demo-image', key: sl_key -%}{%- endcapture -%}
                           {%- assign demo_split_left = demo_split_left | strip -%}
                           {%- if demo_split_left != blank -%}
-                            <img src="{{ demo_split_left }}" alt="{{ block_st.heading | escape }}" class="banner__split-img" loading="lazy">
+                            <img src="{{ demo_split_left }}" alt="{{ block_st.heading | escape }}" class="banner__split-img" loading="{{ sl_loading }}" fetchpriority="{{ sl_priority }}">
                           {%- else -%}
                             {%- render 'placeholder-render', class: 'absolute inset-0 w-full h-full object-fit-cover' -%}
                           {%- endif -%}
@@ -1126,13 +1144,13 @@
                       </div>
                       <div class="banner__media-split-right">
                         {%- if block_st.image_split_right != blank -%}
-                          {{ block_st.image_split_right | image_url: width: 1200 | image_tag: alt: block_st.heading, class: 'banner__split-img', loading: 'lazy', widths: '600, 900, 1200, 1600' }}
+                          {{ block_st.image_split_right | image_url: width: 1200 | image_tag: alt: block_st.heading, class: 'banner__split-img', loading: sl_loading, fetchpriority: sl_priority, widths: '600, 900, 1200, 1600' }}
                         {%- else -%}
                           {%- assign sr_key = block.id | append: '_split_right' -%}
                           {%- capture demo_split_right -%}{%- render 'demo-image', key: sr_key -%}{%- endcapture -%}
                           {%- assign demo_split_right = demo_split_right | strip -%}
                           {%- if demo_split_right != blank -%}
-                            <img src="{{ demo_split_right }}" alt="{{ block_st.heading | escape }}" class="banner__split-img" loading="lazy">
+                            <img src="{{ demo_split_right }}" alt="{{ block_st.heading | escape }}" class="banner__split-img" loading="{{ sl_loading }}" fetchpriority="{{ sl_priority }}">
                           {%- else -%}
                             {%- render 'placeholder-render', class: 'absolute inset-0 w-full h-full object-fit-cover' -%}
                           {%- endif -%}
@@ -1250,10 +1268,10 @@
                     {%- elsif demo_src_mobile != blank -%}
                       <picture>
                         <source media="(max-width: 767px)" srcset="{{ demo_src_mobile }}">
-                        <img src="{{ demo_src }}" alt="{{ block_st.heading | escape }}" class="absolute inset-0 w-full h-full object-fit-cover" loading="lazy">
+                        <img src="{{ demo_src }}" alt="{{ block_st.heading | escape }}" class="absolute inset-0 w-full h-full object-fit-cover" loading="{{ sl_loading }}" fetchpriority="{{ sl_priority }}">
                       </picture>
                     {%- else -%}
-                      <img src="{{ demo_src }}" alt="{{ block_st.heading | escape }}" class="absolute inset-0 w-full h-full object-fit-cover" loading="lazy">
+                      <img src="{{ demo_src }}" alt="{{ block_st.heading | escape }}" class="absolute inset-0 w-full h-full object-fit-cover" loading="{{ sl_loading }}" fetchpriority="{{ sl_priority }}">
                     {%- endif -%}
                   {%- else -%}
                     {%- render 'placeholder-render', class: 'absolute inset-0 w-full h-full object-fit-cover' -%}
